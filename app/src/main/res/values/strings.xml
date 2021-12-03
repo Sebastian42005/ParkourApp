@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Snapchat</string>
+    <string name="title_home">Home</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_teams">Teams</string>
+    <string name="title_meet_ups">Meet Ups</string>
+    <string name="title_profile">Profile</string>
+</resources>

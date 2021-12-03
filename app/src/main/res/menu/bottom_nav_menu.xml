@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_explore"
+        android:icon="@drawable/explore"
+        android:title="@string/title_explore" />
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/ic_baseline_groups_24"
+        android:title="@string/title_teams" />
+
+    <item
+        android:id="@+id/navigation_battles"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:title="@string/title_meet_ups" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/profile"
+        android:title="@string/title_profile" />
+</menu>
