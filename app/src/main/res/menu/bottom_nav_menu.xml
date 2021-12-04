@@ -12,12 +12,12 @@
         android:title="@string/title_explore" />
 
     <item
-        android:id="@+id/navigation_map"
+        android:id="@+id/navigation_teams"
         android:icon="@drawable/ic_baseline_groups_24"
         android:title="@string/title_teams" />
 
     <item
-        android:id="@+id/navigation_battles"
+        android:id="@+id/navigation_meet_ups"
         android:icon="@drawable/ic_baseline_format_list_bulleted_24"
         android:title="@string/title_meet_ups" />
 

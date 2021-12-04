@@ -28,7 +28,7 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
             Glide.with(context).load(it).into(profilePicImageView)
         }
 
-        Database.getUriFromPost(Global.username, key) {uri ->
+        Database.getImageUriFromUser(Global.username, key) { uri ->
             Glide.with(context).load(uri).into(imageView)
         }
 

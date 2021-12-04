@@ -124,11 +124,11 @@ class ProfileFragment : Fragment() {
             var position = 0
             clearAllViews()
             for (post in it) {
-                Database.getUriFromPost(Global.username, post.key) {
+                Database.getImageUriFromUser(Global.username, post.key) {
                     try {
                         val imageView = ImageView(requireContext())
                         Glide.with(requireContext()).load(it).into(imageView)
-                        imageView.scaleType = android.widget.ImageView.ScaleType.FIT_XY
+                        imageView.scaleType = ImageView.ScaleType.FIT_XY
                         val width = (getWidth() / 3).toFloat().roundToInt()
                         val params: ActionBar.LayoutParams = ActionBar.LayoutParams(width, width)
                         if (position != 0) {
@@ -136,7 +136,6 @@ class ProfileFragment : Fragment() {
                         }
                         params.bottomMargin = 10
                         imageView.layoutParams = params
-                        imageView.adjustViewBounds = true
                         imageView.setOnClickListener {
                             postListLayout.visibility = View.VISIBLE
                             YoYo.with(Techniques.SlideInUp).duration(150).playOn(postListLayout)

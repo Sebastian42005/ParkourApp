@@ -17,6 +17,7 @@ import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.classes.User
 import com.vig.sebastian.snapchat.classes.Message
 import com.vig.sebastian.snapchat.database.FirebaseHelper
+import com.vig.sebastian.snapchat.explore.PostExploreClass
 import com.vig.sebastian.snapchat.meetup.MeetUp
 import com.vig.sebastian.snapchat.profile.PostClass
 import java.util.*
@@ -369,11 +370,25 @@ object Database {
      */
 
     fun postImage(username: String, key: String, imageUri: Uri, context: Context, unit: () -> Unit) {
-        reference.child("User").child(Global.username).child("Posts").child(key).child("key").setValue(key)
-        storageReference.child(Global.username).child("Posts").child(key).putFile(imageUri).addOnSuccessListener {
+        reference.child("User").child(username).child("Posts").child(key).child("key").setValue(key)
+        reference.child("Posts").child(key).child("username").setValue(username)
+        storageReference.child(username).child("Posts").child(key).putFile(imageUri).addOnSuccessListener {
             unit()
         }.addOnFailureListener {
             Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun getExplorePosts(unit: (postList: ArrayList<PostExploreClass>) -> Unit) {
+        getSingleDataFromDatabase("Posts") {snapshot ->
+            val postList = ArrayList<PostExploreClass>()
+            for (data in snapshot.children) {
+                val username = data.child("username").value.toString()
+                val key = data.key.toString()
+                postList.add(PostExploreClass(key, username))
+            }
+            postList.shuffle()
+            unit(postList)
         }
     }
 
@@ -389,7 +404,7 @@ object Database {
         }
     }
 
-    fun getUriFromPost(username: String, key: String, unit: (uri: Uri) -> Unit) {
+    fun getImageUriFromUser(username: String, key: String, unit: (uri: Uri) -> Unit) {
         storageReference.child(username).child("Posts").child(key).downloadUrl.addOnSuccessListener {
             unit(it)
         }
@@ -409,6 +424,15 @@ object Database {
             val age = it.child("age").value.toString().toInt()
             unit(User(databaseUsername, password, description, country, city, age))
 
+        }
+    }
+    fun getEveryUser(unit: (userList: ArrayList<String>) -> Unit) {
+        getSingleDataFromDatabase("User") {
+            val userList = ArrayList<String>()
+            for (data in it.children) {
+                userList.add(data.key.toString())
+            }
+            unit(userList)
         }
     }
 }

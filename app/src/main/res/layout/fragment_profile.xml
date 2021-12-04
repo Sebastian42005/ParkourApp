@@ -74,14 +74,14 @@
                     android:src="@drawable/banner" />
 
                 <TextView
+                    android:id="@+id/space"
                     android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/space"/>
+                    android:layout_height="50dp" />
 
                 <TextView
+                    android:id="@+id/space2"
                     android:layout_width="100dp"
-                    android:layout_height="75dp"
-                    android:id="@+id/space2"/>
+                    android:layout_height="75dp" />
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -100,8 +100,8 @@
                     android:layout_height="40dp"
                     android:layout_below="@id/profileDescriptionTextView"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/button_drawable"
                     android:text="Edit Profile"
@@ -129,39 +129,39 @@
                     android:text="Follow"
                     android:textColor="@color/white" />
 
+                <LinearLayout
+                    android:id="@+id/profileImagesListLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/editProfileBtn"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="horizontal">
+
                     <LinearLayout
-                        android:id="@+id/profileImagesListLinearLayout"
-                        android:layout_width="match_parent"
+                        android:id="@+id/layout1"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/editProfileBtn"
-                        android:layout_marginEnd="2dp"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/layout1"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical" />
+                        android:layout_weight="1"
+                        android:orientation="vertical" />
 
 
-                        <LinearLayout
-                            android:id="@+id/layout2"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical" />
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical" />
 
-                        <LinearLayout
-                            android:id="@+id/layout3"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical" />
+                    <LinearLayout
+                        android:id="@+id/layout3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical" />
 
-                    </LinearLayout>
+                </LinearLayout>
 
             </RelativeLayout>
 

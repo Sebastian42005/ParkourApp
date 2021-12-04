@@ -41,14 +41,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="140dp"
-        android:layout_marginBottom="530dp"
         android:layout_marginStart="70dp"
+        android:layout_marginTop="140dp"
         android:layout_marginEnd="70dp"
-        android:textSize="20dp"
-        android:textColor="@color/black"
+        android:layout_marginBottom="530dp"
         android:backgroundTint="@color/aqua"
-        android:hint="Date"/>
+        android:hint="Date"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -62,14 +62,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="220dp"
-        android:layout_marginBottom="450dp"
         android:layout_marginStart="70dp"
+        android:layout_marginTop="220dp"
         android:layout_marginEnd="70dp"
-        android:textSize="20dp"
-        android:textColor="@color/black"
+        android:layout_marginBottom="450dp"
         android:backgroundTint="@color/aqua"
-        android:hint="Duration"/>
+        android:hint="Duration"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
     <ImageView
         android:layout_width="match_parent"

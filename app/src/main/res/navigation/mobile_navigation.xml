@@ -14,18 +14,18 @@
 
     <fragment
         android:id="@+id/navigation_explore"
-        android:name="com.vig.sebastian.snapchat.fragment.HomeFragment"
+        android:name="com.vig.sebastian.snapchat.fragment.ExploreFragment"
         android:label="@string/title_explore"
         tools:layout="@layout/fragment_explore"/>
 
     <fragment
-        android:id="@+id/navigation_map"
+        android:id="@+id/navigation_teams"
         android:name="com.vig.sebastian.snapchat.fragment.TeamsFragment"
         android:label="@string/title_teams"
         tools:layout="@layout/fragment_teams"/>
 
     <fragment
-        android:id="@+id/navigation_battles"
+        android:id="@+id/navigation_meet_ups"
         android:name="com.vig.sebastian.snapchat.fragment.MeetUpsFragment"
         android:label="@string/title_meet_ups"
         tools:layout="@layout/fragment_meet_ups"/>
