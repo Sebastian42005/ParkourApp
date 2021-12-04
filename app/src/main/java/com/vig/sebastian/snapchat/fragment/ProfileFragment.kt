@@ -16,9 +16,12 @@ import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.profile.PostAdapter
 import com.vig.sebastian.snapchat.profile.PostObject
+import com.vig.sebastian.snapchat.profile.UploadPostActivity
+import com.vig.sebastian.snapchat.profile.UploadPostClass
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -113,10 +116,8 @@ class ProfileFragment : Fragment() {
                 Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show()
             }
         }else {
-            val key = UUID.randomUUID().toString()
-            Database.postImage(Global.username, key, imageUri, requireContext()) {
-                setPostsList()
-            }
+            PostObject.uri = imageUri
+            startActivity(Intent(requireContext(), UploadPostActivity::class.java))
         }
     }
     private fun setPostsList() {

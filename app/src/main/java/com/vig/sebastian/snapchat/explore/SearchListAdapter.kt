@@ -6,14 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.test.database.Database
 import com.vig.sebastian.snapchat.R
 
-class SearchListAdapter(context: Context, private val int: Int, arrayList : ArrayList<ExploreAdapterClass>) : ArrayAdapter<ExploreAdapterClass>(context, int, arrayList){
+class SearchListAdapter(context: Context, private val int: Int, arrayList : ArrayList<ExploreSearchClass>) : ArrayAdapter<ExploreSearchClass>(context, int, arrayList){
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val username = getItem(position)!!.username

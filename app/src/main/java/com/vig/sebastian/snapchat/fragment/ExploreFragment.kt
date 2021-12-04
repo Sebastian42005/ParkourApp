@@ -15,11 +15,11 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.test.database.Database
 import com.vig.sebastian.snapchat.R
-import com.vig.sebastian.snapchat.explore.ExploreAdapterClass
 import com.vig.sebastian.snapchat.explore.SearchListAdapter
 import kotlin.math.roundToInt
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
+import com.vig.sebastian.snapchat.profile.PostType
 
 
 class ExploreFragment : Fragment() {
@@ -57,20 +57,21 @@ class ExploreFragment : Fragment() {
             var layoutPosition = 0
             clearAllViews()
             for (post in postList) {
-                Database.getImageUriFromUser(post.username, post.key) {
-                    println("URI:" + it)
-                    val imageView = ImageView(context)
-                    Glide.with(requireContext()).load(it).into(imageView)
-                    imageView.scaleType = ImageView.ScaleType.FIT_XY
-                    val width = (getWidth() / 3).toFloat().roundToInt()
-                    val params: ActionBar.LayoutParams = ActionBar.LayoutParams(width, width)
-                    if (layoutPosition != 0) {
-                        params.leftMargin = 10
+                if (post.postType == PostType.PARKOUR_SPOT) {
+                    Database.getImageUriFromUser(post.username, post.key) {
+                        val imageView = ImageView(context)
+                        Glide.with(requireContext()).load(it).into(imageView)
+                        imageView.scaleType = ImageView.ScaleType.FIT_XY
+                        val width = (getWidth() / 3).toFloat().roundToInt()
+                        val params: ActionBar.LayoutParams = ActionBar.LayoutParams(width, width)
+                        if (layoutPosition != 0) {
+                            params.leftMargin = 10
+                        }
+                        params.bottomMargin = 10
+                        imageView.layoutParams = params
+                        layoutList[layoutPosition].addView(imageView)
+                        if (layoutPosition != 2) layoutPosition++ else layoutPosition = 0
                     }
-                    params.bottomMargin = 10
-                    imageView.layoutParams = params
-                    layoutList[layoutPosition].addView(imageView)
-                    if (layoutPosition != 2) layoutPosition ++ else layoutPosition = 0
                 }
             }
         }
@@ -88,11 +89,7 @@ class ExploreFragment : Fragment() {
     }
     private fun setSearchList(root: View) {
         Database.getEveryUser { userList ->
-            val list = ArrayList<ExploreAdapterClass>()
-            for (searchItem in userList) {
-                list.add(ExploreAdapterClass(searchItem))
-            }
-            val adapter = SearchListAdapter(requireContext(), R.layout.search_list_layout, list)
+            val adapter = SearchListAdapter(requireContext(), R.layout.search_list_layout, userList)
             val searchListView : ListView = root.findViewById(R.id.searchListView)
             searchListView.adapter = adapter
         }

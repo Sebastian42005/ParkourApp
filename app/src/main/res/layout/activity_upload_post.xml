@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profile.UploadPostActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/uploadPostImageView"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/profile" />
+
+            <EditText
+                android:id="@+id/uploadPostDescriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="top"
+                android:hint="Description" />
+
+            <EditText
+                android:id="@+id/uploadPostCountryEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:hint="Country" />
+
+
+            <EditText
+                android:id="@+id/uploadPostCityEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:hint="City" />
+
+            <EditText
+                android:id="@+id/uploadPostLocationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:hint="Location" />
+
+            <Switch
+                android:id="@+id/uploadPostTypeSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Parkour Spot"
+                android:layout_marginStart="2dp"
+                android:textSize="18sp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <Button
+                android:id="@+id/uploadPostBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Post Picture"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

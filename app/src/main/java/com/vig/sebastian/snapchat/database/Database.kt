@@ -10,16 +10,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.vig.sebastian.snapchat.classes.Achievement
 import com.vig.sebastian.snapchat.team.DisplayedTeam
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.classes.User
 import com.vig.sebastian.snapchat.classes.Message
 import com.vig.sebastian.snapchat.database.FirebaseHelper
-import com.vig.sebastian.snapchat.explore.PostExploreClass
+import com.vig.sebastian.snapchat.explore.ExploreSearchClass
 import com.vig.sebastian.snapchat.meetup.MeetUp
 import com.vig.sebastian.snapchat.profile.PostClass
+import com.vig.sebastian.snapchat.profile.PostType
+import com.vig.sebastian.snapchat.profile.UploadPostClass
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -369,23 +370,30 @@ object Database {
 
      */
 
-    fun postImage(username: String, key: String, imageUri: Uri, context: Context, unit: () -> Unit) {
-        reference.child("User").child(username).child("Posts").child(key).child("key").setValue(key)
-        reference.child("Posts").child(key).child("username").setValue(username)
-        storageReference.child(username).child("Posts").child(key).putFile(imageUri).addOnSuccessListener {
+    fun postImage(uploadPostClass: UploadPostClass, imageUri: Uri, context: Context, unit: () -> Unit) {
+        val hm = HashMap<String, Any?>()
+        hm[uploadPostClass.key] = uploadPostClass
+        reference.child("User").child(Global.username).child("Posts").updateChildren(hm)
+        reference.child("Posts").updateChildren(hm)
+        storageReference.child(Global.username).child("Posts").child(uploadPostClass.key).putFile(imageUri).addOnSuccessListener {
             unit()
         }.addOnFailureListener {
             Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun getExplorePosts(unit: (postList: ArrayList<PostExploreClass>) -> Unit) {
+    fun getExplorePosts(unit: (postList: ArrayList<UploadPostClass>) -> Unit) {
         getSingleDataFromDatabase("Posts") {snapshot ->
-            val postList = ArrayList<PostExploreClass>()
+            val postList = ArrayList<UploadPostClass>()
             for (data in snapshot.children) {
                 val username = data.child("username").value.toString()
-                val key = data.key.toString()
-                postList.add(PostExploreClass(key, username))
+                val country = data.child("country").value.toString()
+                val key = data.child("key").value.toString()
+                val city = data.child("city").value.toString()
+                val location = data.child("location").value.toString()
+                val description = data.child("description").value.toString()
+                val postType : PostType = PostType.valueOf(data.child("postType").value.toString().trim())
+                postList.add(UploadPostClass(username, postType, key, country, city, location, description))
             }
             postList.shuffle()
             unit(postList)
@@ -426,12 +434,25 @@ object Database {
 
         }
     }
-    fun getEveryUser(unit: (userList: ArrayList<String>) -> Unit) {
+    fun getEveryUser(unit: (userList: ArrayList<ExploreSearchClass>) -> Unit) {
         getSingleDataFromDatabase("User") {
-            val userList = ArrayList<String>()
+            val userList = ArrayList<ExploreSearchClass>()
             for (data in it.children) {
-                userList.add(data.key.toString())
+                if (data.key.toString() != Global.username) {
+                    var importance = 0
+                    if (data.child("country").value.toString().toLowerCase().trim() == Global.country.toLowerCase().trim())
+                        importance++
+                    if (data.child("city").value.toString().toLowerCase().trim() == Global.city.toLowerCase().trim())
+                        importance++
+
+
+                    if (data.child("age").value.toString().toInt() == Global.age)
+                        importance++
+
+                    userList.add(ExploreSearchClass(data.key.toString(), importance))
+                }
             }
+            userList.sort()
             unit(userList)
         }
     }

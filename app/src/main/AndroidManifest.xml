@@ -28,17 +28,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Snapchat">
         <activity
-            android:name=".profile.PostListActivity"
+            android:name="com.vig.sebastian.snapchat.profile.UploadPostActivity"
             android:exported="false" />
-        <activity
-            android:name=".meetup.CreateMeetUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".login.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".meetup.MeetUpDetailsActivity"
-            android:exported="false" />
+        <activity android:name=".meetup.CreateMeetUpActivity" />
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".meetup.MeetUpDetailsActivity" />
         <activity android:name=".meetup.MeetUpActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
