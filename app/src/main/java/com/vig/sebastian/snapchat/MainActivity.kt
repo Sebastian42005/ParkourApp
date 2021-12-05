@@ -11,6 +11,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.test.database.Database
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.vig.sebastian.snapchat.fragment.CurrentFragmentEnum
+import com.vig.sebastian.snapchat.fragment.CurrentFragmentObject
 import com.vig.sebastian.snapchat.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -52,5 +54,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        Database.pressBackBtn(CurrentFragmentObject.currentFragmentEnum)
     }
 }

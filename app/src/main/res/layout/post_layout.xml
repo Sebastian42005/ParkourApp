@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,12 +9,13 @@
         android:id="@+id/profilePicImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/space"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/profile"
         app:civ_border_color="#FFFFFF"
-        app:civ_border_width="3dp" />
+        app:civ_border_width="3dp"
+        tools:ignore="NotSibling" />
 
 
     <TextView
@@ -32,7 +34,41 @@
     <ImageView
         android:layout_width="400dp"
         android:layout_height="400dp"
+        android:src="@drawable/parkour"
         android:layout_below="@id/postUsername"
         android:id="@+id/postImage"/>
+
+    <ImageView
+        android:id="@+id/likePostImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/postImage"
+        android:layout_marginStart="5dp"
+        android:foreground="@drawable/ic_baseline_star_outline_24"
+        tools:ignore="UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/postLikeAmountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 Likes"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        android:layout_below="@id/likePostImageView"/>
+
+    <TextView
+        android:id="@+id/postDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello, this is a test description\nUnd das ist eine zweite Zeile!!"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:layout_below="@id/postLikeAmountTextView"
+        android:layout_marginStart="10dp"/>
+
+    
 
 </RelativeLayout>

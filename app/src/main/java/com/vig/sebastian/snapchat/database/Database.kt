@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.android.gms.common.internal.GmsLogger
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,10 +18,11 @@ import com.vig.sebastian.snapchat.classes.User
 import com.vig.sebastian.snapchat.classes.Message
 import com.vig.sebastian.snapchat.database.FirebaseHelper
 import com.vig.sebastian.snapchat.explore.ExploreSearchClass
+import com.vig.sebastian.snapchat.fragment.CurrentFragmentEnum
 import com.vig.sebastian.snapchat.meetup.MeetUp
-import com.vig.sebastian.snapchat.profile.PostClass
+import com.vig.sebastian.snapchat.profile.classes.PostClass
 import com.vig.sebastian.snapchat.profile.PostType
-import com.vig.sebastian.snapchat.profile.UploadPostClass
+import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -134,8 +136,8 @@ object Database {
         }
     }
 
-    fun getFriendRequestList(unit: (friendRequestsList: ArrayList<String>) -> Unit) {
-        getSingleDataFromDatabase("User", Global.username, "friendRequests") {
+    fun getFriendRequestList(username: String, unit: (friendRequestsList: ArrayList<String>) -> Unit) {
+        getDataFromDatabase("User", username, "friendRequests") {
             val friendsList = ArrayList<String>()
             for (friend in it.children) {
                 friendsList.add(friend.value.toString())
@@ -144,13 +146,16 @@ object Database {
         }
     }
     fun acceptFriendRequest(username: String) {
-        getFriendRequestList {
+        getFriendRequestList(Global.username) {
             if (it.contains(username)) {
                 reference.child("User").child(Global.username).child("friendRequests").child(username).removeValue()
                 reference.child("User").child(Global.username).child("friends").child(username).setValue(username)
                 reference.child("User").child(username).child("friends").child(Global.username).setValue(Global.username)
             }
         }
+    }
+    fun removeFriendRequest(username: String) {
+        reference.child("User").child(username).child("friendRequests").child(Global.username).removeValue()
     }
 
     fun sendFriendRequest(username: String) {
@@ -160,6 +165,10 @@ object Database {
                     .setValue(Global.username)
             }
         }
+    }
+    fun unfollowFriend(username: String) {
+        reference.child("User").child(username).child("friends").child(Global.username).removeValue()
+        reference.child("User").child(Global.username).child("friends").child(username).removeValue()
     }
 
     /*
@@ -405,7 +414,12 @@ object Database {
             val list = ArrayList<PostClass>()
             var position = 0
             for (data in snapshot.children) {
-                list.add(PostClass(data.key.toString(), position))
+                val postType = PostType.valueOf(data.child("postType").value.toString())
+                val country = data.child("country").value.toString()
+                val city = data.child("city").value.toString()
+                val location = data.child("location").value.toString()
+                val description = data.child("description").value.toString()
+                list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description), position))
                 position ++
             }
             unit(list)
@@ -454,6 +468,66 @@ object Database {
             }
             userList.sort()
             unit(userList)
+        }
+    }
+    fun getEveryPostFromFriends(unit: (postKeyList: ArrayList<PostClass>) -> Unit) {
+        getSingleDataFromDatabase("User") { snapshot ->
+            val friendsList = ArrayList<String>()
+            for (data1 in snapshot.child(Global.username).child("friends").children) {
+                friendsList.add(data1.value.toString())
+            }
+            val postKeyList = ArrayList<PostClass>()
+            for (friend in friendsList) {
+                for (data2 in snapshot.child(friend).child("Posts").children) {
+                    val postType = PostType.valueOf(data2.child("postType").value.toString())
+                    val country = data2.child("country").value.toString()
+                    val city = data2.child("city").value.toString()
+                    val location = data2.child("location").value.toString()
+                    val description = data2.child("description").value.toString()
+                    postKeyList.add(PostClass(UploadPostClass(friend, postType, data2.key.toString(), country, city, location, description), 0))
+                }
+            }
+            unit(postKeyList)
+        }
+    }
+
+    fun removeLikeFromPost(key: String) {
+        reference.child("Posts").child(key).child("likeList").child(Global.username).removeValue()
+    }
+
+    fun likePost(key: String) {
+        reference.child("Posts").child(key).child("likeList").child(Global.username).setValue(Global.username)
+    }
+
+    fun getPostLikeList(key: String, unit: (likesList: ArrayList<String>) -> Unit) {
+        getSingleDataFromDatabase("Posts", key, "likeList") {snapshot ->
+            val likeList = ArrayList<String>()
+            for (data in snapshot.children) {
+                likeList.add(data.value.toString())
+            }
+            unit(likeList)
+        }
+    }
+    /*
+  ____             _      ____        _   _
+ |  _ \           | |    |  _ \      | | | |
+ | |_) | __ _  ___| | __ | |_) |_   _| |_| |_ ___  _ __
+ |  _ < / _` |/ __| |/ / |  _ <| | | | __| __/ _ \| '_ \
+ | |_) | (_| | (__|   <  | |_) | |_| | |_| || (_) | | | |
+ |____/ \__,_|\___|_|\_\ |____/ \__,_|\__|\__\___/|_| |_|
+     */
+
+    fun pressBackBtn(currentFragmentEnum: CurrentFragmentEnum) {
+        reference.child("User").child(Global.username).child("backBtn").setValue(currentFragmentEnum)
+    }
+
+    fun backBtnPressed(unit: (currentFragmentEnum: CurrentFragmentEnum) -> Unit) {
+        getDataFromDatabase("User", Global.username, "backBtn") {snapshot ->
+            val currentFragmentEnum : CurrentFragmentEnum?
+            if (snapshot.value.toString() != "null") {
+                currentFragmentEnum = CurrentFragmentEnum.valueOf(snapshot.value.toString())
+            }else currentFragmentEnum = CurrentFragmentEnum.NOTHING
+            unit(currentFragmentEnum)
         }
     }
 }

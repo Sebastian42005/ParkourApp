@@ -8,6 +8,7 @@ import android.widget.*
 import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
 import java.util.*
 
 class UploadPostActivity : AppCompatActivity() {

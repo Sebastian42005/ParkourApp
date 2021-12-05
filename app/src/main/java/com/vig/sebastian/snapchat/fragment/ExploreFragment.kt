@@ -18,12 +18,19 @@ import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.explore.SearchListAdapter
 import kotlin.math.roundToInt
 import android.app.Activity
+import android.content.Intent
 import android.view.inputmethod.InputMethodManager
+import com.vig.sebastian.snapchat.explore.ClickedPostObject
+import com.vig.sebastian.snapchat.explore.ExploreSearchClass
+import com.vig.sebastian.snapchat.explore.ShowPostActivity
 import com.vig.sebastian.snapchat.profile.PostType
+import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
+import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
 
 
 class ExploreFragment : Fragment() {
     lateinit var layoutList: ArrayList<LinearLayout>
+    var searchUserList = ArrayList<ExploreSearchClass>()
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -32,7 +39,6 @@ class ExploreFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_explore, container, false)
-
         val searchEditText : EditText = root.findViewById(R.id.searchEditText)
         val layout1 : LinearLayout = root.findViewById(R.id.layout1)
         val layout2 : LinearLayout = root.findViewById(R.id.layout2)
@@ -42,6 +48,13 @@ class ExploreFragment : Fragment() {
 
         setSearchList(root)
         setPostsList()
+
+        searchListView.setOnItemClickListener { parent, view, position, id ->
+            Database.getUserInfo(searchUserList[position].username) {user ->
+                ClickedProfileObject.user = user
+                startActivity(Intent(requireContext(), ClickedUserProfileActivity::class.java))
+            }
+        }
 
         searchEditText.setOnTouchListener { v, event ->
             if (!searchListView.isVisible) {
@@ -67,6 +80,10 @@ class ExploreFragment : Fragment() {
                         if (layoutPosition != 0) {
                             params.leftMargin = 10
                         }
+                        imageView.setOnClickListener {
+                            ClickedPostObject.uploadPostClass = post
+                            startActivity(Intent(context, ShowPostActivity::class.java))
+                        }
                         params.bottomMargin = 10
                         imageView.layoutParams = params
                         layoutList[layoutPosition].addView(imageView)
@@ -89,7 +106,8 @@ class ExploreFragment : Fragment() {
     }
     private fun setSearchList(root: View) {
         Database.getEveryUser { userList ->
-            val adapter = SearchListAdapter(requireContext(), R.layout.search_list_layout, userList)
+            searchUserList = userList
+            val adapter = SearchListAdapter(requireContext(), R.layout.search_list_layout, searchUserList)
             val searchListView : ListView = root.findViewById(R.id.searchListView)
             searchListView.adapter = adapter
         }

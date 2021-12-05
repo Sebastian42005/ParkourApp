@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profilePicImageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/profile"
+        app:civ_border_color="#FFFFFF"
+        app:civ_border_width="3dp" />
+
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Sebastian"
+        android:gravity="center_vertical"
+        android:layout_toEndOf="@id/profilePicImageView"
+        android:textColor="@color/black"
+        android:textSize="20sp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/acceptFriendRequestBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_baseline_check_24"
+        android:layout_alignParentEnd="true"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="3dp"/>
+
+</RelativeLayout>

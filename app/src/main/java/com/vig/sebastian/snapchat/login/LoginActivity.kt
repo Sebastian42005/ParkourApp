@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.example.test.database.Database
@@ -93,9 +94,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        YoYo.with(Techniques.SlideOutRight).duration(400).playOn(registerLayout)
-        Global.wait(400) {
-            registerLayout.visibility = View.GONE
+        if (registerLayout.isVisible) {
+            YoYo.with(Techniques.SlideOutRight).duration(400).playOn(registerLayout)
+            Global.wait(400) {
+                registerLayout.visibility = View.GONE
+            }
         }
     }
 }

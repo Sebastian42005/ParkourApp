@@ -28,7 +28,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Snapchat">
         <activity
-            android:name="com.vig.sebastian.snapchat.profile.UploadPostActivity"
+            android:name=".explore.ShowPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profile.clicker_profile.ClickedUserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profile.UploadPostActivity"
             android:exported="false" />
         <activity android:name=".meetup.CreateMeetUpActivity" />
         <activity android:name=".login.LoginActivity" />

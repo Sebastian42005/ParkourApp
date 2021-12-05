@@ -4,12 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/drawable/search_drawable.xml" value="0.34814814814814815" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/drawable/settings_background_drawable.xml" value="0.3769230769230769" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_clicked_user_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_create_meet_up.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_show_post.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_upload_pic.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_upload_post.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_explore.xml" value="0.33" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/friend_requests_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/post_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/search_list_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/drawable/aqua_corners.xml" value="0.1885" />
