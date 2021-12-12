@@ -7,9 +7,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.database.Database
 
 class ShowPostActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -30,14 +30,17 @@ class ShowPostActivity : AppCompatActivity() {
         val usernameTextView = findViewById<TextView>(R.id.postUsername)
         val likePostBtn: ImageView = findViewById(R.id.likePostImageView)
         val descriptionTextView = findViewById<TextView>(R.id.postDescriptionTextView)
+        val backBtn: ImageView = findViewById(R.id.backBtn)
         var likeList = ArrayList<String>()
 
         descriptionTextView.text = description
 
-        usernameTextView.text = username
-        Database.getUserProfilePic(username) {
-            Glide.with(this).load(it).into(profilePicImageView)
+        backBtn.setOnClickListener {
+            super.onBackPressed()
         }
+
+        usernameTextView.text = username
+        Glide.with(this).load(ClickedPostObject.imageUri).into(profilePicImageView)
 
         likePostBtn.setOnClickListener {
             if (likeList.contains(Global.username)) {

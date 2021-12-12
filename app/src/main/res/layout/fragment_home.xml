@@ -4,18 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6E5E5"
+    android:background="@drawable/background"
     tools:context=".fragment.HomeFragment">
 
     <TextView
-        android:id="@+id/homeTextView"
+        android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:gravity="center"
         android:text="Home"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textSize="23sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_below="@id/actionBar"/>
 
     <ListView
         android:id="@+id/postListView"
@@ -23,6 +28,8 @@
         android:layout_height="match_parent"
         android:divider="@color/white"
         android:dividerHeight="0dp"
-        android:layout_below="@id/homeTextView"/>
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:layout_below="@id/actionBar"/>
 
 </RelativeLayout>

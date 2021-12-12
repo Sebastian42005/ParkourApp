@@ -13,8 +13,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/profile"
-        app:civ_border_color="#FFFFFF"
-        app:civ_border_width="3dp"
+        app:civ_border_color="#000000"
+        app:civ_border_width="2dp"
         tools:ignore="NotSibling" />
 
 
@@ -22,14 +22,14 @@
         android:id="@+id/postUsername"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Sebastian"
-        android:gravity="center_vertical"
-        android:layout_toEndOf="@id/profilePicImageView"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="@color/black"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/profilePicImageView"
+        android:gravity="center_vertical"
+        android:text="Sebastian"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:layout_width="400dp"

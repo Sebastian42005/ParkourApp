@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.database.Database
 
 class FriendRequestAdapter(context: Context, private val int: Int, arrayList : ArrayList<String>) : ArrayAdapter<String>(context, int, arrayList){
     @SuppressLint("ViewHolder", "SetTextI18n")

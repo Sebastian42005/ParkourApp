@@ -31,36 +31,36 @@
                 android:id="@+id/postPictureBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:foreground="@drawable/ic_baseline_add_24"
-                android:background="@drawable/post_picture_drawable"
-                android:foregroundTint="@color/black"
-                android:layout_toStartOf="@id/showSettingsBtn"
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="15dp"
+                android:layout_toStartOf="@id/logoutBtn"
+                android:background="@drawable/post_picture_drawable"
+                android:foreground="@drawable/ic_baseline_add_24"
+                android:foregroundTint="@color/black"
                 tools:ignore="UnusedAttribute" />
 
             <ImageView
-                android:id="@+id/showSettingsBtn"
+                android:id="@+id/logoutBtn"
                 android:layout_width="35dp"
-                android:layout_height="30dp"
-                android:foreground="@drawable/ic_baseline_density_medium_24"
-                android:foregroundTint="@color/black"
+                android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="10dp"
+                android:foreground="@drawable/ic_baseline_exit_to_app_24"
+                android:foregroundTint="@color/black"
                 tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/profileUsername"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/postPictureBtn"
                 android:gravity="center_vertical"
                 android:text="Sebastian"
-                android:layout_toStartOf="@id/postPictureBtn"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -95,29 +95,29 @@
                         android:layout_height="75dp" />
 
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profilePicImageView"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_below="@id/space"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/profile"
-                        app:civ_border_color="#FFFFFF"
-                        app:civ_border_width="3dp" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profilePicImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/space"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/profile"
+                    app:civ_border_color="#000000"
+                    app:civ_border_width="3dp" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/editProfileBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@id/profileDescriptionTextView"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/button_drawable"
-                        android:text="Edit Profile"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/editProfileBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/profileDescriptionTextView"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/button_drawable"
+                    android:text="Edit Profile"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/profileDescriptionTextView"
@@ -257,59 +257,5 @@
             android:id="@+id/friendsRequestsListView"/>
 
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/settingsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        android:background="@drawable/settings_background_drawable"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/settingsSavedTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Saved"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"/>
-
-        <TextView
-            android:id="@+id/settingsFriendsTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Friends"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"/>
-
-        <TextView
-            android:id="@+id/settingsLogoutTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
-
-    </LinearLayout>
 
 </RelativeLayout>

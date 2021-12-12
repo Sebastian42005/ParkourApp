@@ -6,10 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ExploreFragment">
 
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:layout_alignTop="@id/searchLayout"
+        android:visibility="gone"
+        android:id="@+id/searchUserBackBtn"/>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/searchUserBackBtn"
         android:id="@+id/searchLayout">
 
         <ImageView
@@ -17,7 +27,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/search_drawable"/>
+            android:background="@drawable/search_drawable" />
 
         <ImageView
             android:id="@+id/searchImage"
@@ -41,12 +51,26 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/setFilterBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  Filter  "
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/searchLayout"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_drawable"/>
+
     <ScrollView
+        android:id="@+id/postsListScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchLayout"
-        android:layout_marginTop="5dp"
+        android:layout_below="@id/setFilterBtn"
         android:layout_marginStart="2dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="2dp">
 
         <LinearLayout
@@ -80,13 +104,120 @@
 
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/setPostsFilterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/settings_background_drawable"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Country:"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/filterCountryEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:hint="Austria" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="City:"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/filterCityEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:hint="Vienna" />
+
+        <Button
+            android:id="@+id/saveFilterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:text="Save" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/searchListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_below="@id/searchLayout"
+        android:layout_below="@id/filterLayout"
         android:visibility="gone"
         android:layout_marginTop="5dp"/>
+
+    <LinearLayout
+        android:id="@+id/filterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_below="@id/searchLayout">
+
+        <TextView
+            android:id="@+id/filterUsernameTextView"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Username"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/filterCountryTextView"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Country"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/filterCityTextView"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="City"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/filterAgeTextView"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Age"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

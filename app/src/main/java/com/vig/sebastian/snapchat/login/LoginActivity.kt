@@ -13,11 +13,11 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.classes.User
+import com.vig.sebastian.snapchat.database.Database
 
 class LoginActivity : AppCompatActivity() {
     lateinit var registerLayout : RelativeLayout
@@ -65,6 +65,8 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     editor.putString("username", username)
                     editor.putString("password", password)
+                    Global.username = username
+                    Global.password = password
                     editor.apply()
                     startActivity(Intent(this, MainActivity::class.java))
                 }

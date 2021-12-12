@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.profile.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.profile.classes.PostClass
 import java.util.concurrent.TimeoutException
 
@@ -24,6 +25,8 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         val city = getItem(position)!!.uploadPostClass.city
         val location = getItem(position)!!.uploadPostClass.location
         val description = getItem(position)!!.uploadPostClass.description
+        val imageUri = getItem(position)!!.imageUri
+        val profileImageUri = getItem(position)!!.profilePicImageUri
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(int, parent, false)
         val imageView = view.findViewById<ImageView>(R.id.postImage)
@@ -37,9 +40,7 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         descriptionTextView.text = description
 
         usernameTextView.text = username
-        Database.getUserProfilePic(username) {
-            Glide.with(context).load(it).into(profilePicImageView)
-        }
+        if (profileImageUri != null) Glide.with(context).load(profileImageUri).into(profilePicImageView)
 
         likePostBtn.setOnClickListener {
             if (likeList.contains(Global.username)) {
@@ -72,9 +73,7 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
             }else likesAmountTextView.visibility = View.GONE
         }
 
-        Database.getImageUriFromUser(username, key) { uri ->
-            Glide.with(context).load(uri).into(imageView)
-        }
+        Glide.with(context).load(imageUri).into(imageView)
 
         return view
     }

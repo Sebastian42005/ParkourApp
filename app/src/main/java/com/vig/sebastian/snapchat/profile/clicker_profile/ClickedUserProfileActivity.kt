@@ -3,6 +3,7 @@ package com.vig.sebastian.snapchat.profile.clicker_profile
 import android.annotation.SuppressLint
 import android.app.ActionBar
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -13,10 +14,12 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.example.test.database.Database
 import com.google.android.gms.common.internal.GmsLogger
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.chat.user.ClickedChatObject
+import com.vig.sebastian.snapchat.chat.user.UserChatActivity
+import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.profile.PostObject
 import com.vig.sebastian.snapchat.profile.adapter.FriendRequestAdapter
 import com.vig.sebastian.snapchat.profile.adapter.PostAdapter
@@ -31,7 +34,7 @@ class ClickedUserProfileActivity : AppCompatActivity() {
     lateinit var postListLayout: RelativeLayout
     lateinit var backBtn: ImageView
     lateinit var postListView: ListView
-    val clickedUser = ClickedProfileObject.user!!
+    val clickedUser = ClickedProfileObject.user
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +48,26 @@ class ClickedUserProfileActivity : AppCompatActivity() {
         val profileImageLayout3 = findViewById<LinearLayout>(R.id.layout3)
         val profileDescriptionTextView = findViewById<TextView>(R.id.profileDescriptionTextView)
         val followBtn = findViewById<Button>(R.id.followBtn)
+        val goToChatActivityBtn : ImageView = findViewById(R.id.goToUserChatActivityBtn)
+        val backToMainMenuBtn: ImageView = findViewById(R.id.backToMainMenuBtn)
         postListLayout = findViewById(R.id.profilePostsLayout)
         backBtn = findViewById(R.id.backBtn)
         postListView = findViewById(R.id.postListView)
+
+        backToMainMenuBtn.setOnClickListener {
+            super.onBackPressed()
+        }
+
         Database.getFriendsList(clickedUser.username) {
             if (it.contains(Global.username)) {
                 followBtn.setBackgroundColor(Color.GRAY)
                 followBtn.text = "Unfollow"
             }
+        }
+
+        goToChatActivityBtn.setOnClickListener {
+            ClickedChatObject.username = ClickedProfileObject.user.username
+            startActivity(Intent(this, UserChatActivity::class.java))
         }
 
         followBtn.setOnClickListener {
@@ -106,6 +121,7 @@ class ClickedUserProfileActivity : AppCompatActivity() {
         try {
             Database.storageReference.child(clickedUser.username + "/ProfilePic").downloadUrl.addOnSuccessListener {
                 Glide.with(this).load(it).into(profilePic)
+                ClickedChatObject.imageUri = it
             }.addOnFailureListener {
                 profilePic.setBackgroundResource(R.drawable.profile)
             }
@@ -161,7 +177,6 @@ class ClickedUserProfileActivity : AppCompatActivity() {
         Database.getPostsFromUser(clickedUser.username) {
             postListView = findViewById(R.id.postListView)
             try {
-                println("Username: " + clickedUser.username)
                 adapter = PostAdapter(this, R.layout.post_layout, it)
                 postListView.adapter = adapter
             }catch (e: Exception){}

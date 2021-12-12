@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/profileLayout"
+        android:layout_width="match_parent"
+        android:background="@color/dark_aqua"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/profileUsernameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/backBtn"
+            android:gravity="center_vertical"
+            android:text="Sebastian"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
+            android:foregroundTint="@color/white"
+            tools:ignore="MissingPrefix,RtlCompat" />
+
+        <ImageView
+            android:id="@+id/showMeetUpListBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:foreground="@drawable/ic_baseline_format_list_bulleted_24"
+            android:foregroundTint="@color/white"
+            tools:ignore="MissingPrefix,RtlCompat" />
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/chatListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/profileLayout"
+        android:layout_above="@id/messageEditTextBackground"
+        android:layout_marginBottom="2dp"
+        android:divider="@color/white"
+        android:dividerHeight="0dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@color/dark_aqua"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/sendMessageBackground"
+        tools:ignore="RtlCompat" />
+
+    <ImageView
+        android:id="@+id/messageEditTextBackground"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/search_drawable"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignTop="@id/spacer"
+        android:layout_toStartOf="@id/sendMessageBtn"
+        tools:ignore="RtlCompat" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:id="@+id/spacer"
+        android:layout_above="@id/messageEditText"/>
+
+    <EditText
+        android:id="@+id/messageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/messageEditTextBackground"
+        android:layout_alignEnd="@id/messageEditTextBackground"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="11dp"
+        android:background="@null"
+        android:hint="Nachricht"
+        android:maxHeight="120dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_grey"
+        tools:ignore="RtlCompat" />
+
+    <ImageView
+        android:id="@+id/sendMessageBtn"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_alignEnd="@id/sendMessageBackground"
+        android:layout_alignBottom="@id/sendMessageBackground"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:foreground="@drawable/ic_baseline_send_24"
+        android:foregroundTint="@color/white"
+        tools:ignore="RtlCompat" />
+
+
+    <!--Team Meet Ups-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/teamMeetUpsLayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background">
+
+            <TextView
+                android:id="@+id/meetUpActionBar"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Meet Ups"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+
+            <ImageView
+                android:id="@+id/showTeamChatBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignTop="@id/meetUpActionBar"
+                android:layout_marginStart="5dp"
+                android:rotation="270"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_below="@id/meetUpActionBar"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="0dp"
+                android:divider="@null"
+                android:layout_below="@id/meetUpActionBar"
+                android:id="@+id/meetUpListView"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:id="@+id/meetUpDetailLayout">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:id="@+id/meetUpBackBtn"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/meetUpBackBtn"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Location:"
+                    android:textSize="18sp"
+                    android:textColor="@color/dark_aqua" />
+
+                <TextView
+                    android:id="@+id/locationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bahnhof Meidling"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Duration:"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/dark_aqua"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2 Stunden"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:id="@+id/durationTextView"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/dark_aqua"
+                    android:text="Start Date:"/>
+
+                <TextView
+                    android:id="@+id/startDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:text="28.07.2005 | 18:00"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description:"
+                    android:textSize="18sp"
+                    android:textColor="@color/dark_aqua"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/descriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="This is the test description"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Accepted Users:"
+                    android:textSize="18sp"
+                    android:textColor="@color/dark_green"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/acceptedUsersTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sebastian, Patrick, Julian"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Declined Users:"
+                    android:textSize="18sp"
+                    android:textColor="@color/dark_red"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/declinedUsersTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sebastian, Patrick, Julian"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/createMeetUpBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/dark_aqua"
+            android:foreground="@drawable/ic_baseline_add_24"
+            android:foregroundGravity="center"
+            android:foregroundTint="@color/white"
+            tools:targetApi="lollipop" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

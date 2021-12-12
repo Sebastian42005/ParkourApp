@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.meetup
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ class MeetUpAdapter(context: Context, private val int: Int, arrayList : ArrayLis
         val date = getItem(position)!!.startDate
         val location = getItem(position)!!.location
         val duration = getItem(position)!!.duration
+        val description = getItem(position)!!.description
+        val key = getItem(position)!!.key
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(int, parent, false)
         val dateTextView = view.findViewById<TextView>(R.id.meetUpDateTextView)

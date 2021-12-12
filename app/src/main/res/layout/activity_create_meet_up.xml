@@ -3,113 +3,187 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/background"
     android:layout_height="match_parent">
 
-    <ImageView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/teamTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/createTeamLayout"
+            android:layout_centerHorizontal="true"
+            android:text="Meet Up"
+            android:textColor="@color/dark_blue"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/createTeamLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/login_background_drawable"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_background"
+                    android:layout_alignBottom="@id/meetUpLocationEditText"
+                    android:layout_alignEnd="@id/meetUpLocationEditText"
+                    android:layout_alignStart="@id/meetUpLocationEditText"
+                    android:layout_alignTop="@id/meetUpLocationEditText"/>
+
+                <EditText
+                    android:id="@+id/meetUpLocationEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginRight="20dp"
+                    android:backgroundTint="#00000000"
+                    android:hint="Location" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_background"
+                    android:layout_alignBottom="@id/meetUpDateEditText"
+                    android:layout_alignEnd="@id/meetUpDateEditText"
+                    android:layout_alignStart="@id/meetUpDateEditText"
+                    android:layout_alignTop="@id/meetUpDateEditText"/>
+
+                <EditText
+                    android:id="@+id/meetUpDateEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:backgroundTint="#00000000"
+                    android:maxLength="16"
+                    android:hint="Date (dd.MM.yyyy HH:mm)" />
+
+                <ImageView
+                    android:id="@+id/meetUpDatePickerImageView"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignEnd="@id/meetUpDateEditText"
+                    android:layout_alignBottom="@id/meetUpDateEditText"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="3dp"
+                    android:foreground="@drawable/date_drawable"
+                    android:foregroundTint="@color/black"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_background"
+                    android:layout_alignBottom="@id/meetUpDurationEditText"
+                    android:layout_alignEnd="@id/meetUpDurationEditText"
+                    android:layout_alignStart="@id/meetUpDurationEditText"
+                    android:layout_alignTop="@id/meetUpDurationEditText"/>
+
+                <EditText
+                    android:id="@+id/meetUpDurationEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:backgroundTint="#00000000"
+                    android:hint="Duration" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_background"
+                    android:layout_alignBottom="@id/meetUpDescriptionEditText"
+                    android:layout_alignEnd="@id/meetUpDescriptionEditText"
+                    android:layout_alignStart="@id/meetUpDescriptionEditText"
+                    android:layout_alignTop="@id/meetUpDescriptionEditText"/>
+
+                <EditText
+                    android:id="@+id/meetUpDescriptionEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:backgroundTint="#00000000"
+                    android:hint="Description" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/createMeetUpBtn"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/createTeamLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/dark_blue"
+            android:text="Create" />
+
+    </RelativeLayout>
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/gradient"/>
+        android:background="#B0808080"
+        android:visibility="gone"
+        android:id="@+id/meetUpShowDateTimeLayout"/>
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="75dp"
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Meetup"
-        android:textColor="@color/black"
-        android:textSize="50dp"
-        android:textAlignment="center" />
+        android:background="@color/white"
+        android:visibility="gone"
+        android:id="@+id/meetUpDatePicker"/>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginTop="110dp"
-        android:layout_marginBottom="200dp"
-        android:src="@drawable/meetup_create_button_background"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="140dp"
-        android:layout_marginBottom="530dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:src="@drawable/aqua_corners"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="530dp"
-        android:backgroundTint="@color/aqua"
-        android:hint="Date"
-        android:textColor="@color/black"
-        android:textSize="20dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="220dp"
-        android:layout_marginBottom="450dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:src="@drawable/aqua_corners"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="220dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="450dp"
-        android:backgroundTint="@color/aqua"
-        android:hint="Duration"
-        android:textColor="@color/black"
-        android:textSize="20dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="300dp"
-        android:layout_marginBottom="370dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:src="@drawable/aqua_corners"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="370dp"
-        android:backgroundTint="@color/aqua"
-        android:hint="Duration"
-        android:textColor="@color/black"
-        android:textSize="20dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="440dp"
-        android:layout_marginBottom="230dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:src="@drawable/aqua_corners"/>
-
-    <TextView
-        android:layout_width="180dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="455dp"
-        android:layout_marginBottom="230dp"
+    <Button
+        android:id="@+id/meetUpSaveDateTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/meetUpDatePicker"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:text="Create"/>
+        android:layout_marginBottom="30dp"
+        android:text="Save"
+        android:backgroundTint="@color/dark_blue"
+        android:visibility="gone" />
 
 </RelativeLayout>

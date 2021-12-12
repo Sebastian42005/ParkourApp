@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/profileLayout"
+        android:layout_width="match_parent"
+        android:background="@color/dark_aqua"
+        android:layout_height="60dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profilePicImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/profile"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="1dp"
+            android:layout_toEndOf="@id/backBtn"
+            tools:ignore="RtlCompat" />
+
+        <TextView
+            android:id="@+id/profileUsernameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Sebastian"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/profilePicImageView"
+            android:layout_marginStart="10dp"
+            tools:ignore="RtlCompat" />
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
+            android:foregroundTint="@color/white"
+            android:layout_centerVertical="true"
+            tools:ignore="MissingPrefix,RtlCompat" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/chatListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/profileLayout"
+        android:layout_above="@id/messageEditTextBackground"
+        android:layout_marginBottom="2dp"
+        android:divider="@color/white"
+        android:dividerHeight="0dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@color/dark_aqua"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/sendMessageBackground"
+        tools:ignore="RtlCompat" />
+
+    <ImageView
+        android:id="@+id/messageEditTextBackground"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/search_drawable"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignTop="@id/spacer"
+        android:layout_toStartOf="@id/sendMessageBtn"
+        tools:ignore="RtlCompat" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:id="@+id/spacer"
+        android:layout_above="@id/messageEditText"/>
+
+    <EditText
+        android:id="@+id/messageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/messageEditTextBackground"
+        android:layout_alignEnd="@id/messageEditTextBackground"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="11dp"
+        android:background="@null"
+        android:hint="Nachricht"
+        android:maxHeight="120dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_grey"
+        tools:ignore="RtlCompat" />
+
+    <ImageView
+        android:id="@+id/sendMessageBtn"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:foreground="@drawable/ic_baseline_send_24"
+        android:foregroundTint="@color/white"
+        android:layout_alignEnd="@id/sendMessageBackground"
+        android:layout_alignBottom="@id/sendMessageBackground"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        tools:ignore="RtlCompat" />
+</RelativeLayout>

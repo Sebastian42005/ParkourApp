@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import androidx.fragment.app.Fragment
-import com.example.test.database.Database
-import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.profile.adapter.PostAdapter
 import com.vig.sebastian.snapchat.profile.classes.PostClass
 import java.lang.Exception
 
 class HomeFragment : Fragment() {
-
     lateinit var postListView: ListView
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,8 +27,11 @@ class HomeFragment : Fragment() {
     var postList = ArrayList<PostClass>()
     lateinit var adapter : PostAdapter
     private fun setPostsListView(root: View) {
-        Database.getEveryPostFromFriends {
-            postList = it
+        Database.getFirst10PostsFromFriends {
+            postList.clear()
+            for (post in it) {
+                postList.add(PostClass(post.uploadPostClass, post.position, ImageUriListsObject.getPost(post.uploadPostClass.key), ImageUriListsObject.getProfilePic(post.uploadPostClass.username)))
+            }
             postListView = root.findViewById(R.id.postListView)
             try {
                 adapter = PostAdapter(requireContext(), R.layout.post_layout, postList)
