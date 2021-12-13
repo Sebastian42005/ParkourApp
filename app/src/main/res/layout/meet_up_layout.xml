@@ -25,7 +25,6 @@
                 android:id="@+id/meetUpLocationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Obere Donaustraße 63"
                 android:textColor="@color/dark_aqua"
                 android:textStyle="bold"
                 android:textSize="20sp"/>
@@ -34,7 +33,6 @@
                 android:id="@+id/meetUpDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date: 28.07.2021 14:00"
                 android:textColor="@color/black"
                 android:textSize="18sp"/>
 
@@ -42,7 +40,6 @@
                 android:id="@+id/meetUpDurationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duration: 2 Hours"
                 android:textColor="@color/dark_aqua"
                 android:textSize="18sp"/>
 

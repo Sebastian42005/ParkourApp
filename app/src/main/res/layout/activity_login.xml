@@ -21,8 +21,8 @@
             android:id="@+id/loginTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/image"
+            android:layout_centerHorizontal="true"
             android:text="Login"
             android:textColor="@color/dark_blue"
             android:textSize="50sp"
@@ -60,6 +60,7 @@
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
                     android:hint="Username" />
 
             </RelativeLayout>
@@ -121,205 +122,219 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
             android:foreground="@drawable/parkour"
             android:foregroundTint="@color/dark_blue" />
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="gone"
-        android:id="@+id/registerRelativeLayout">
+        android:background="@drawable/login_background"
+        android:id="@+id/registerRelativeLayout"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:visibility="gone">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/login_background" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/loginTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/image"
-            android:text="Register"
-            android:textColor="@color/dark_blue"
-            android:textSize="50sp"
-            android:textStyle="bold" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:foreground="@drawable/ic_baseline_arrow_back_24"
+                android:foregroundTint="@color/black"
+                android:id="@+id/backBtn"/>
 
-        <LinearLayout
-            android:id="@+id/registerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/loginTextView"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/login_background_drawable"
-            android:orientation="vertical">
-
-            <RelativeLayout
+            <TextView
+                android:id="@+id/registerTitleTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/registerImage"
+                android:text="Register"
+                android:textColor="@color/dark_blue"
+                android:textSize="50sp"
+                android:textStyle="bold" />
 
-                <ImageView
+            <LinearLayout
+                android:id="@+id/registerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/registerTitleTextView"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/login_background_drawable"
+                android:orientation="vertical">
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background"
-                    android:layout_alignBottom="@id/registerUsernameEditText"
-                    android:layout_alignEnd="@id/registerUsernameEditText"
-                    android:layout_alignStart="@id/registerUsernameEditText"
-                    android:layout_alignTop="@id/registerUsernameEditText"/>
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/registerUsernameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginRight="20dp"
-                    android:backgroundTint="#00000000"
-                    android:hint="Username" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_background"
+                        android:layout_alignBottom="@id/registerUsernameEditText"
+                        android:layout_alignEnd="@id/registerUsernameEditText"
+                        android:layout_alignStart="@id/registerUsernameEditText"
+                        android:layout_alignTop="@id/registerUsernameEditText"/>
 
-            </RelativeLayout>
+                    <EditText
+                        android:id="@+id/registerUsernameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginRight="20dp"
+                        android:backgroundTint="#00000000"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
+                        android:hint="Username" />
 
-            <RelativeLayout
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_background"
+                        android:layout_alignBottom="@id/registerPasswordEditText"
+                        android:layout_alignEnd="@id/registerPasswordEditText"
+                        android:layout_alignStart="@id/registerPasswordEditText"
+                        android:layout_alignTop="@id/registerPasswordEditText"/>
+
+                    <EditText
+                        android:id="@+id/registerPasswordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_!-"
+                        android:backgroundTint="#00000000"
+                        android:hint="Password" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_background"
+                        android:layout_alignBottom="@id/registerCountryEditText"
+                        android:layout_alignEnd="@id/registerCountryEditText"
+                        android:layout_alignStart="@id/registerCountryEditText"
+                        android:layout_alignTop="@id/registerCountryEditText"/>
+
+                    <EditText
+                        android:id="@+id/registerCountryEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-"
+                        android:backgroundTint="#00000000"
+                        android:hint="Country" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_background"
+                        android:layout_alignBottom="@id/registerCityEditText"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-"
+                        android:layout_alignEnd="@id/registerCityEditText"
+                        android:layout_alignStart="@id/registerCityEditText"
+                        android:layout_alignTop="@id/registerCityEditText"/>
+
+                    <EditText
+                        android:id="@+id/registerCityEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:backgroundTint="#00000000"
+                        android:hint="City" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_background"
+                        android:layout_alignBottom="@id/registerAgeEditText"
+                        android:layout_alignEnd="@id/registerAgeEditText"
+                        android:layout_alignStart="@id/registerAgeEditText"
+                        android:layout_alignTop="@id/registerAgeEditText"/>
+
+                    <EditText
+                        android:id="@+id/registerAgeEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="40dp"
+                        android:backgroundTint="#00000000"
+                        android:hint="Age"
+                        android:inputType="number" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/registerLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/dark_blue"
+                android:text="Register" />
+
+            <ProgressBar
+                android:id="@+id/registerProgressBar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleLarge"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background"
-                    android:layout_alignBottom="@id/registerPasswordEditText"
-                    android:layout_alignEnd="@id/registerPasswordEditText"
-                    android:layout_alignStart="@id/registerPasswordEditText"
-                    android:layout_alignTop="@id/registerPasswordEditText"/>
+            <ImageView
+                android:id="@+id/registerImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:foreground="@drawable/parkour"
+                android:foregroundTint="@color/dark_blue" />
 
-                <EditText
-                    android:id="@+id/registerPasswordEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:backgroundTint="#00000000"
-                    android:hint="Password" />
+        </RelativeLayout>
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background"
-                    android:layout_alignBottom="@id/registerCountryEditText"
-                    android:layout_alignEnd="@id/registerCountryEditText"
-                    android:layout_alignStart="@id/registerCountryEditText"
-                    android:layout_alignTop="@id/registerCountryEditText"/>
-
-                <EditText
-                    android:id="@+id/registerCountryEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:backgroundTint="#00000000"
-                    android:hint="Country" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background"
-                    android:layout_alignBottom="@id/registerCityEditText"
-                    android:layout_alignEnd="@id/registerCityEditText"
-                    android:layout_alignStart="@id/registerCityEditText"
-                    android:layout_alignTop="@id/registerCityEditText"/>
-
-                <EditText
-                    android:id="@+id/registerCityEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:backgroundTint="#00000000"
-                    android:hint="City" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background"
-                    android:layout_alignBottom="@id/registerAgeEditText"
-                    android:layout_alignEnd="@id/registerAgeEditText"
-                    android:layout_alignStart="@id/registerAgeEditText"
-                    android:layout_alignTop="@id/registerAgeEditText"/>
-
-                <EditText
-                    android:id="@+id/registerAgeEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:inputType="number"
-                    android:layout_marginBottom="40dp"
-                    android:backgroundTint="#00000000"
-                    android:hint="Age" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/registerBtn"
-            android:layout_width="210dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/registerLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/dark_blue"
-            android:text="Register" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?android:attr/progressBarStyleLarge"
-            android:visibility="gone"
-            android:layout_centerInParent="true"/>
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:foreground="@drawable/parkour"
-            android:id="@+id/image"
-            android:foregroundTint="@color/dark_blue" />
-
-    </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

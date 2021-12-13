@@ -1,4 +1,4 @@
-package com.vig.sebastian.snapchat.profile
+package com.vig.sebastian.snapchat.profile.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,27 +9,29 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.database.Database
 
-class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<String>) : ArrayAdapter<String>(context, int, arrayList){
+class FriendRequestAdapter(context: Context, private val int: Int, arrayList : ArrayList<String>) : ArrayAdapter<String>(context, int, arrayList){
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val key = getItem(position)!!
+        val username = getItem(position)!!
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(int, parent, false)
-        val imageView = view.findViewById<ImageView>(R.id.postImage)
-        val profilePicImageView = view.findViewById<ImageView>(R.id.profilePicImageView)
-        val usernameTextView = view.findViewById<TextView>(R.id.postUsername)
 
-        usernameTextView.text = Global.username
-        Database.getUserProfilePic(Global.username) {
+        val acceptFriendRequestBtn = view.findViewById<ImageView>(R.id.acceptFriendRequestBtn)
+        val profilePicImageView = view.findViewById<ImageView>(R.id.profilePicImageView)
+        val usernameTextView = view.findViewById<TextView>(R.id.usernameTextView)
+
+        usernameTextView.text = username
+
+        Database.getUserProfilePic(username) {
             Glide.with(context).load(it).into(profilePicImageView)
         }
 
-        Database.getImageUriFromUser(Global.username, key) { uri ->
-            Glide.with(context).load(uri).into(imageView)
+        acceptFriendRequestBtn.setOnClickListener {
+            Database.acceptFriendRequest(username)
         }
 
         return view

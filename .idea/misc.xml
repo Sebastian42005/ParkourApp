@@ -3,13 +3,33 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../Library/Android/sdk/platforms/android-30/data/res/layout/simple_list_item_1.xml" value="0.2874873353596758" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/drawable/round_button_drawable.xml" value="0.3828125" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/drawable/search_drawable.xml" value="0.34814814814814815" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/drawable/settings_background_drawable.xml" value="0.3769230769230769" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_clicked_user_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_create_meet_up.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_create_team.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_edit_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_loading_screen.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_meet_up.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_meet_up_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_post_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_show_post.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_team_chat.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_upload_pic.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_upload_post.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/activity_user_chat.xml" value="0.33" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/add_user_to_team_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_explore.xml" value="0.33" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_meet_ups.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/fragment_teams.xml" value="0.33" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/friend_requests_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/message_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/post_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/layout/search_list_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sebi4/AndroidStudioProjects/ParkourApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/drawable/aqua_corners.xml" value="0.1885" />
@@ -23,24 +43,40 @@
         <entry key="app/src/main/res/drawable/meet_up_drawable.xml" value="0.174" />
         <entry key="app/src/main/res/drawable/meetup_create_button_background.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/post_picture_drawable.xml" value="0.2225" />
+        <entry key="app/src/main/res/layout/activity_clicked_user_profile.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/activity_create_meet_up.xml" value="0.38858695652173914" />
+        <entry key="app/src/main/res/layout/activity_create_team.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/activity_loading_screen.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_meet_up.xml" value="0.46141479099678456" />
         <entry key="app/src/main/res/layout/activity_meet_up_details.xml" value="0.2874873353596758" />
         <entry key="app/src/main/res/layout/activity_meet_uup.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/activity_post_list.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/activity_show_post.xml" value="0.469464111328125" />
+        <entry key="app/src/main/res/layout/activity_team_chat.xml" value="0.582010582010582" />
+        <entry key="app/src/main/res/layout/activity_upload_post.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/activity_user_chat.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/add_user_to_team_layout.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/fragment_battles.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_chats.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_explore.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2874873353596758" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_meet_ups.xml" value="0.38858695652173914" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_quiz.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_teams.xml" value="0.38858695652173914" />
+        <entry key="app/src/main/res/layout/friend_requests_layout.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/meet_up_drawable.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/meet_up_layout.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/message_layout.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/post_layout.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/search_list_layout.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/settings_layout.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/username_profile_layout.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.27419354838709675" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />

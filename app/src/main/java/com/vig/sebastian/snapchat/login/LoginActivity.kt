@@ -6,20 +6,19 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.core.view.isVisible
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.example.test.database.Database
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.classes.User
+import com.vig.sebastian.snapchat.database.Database
 
 class LoginActivity : AppCompatActivity() {
-    lateinit var registerLayout : RelativeLayout
+    lateinit var registerLayout : ScrollView
+    lateinit var loginLayout : RelativeLayout
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         editor = sharedPreferences.edit()
 
         registerLayout = findViewById(R.id.registerRelativeLayout)
-        val loginLayout = findViewById<RelativeLayout>(R.id.loginRelativeLayout)
+        loginLayout = findViewById(R.id.loginRelativeLayout)
         val registerTextView = findViewById<TextView>(R.id.registerTextView)
         val loginUsername = findViewById<EditText>(R.id.loginUsernameEditText)
         val loginPassword = findViewById<EditText>(R.id.loginPasswordEditText)
@@ -40,10 +39,20 @@ class LoginActivity : AppCompatActivity() {
         val registerAge = findViewById<EditText>(R.id.registerAgeEditText)
         val registerBtn = findViewById<Button>(R.id.registerBtn)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
+        val backBtn = findViewById<ImageView>(R.id.backBtn)
 
         registerTextView.setOnClickListener {
             registerLayout.visibility = View.VISIBLE
             YoYo.with(Techniques.SlideInLeft).duration(400).playOn(registerLayout)
+        }
+
+        backBtn.setOnClickListener {
+            if (registerLayout.isVisible) {
+                YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
+                Global.wait(400) {
+                    registerLayout.visibility = View.GONE
+                }
+            }
         }
 
         registerBtn.setOnClickListener {
@@ -64,6 +73,8 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     editor.putString("username", username)
                     editor.putString("password", password)
+                    Global.username = username
+                    Global.password = password
                     editor.apply()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
@@ -93,9 +104,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        YoYo.with(Techniques.SlideOutRight).duration(400).playOn(registerLayout)
-        Global.wait(400) {
-            registerLayout.visibility = View.GONE
+        if (registerLayout.isVisible) {
+            YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
+            Global.wait(400) {
+                registerLayout.visibility = View.GONE
+            }
         }
     }
 }

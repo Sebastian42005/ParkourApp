@@ -1,14 +1,22 @@
 package com.vig.sebastian.snapchat
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Build
 import android.os.CountDownTimer
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import androidx.core.content.ContextCompat.getSystemService
+
+
+
 
 
 object Global {
@@ -19,7 +27,7 @@ object Global {
     var city = ""
     var age = 0
 
-    val basicFormat = "dd.MM.yyyy HH:mm"
+    val basicFormat = "dd-MM-yyyy HH:mm"
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentTime() : Date {
@@ -84,6 +92,12 @@ object Global {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getKey(): String {
+        val key =  getStringFromDate(getCurrentTime(), "yyyy-MM-dd | HH:mm:sss")
+        return  key + " | " + UUID.randomUUID().toString()
+    }
+
     fun wait(mil: Long, unit: () -> Unit) {
         val cd = object : CountDownTimer(mil + 1, mil){
             override fun onTick(millisUntilFinished: Long) {
@@ -97,12 +111,6 @@ object Global {
         cd.start()
     }
 
-    fun getAverage(int1: Int, int2: Int): String {
-        val fullAmount = int1 + int2
-        if (fullAmount != 0) {
-            return ((int1 * 100) / fullAmount).toString()
-        }else return "100"
-    }
     fun checkIfStringsAreEmpty(vararg strings: String) : Boolean {
         var bool = false
         for (string in strings) {
