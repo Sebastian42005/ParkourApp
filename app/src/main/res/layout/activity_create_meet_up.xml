@@ -56,12 +56,13 @@
                     android:id="@+id/meetUpLocationEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/ "
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
-                    android:hint="Location" />
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/ "
+                    android:hint="Location"
+                    android:inputType="text" />
 
             </RelativeLayout>
 
@@ -84,10 +85,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:digits="1234567890.: "
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
+                    android:digits="1234567890.: "
                     android:hint="Date (dd.MM.yyyy HH:mm)"
+                    android:inputType="text"
                     android:maxLength="16" />
 
                 <ImageView
@@ -122,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
+                    android:inputType="text"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_ "
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"

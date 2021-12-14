@@ -26,6 +26,8 @@ import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.database.Database
+import com.vig.sebastian.snapchat.explore.ClickedPostObject
+import com.vig.sebastian.snapchat.explore.ShowPostActivity
 import com.vig.sebastian.snapchat.login.LoginActivity
 import com.vig.sebastian.snapchat.profile.EditProfileActivity
 import com.vig.sebastian.snapchat.profile.adapter.PostAdapter
@@ -48,9 +50,6 @@ class ProfileFragment : Fragment() {
     lateinit var imageUri: Uri
     lateinit var profilePic: ImageView
     lateinit var layoutList: ArrayList<LinearLayout>
-    lateinit var postListLayout: RelativeLayout
-    lateinit var backBtn: ImageView
-    lateinit var postListView: ListView
     var postImageType = "profile"
     @SuppressLint("CommitPrefEdits")
     override fun onCreateView(
@@ -59,6 +58,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
+        sharedPreferences = requireActivity().application.getSharedPreferences("save", Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
         profilePic = root.findViewById(R.id.profilePicImageView)
         val profileBanner = root.findViewById<ImageView>(R.id.profileBannerImageView)
         val profileUsernameTextView = root.findViewById<TextView>(R.id.profileUsername)
@@ -72,11 +73,12 @@ class ProfileFragment : Fragment() {
         val friendRequestsBackBtn: ImageView = root.findViewById(R.id.friendsRequestsBackBtn)
         val settingsBtn: ImageView = root.findViewById(R.id.settingsBtn)
         val editProfileBtn: Button = root.findViewById(R.id.editProfileBtn)
-        postListLayout = root.findViewById(R.id.profilePostsLayout)
-        backBtn = root.findViewById(R.id.backBtn)
-        postListView = root.findViewById(R.id.postListView)
-        sharedPreferences = requireActivity().application.getSharedPreferences("save", Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
+        val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
+
+        refreshLayout.setOnRefreshListener {
+            setPostsList(root)
+            refreshLayout.isRefreshing = false
+        }
 
         editProfileBtn.setOnClickListener {
             startActivity(Intent(context, EditProfileActivity::class.java))
@@ -125,13 +127,6 @@ class ProfileFragment : Fragment() {
         profilePic.setOnClickListener {
             postImageType = "profile"
             choosePicture()
-        }
-
-        backBtn.setOnClickListener {
-            YoYo.with(Techniques.SlideOutRight).duration(200).playOn(postListLayout)
-            Global.wait(200) {
-                postListLayout.visibility = View.GONE
-            }
         }
 
         return root
@@ -187,13 +182,9 @@ class ProfileFragment : Fragment() {
                     params.bottomMargin = 10
                     imageView.layoutParams = params
                     imageView.setOnClickListener {
-                        setPostsListView(root)
-                        postListLayout.visibility = View.VISIBLE
-                        YoYo.with(Techniques.SlideInRight).duration(200).playOn(postListLayout)
-                        Global.wait(50) {
-                            postListView.setSelection(PostObject.position)
-                        }
-                        PostObject.position = post.position
+                        ClickedPostObject.uploadPostClass = post.uploadPostClass
+                        ClickedPostObject.imageUri = ImageUriListsObject.getPost(post.uploadPostClass.key)
+                        startActivity(Intent(context, ShowPostActivity::class.java))
                     }
                     layoutList[position].addView(imageView)
                     if (position >= 2) position = 0 else position++
@@ -212,21 +203,5 @@ class ProfileFragment : Fragment() {
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
-    }
-
-    var postList = ArrayList<PostClass>()
-    lateinit var adapter : PostAdapter
-    private fun setPostsListView(root: View) {
-        Database.getPostsFromUser(Global.username) {
-            postList.clear()
-            for (post in it) {
-                postList.add(PostClass(post.uploadPostClass, post.position, ImageUriListsObject.getPost(post.uploadPostClass.key), ImageUriListsObject.getProfilePic(post.uploadPostClass.key)))
-            }
-            postListView = root.findViewById(R.id.postListView)
-            try {
-                adapter = PostAdapter(requireContext(), R.layout.post_layout, postList)
-                postListView.adapter = adapter
-            }catch (e: Exception){}
-        }
     }
 }

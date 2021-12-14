@@ -11,10 +11,10 @@
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Teams"
         android:gravity="center"
+        android:text="Teams"
         android:textColor="@color/black"
-        android:textSize="23sp"/>
+        android:textSize="23sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -22,11 +22,18 @@
         android:background="@color/black"
         android:layout_below="@id/actionBar"/>
 
-    <ListView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/actionBar"
-        android:id="@+id/teamsListView"/>
+        android:layout_below="@id/actionBar">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/teamsListView"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/createTeamBtn"

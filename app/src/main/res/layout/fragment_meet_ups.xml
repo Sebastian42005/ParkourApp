@@ -26,27 +26,35 @@
             android:background="@color/black"
             android:layout_below="@id/actionBar"/>
 
-        <ListView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="0dp"
-            android:divider="@null"
-            android:layout_below="@id/actionBar"
-            android:id="@+id/meetUpListView"/>
+            android:layout_below="@id/actionBar">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="0dp"
+                android:divider="@null"
+                android:id="@+id/meetUpListView"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@drawable/background"
         android:visibility="gone"
         android:id="@+id/meetUpDetailLayout">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24"
+            android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
+            android:foregroundTint="@color/black"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:id="@+id/backBtn"/>
@@ -66,7 +74,8 @@
                 android:layout_height="wrap_content"
                 android:text="Location:"
                 android:textSize="18sp"
-                android:textColor="@color/dark_aqua" />
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/locationTextView"
@@ -82,7 +91,8 @@
                 android:text="Duration:"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/dark_aqua"/>
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -97,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/dark_aqua"
+                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:text="Start Date:"/>
 
             <TextView
@@ -113,7 +124,8 @@
                 android:layout_height="wrap_content"
                 android:text="Description: "
                 android:textSize="18sp"
-                android:textColor="@color/dark_aqua"
+                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"/>
 
             <TextView

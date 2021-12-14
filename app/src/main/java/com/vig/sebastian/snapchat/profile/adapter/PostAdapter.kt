@@ -39,6 +39,10 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
 
         descriptionTextView.text = description
 
+        profilePicImageView.setOnClickListener {
+            Global.showProfile(username, context)
+        }
+
         usernameTextView.text = username
         if (profileImageUri != null) Glide.with(context).load(profileImageUri).into(profilePicImageView)
 

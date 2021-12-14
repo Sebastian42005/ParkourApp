@@ -12,9 +12,10 @@
         android:id="@+id/profileFragmentLayout">
 
         <RelativeLayout
+            android:id="@+id/profileNameLayout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/profileNameLayout">
+            android:background="@color/dark_aqua"
+            android:layout_height="50dp">
 
             <ImageView
                 android:id="@+id/backToMainMenuBtn"
@@ -23,7 +24,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
-                android:foregroundTint="@color/black"/>
+                android:foregroundTint="@color/black" />
 
             <TextView
                 android:id="@+id/profileUsername"
@@ -40,11 +41,11 @@
                 android:id="@+id/goToUserChatActivityBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="5dp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
                 android:foreground="@drawable/ic_baseline_chat_24"
-                android:foregroundTint="@color/black"
-                android:layout_alignParentEnd="true"/>
+                android:foregroundTint="@color/black" />
 
         </RelativeLayout>
 
@@ -53,12 +54,12 @@
             android:layout_height="match_parent"
             android:layout_below="@id/profileNameLayout"
             android:overScrollMode="never"
+            android:background="@drawable/background"
             android:scrollbars="none">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/profileBannerImageView"
@@ -87,7 +88,7 @@
                     android:layout_marginStart="10dp"
                     android:src="@drawable/profile"
                     app:civ_border_color="#000000"
-                    app:civ_border_width="3dp"/>
+                    app:civ_border_width="3dp" />
 
                 <TextView
                     android:id="@+id/profileDescriptionTextView"

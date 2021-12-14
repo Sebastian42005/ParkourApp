@@ -19,6 +19,7 @@ class UploadPostActivity : AppCompatActivity() {
     lateinit var countryEditText: EditText
     lateinit var cityEditText: EditText
     lateinit var locationEditText: EditText
+    var uploadingPic = false
     val uri = PostObject.uri!!
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -51,12 +52,14 @@ class UploadPostActivity : AppCompatActivity() {
         }
 
         uploadBtn.setOnClickListener {
-            var type = PostType.PICTURE
-            if (typeSwitch.isChecked) type = PostType.PARKOUR_SPOT
-            if (locationEditText.text.toString().trim() != "") {
-                uploadPic(type)
-            }else if (type == PostType.PICTURE) {
-                uploadPic(type)
+            if (!uploadingPic) {
+                var type = PostType.PICTURE
+                if (typeSwitch.isChecked) type = PostType.PARKOUR_SPOT
+                if (locationEditText.text.toString().trim() != "") {
+                    uploadPic(type)
+                } else if (type == PostType.PICTURE) {
+                    uploadPic(type)
+                }
             }
         }
     }
@@ -71,14 +74,18 @@ class UploadPostActivity : AppCompatActivity() {
 
         if (country == "") country = Global.country
         if (city == "") city = Global.city
+        uploadingPic = true
         ImageUriListsObject.setPostImageUriHashMap(key, uri)
-        Database.postImage(UploadPostClass(Global.username, type, key, country, city, location, description, Global.age), uri, this) {
-            if (type == PostType.PARKOUR_SPOT) {
+        if (type == PostType.PARKOUR_SPOT) {
+            Database.postImage(UploadPostClass(Global.username, type, key, country, city, location, description, Global.age), uri, this) {
                 Toast.makeText(this, "Spot successfully uploaded!", Toast.LENGTH_SHORT).show()
-            }else {
-                Toast.makeText(this, "Picture successfully uploaded!", Toast.LENGTH_SHORT).show()
+                super.onBackPressed()
             }
-            super.onBackPressed()
+        }else {
+            Database.postImage(UploadPostClass(Global.username, type, key, "", "", "", description, Global.age), uri, this) {
+                Toast.makeText(this, "Picture successfully uploaded!", Toast.LENGTH_SHORT).show()
+                super.onBackPressed()
+            }
         }
     }
 }

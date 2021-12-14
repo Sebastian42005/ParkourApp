@@ -59,6 +59,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="20dp"
+                    android:inputType="text"
                     android:backgroundTint="#00000000"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
                     android:hint="Username" />
@@ -79,15 +80,16 @@
                     android:layout_alignTop="@id/loginPasswordEditText"/>
 
                 <EditText
+                    android:id="@+id/loginPasswordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:id="@+id/loginPasswordEditText"
                     android:layout_marginLeft="20dp"
-                    android:backgroundTint="#00000000"
                     android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="40dp"
-                    android:layout_marginRight="20dp"/>
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-!.,;"
+                    android:backgroundTint="#00000000"
+                    android:hint="Password" />
 
             </RelativeLayout>
 

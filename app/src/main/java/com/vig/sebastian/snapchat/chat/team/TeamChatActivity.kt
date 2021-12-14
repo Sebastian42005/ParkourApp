@@ -21,6 +21,8 @@ import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.meetup.CreateMeetUpActivity
 import com.vig.sebastian.snapchat.meetup.MeetUp
 import com.vig.sebastian.snapchat.meetup.MeetUpAdapter
+import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
+import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
 import com.vig.sebastian.snapchat.team.AddUserToTeamAdapter
 import com.vig.sebastian.snapchat.team.AddUserToTeamClass
 import com.vig.sebastian.snapchat.team.UsernameProfileAdapter
@@ -32,7 +34,7 @@ class TeamChatActivity : AppCompatActivity() {
     lateinit var chatListView : ListView
     val chatList = ArrayList<MessageClass>()
     var meetUpList = ArrayList<MeetUp>()
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,6 +157,10 @@ class TeamChatActivity : AppCompatActivity() {
         val editTeamMemberListBtn: ImageView = findViewById(R.id.editTeamMembersBtn)
         val saveTeamMemberChangesBtn: Button = findViewById(R.id.saveTeamMemberChangesBtn)
 
+        teamMembersListView.setOnItemClickListener { parent, view, position, id ->
+            Global.showProfile(teamMembersList[position], this)
+        }
+
         if (ClickedTeamChatObject.admin != Global.username.trim()) {
             editTeamMemberListBtn.visibility = View.GONE
         }
@@ -171,10 +177,12 @@ class TeamChatActivity : AppCompatActivity() {
                 editTeamMembersListView.visibility = View.VISIBLE
                 saveTeamMemberChangesBtn.visibility = View.VISIBLE
                 teamMembersListView.visibility = View.GONE
+                editTeamMemberListBtn.foreground = getDrawable(R.drawable.ic_baseline_edit_off_24)
             }else {
                 saveTeamMemberChangesBtn.visibility = View.GONE
                 editTeamMembersListView.visibility = View.GONE
                 teamMembersListView.visibility = View.VISIBLE
+                editTeamMemberListBtn.foreground = getDrawable(R.drawable.edit)
                 setTeamMembersList()
             }
         }
@@ -211,7 +219,7 @@ class TeamChatActivity : AppCompatActivity() {
         val editTeamMembersListView: ListView = findViewById(R.id.editTeamMembersListView)
         val teamMembersList = ArrayList<AddUserToTeamClass>()
         for (user in this.teamMembersList) {
-            teamMembersList.add(AddUserToTeamClass(user, true))
+            if (user != Global.username) teamMembersList.add(AddUserToTeamClass(user, true))
         }
         Database.getFriendsList(Global.username) {
             for (user in it) {
@@ -226,6 +234,7 @@ class TeamChatActivity : AppCompatActivity() {
     private fun setTeamMembersList() {
         val teamMemberListView : ListView = findViewById(R.id.teamMembersListView)
         Database.getTeamMembers(ClickedTeamChatObject.teamKey) {memberList ->
+            println("Members: " + memberList)
             val teamMemberList = ArrayList<String>()
             for (user in memberList) {
                 teamMemberList.add(user)

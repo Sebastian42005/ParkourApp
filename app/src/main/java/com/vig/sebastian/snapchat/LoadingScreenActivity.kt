@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.appcompat.app.AppCompatDelegate
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.login.LoginActivity
@@ -13,6 +14,7 @@ import com.vig.sebastian.snapchat.login.LoginActivity
 class LoadingScreenActivity : AppCompatActivity() {
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
+    val finishedDataList = ArrayList<Boolean>()
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +31,20 @@ class LoadingScreenActivity : AppCompatActivity() {
                 uri?.let {
                     ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, uri)
                 }
+                addData()
+            }
+
+            Database.getFirst10PostsFromFriends {
+                addData()
             }
 
             Database.getPostsFromUser(Global.username) {postList ->
                 postList.sort()
+                if (postList.size == 0) addData()
                 for (post in postList) {
                     Database.getImageUriFromUser(Global.username, post.uploadPostClass.key) {
                         ImageUriListsObject.setPostImageUriHashMap(post.uploadPostClass.key, it)
+                        if (post.uploadPostClass.key == postList[postList.size - 1].uploadPostClass.key) addData()
                     }
                 }
             }
@@ -46,6 +55,7 @@ class LoadingScreenActivity : AppCompatActivity() {
                         ImageUriListsObject.setProfilePicImageUriHashMap(userList[position], it)
                     }
                 }
+                addData()
             }
         }
     }
@@ -58,7 +68,6 @@ class LoadingScreenActivity : AppCompatActivity() {
                 if (it == null) {
                     startActivity(Intent(this, LoginActivity::class.java))
                 }else {
-                    startActivity(Intent(this, MainActivity::class.java))
                     Database.getUserInfo(username) { user ->
                         Global.username = user.username
                         Global.password = user.password
@@ -70,6 +79,12 @@ class LoadingScreenActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+    private fun addData() {
+        finishedDataList.add(true)
+        if (finishedDataList.size == 3) {
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 }

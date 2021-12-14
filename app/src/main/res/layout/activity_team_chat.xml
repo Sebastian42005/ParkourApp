@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/profileLayout"
         android:layout_width="match_parent"
-        android:background="@color/dark_aqua"
         android:layout_height="50dp">
 
         <TextView
@@ -71,6 +70,12 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_below="@id/profileLayout"/>
+
     <ListView
         android:id="@+id/chatListView"
         android:layout_width="match_parent"
@@ -96,7 +101,7 @@
     <ImageView
         android:id="@+id/messageEditTextBackground"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:src="@drawable/search_drawable"
         android:layout_marginStart="10dp"
@@ -155,23 +160,30 @@
             android:layout_height="match_parent"
             android:background="@drawable/background">
 
-            <TextView
+            <RelativeLayout
                 android:id="@+id/meetUpActionBar"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Meet Ups"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"/>
+                android:layout_height="60dp">
 
-            <ImageView
-                android:id="@+id/showTeamChatBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignTop="@id/meetUpActionBar"
-                android:layout_marginStart="5dp"
-                android:rotation="270"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:text="Meet Ups"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/showTeamChatBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_centerVertical="true"
+                    android:foreground="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:foregroundTint="@color/black"/>
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -192,14 +204,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@drawable/background"
             android:visibility="gone"
             android:id="@+id/meetUpDetailLayout">
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
+                android:foregroundTint="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:id="@+id/meetUpBackBtn"/>
@@ -219,7 +232,8 @@
                     android:layout_height="wrap_content"
                     android:text="Location:"
                     android:textSize="18sp"
-                    android:textColor="@color/dark_aqua" />
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/locationTextView"
@@ -235,7 +249,8 @@
                     android:text="Duration:"
                     android:textSize="18sp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/dark_aqua"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -250,7 +265,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/dark_aqua"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:text="Start Date:"/>
 
                 <TextView
@@ -266,7 +282,8 @@
                     android:layout_height="wrap_content"
                     android:text="Description:"
                     android:textSize="18sp"
-                    android:textColor="@color/dark_aqua"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:layout_marginTop="10dp"/>
 
                 <TextView
@@ -283,6 +300,7 @@
                     android:text="Accepted Users:"
                     android:textSize="18sp"
                     android:textColor="@color/dark_green"
+                    android:textStyle="bold"
                     android:layout_marginTop="10dp"/>
 
                 <TextView
@@ -299,6 +317,7 @@
                     android:text="Declined Users:"
                     android:textSize="18sp"
                     android:textColor="@color/dark_red"
+                    android:textStyle="bold"
                     android:layout_marginTop="10dp"/>
 
                 <TextView
@@ -334,37 +353,50 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@drawable/background"
         android:visibility="gone"
         android:id="@+id/teamMembersLayout">
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/teamMembersActionBar"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="Team Members"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:layout_height="60dp">
 
-        <ImageView
-            android:id="@+id/dontShowTeamMembersChatBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignTop="@id/teamMembersActionBar"
-            android:layout_marginStart="5dp"
-            android:rotation="270"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="Team Members"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/edit"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
-            android:layout_alignTop="@id/teamMembersActionBar"
-            android:layout_alignBottom="@id/teamMembersActionBar"
-            android:id="@+id/editTeamMembersBtn"/>
+            <ImageView
+                android:id="@+id/dontShowTeamMembersChatBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_centerVertical="true"
+                android:foreground="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:foregroundTint="@color/black"/>
+
+            <ImageView
+                android:id="@+id/editTeamMembersBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="10dp"
+                android:foreground="@drawable/edit"
+                android:foregroundTint="@color/black"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_below="@id/teamMembersActionBar"/>
 
         <ListView
             android:id="@+id/teamMembersListView"

@@ -2,6 +2,8 @@ package com.vig.sebastian.snapchat
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
 import android.view.View
@@ -14,9 +16,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 import androidx.core.content.ContextCompat.getSystemService
-
-
-
+import com.vig.sebastian.snapchat.database.Database
+import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
+import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
 
 
 object Global {
@@ -89,6 +91,15 @@ object Global {
             if (seconds < 10) {
                 return "Jetzt"
             }else return "$seconds Sekunden"
+        }
+    }
+
+    fun showProfile(username: String, context: Context?) {
+        if (username != Global.username) {
+            Database.getUserInfo(username) { user ->
+                ClickedProfileObject.user = user
+                context?.startActivity(Intent(context, ClickedUserProfileActivity::class.java))
+            }
         }
     }
 

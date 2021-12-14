@@ -11,12 +11,14 @@ import androidx.core.view.isVisible
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.classes.User
 import com.vig.sebastian.snapchat.database.Database
 
 class LoginActivity : AppCompatActivity() {
+    val finishedDataList = ArrayList<Boolean>()
     lateinit var registerLayout : ScrollView
     lateinit var loginLayout : RelativeLayout
     lateinit var sharedPreferences : SharedPreferences
@@ -40,6 +42,8 @@ class LoginActivity : AppCompatActivity() {
         val registerBtn = findViewById<Button>(R.id.registerBtn)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val backBtn = findViewById<ImageView>(R.id.backBtn)
+
+
 
         registerTextView.setOnClickListener {
             registerLayout.visibility = View.VISIBLE
@@ -70,13 +74,12 @@ class LoginActivity : AppCompatActivity() {
             ) {
                 val age = registerAge.text.toString().toInt()
                 Database.register(User(username, password, "", country, city, age)) {
-                    startActivity(Intent(this, MainActivity::class.java))
                     editor.putString("username", username)
                     editor.putString("password", password)
                     Global.username = username
                     Global.password = password
                     editor.apply()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    getDataFromDatabase()
                 }
             }
         }
@@ -86,7 +89,6 @@ class LoginActivity : AppCompatActivity() {
             if (!Global.checkIfStringsAreEmpty(username, password)) {
                 Database.login(this, username, password) {
                     if (it != null) {
-                        startActivity(Intent(this, MainActivity::class.java))
                         Global.username = it.username
                         Global.password = it.password
                         Global.description = it.description
@@ -96,10 +98,50 @@ class LoginActivity : AppCompatActivity() {
                         editor.putString("username", username)
                         editor.putString("password", password)
                         editor.apply()
-                        startActivity(Intent(this, MainActivity::class.java))
+                        getDataFromDatabase()
                     }
                 }
             }
+        }
+    }
+
+    private fun getDataFromDatabase() {
+        Database.getUserProfilePic(Global.username) { uri ->
+            uri?.let {
+                ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, uri)
+            }
+            addData()
+        }
+
+        Database.getFirst10PostsFromFriends {
+            addData()
+        }
+
+        Database.getPostsFromUser(Global.username) {postList ->
+            postList.sort()
+            if (postList.size == 0) addData()
+            for (post in postList) {
+                Database.getImageUriFromUser(Global.username, post.uploadPostClass.key) {
+                    ImageUriListsObject.setPostImageUriHashMap(post.uploadPostClass.key, it)
+                    if (post.uploadPostClass.key == postList[postList.size - 1].uploadPostClass.key) addData()
+                }
+            }
+        }
+
+        Database.getFriendProfilePics { userList, uriList ->
+            for (position in userList.indices) {
+                uriList[position]?.let {
+                    ImageUriListsObject.setProfilePicImageUriHashMap(userList[position], it)
+                }
+            }
+            addData()
+        }
+    }
+
+    private fun addData() {
+        finishedDataList.add(true)
+        if (finishedDataList.size == 4) {
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 

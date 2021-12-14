@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import com.bumptech.glide.Glide
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.R
@@ -32,6 +35,10 @@ class ShowPostActivity : AppCompatActivity() {
         val descriptionTextView = findViewById<TextView>(R.id.postDescriptionTextView)
         val backBtn: ImageView = findViewById(R.id.backBtn)
         var likeList = ArrayList<String>()
+
+        profilePicImageView.setOnClickListener {
+            Global.showProfile(username, this)
+        }
 
         descriptionTextView.text = description
 

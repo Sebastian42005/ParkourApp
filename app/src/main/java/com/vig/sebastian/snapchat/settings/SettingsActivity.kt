@@ -1,5 +1,6 @@
 package com.vig.sebastian.snapchat.settings
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
@@ -17,6 +18,7 @@ import com.vig.sebastian.snapchat.login.LoginActivity
 class SettingsActivity : AppCompatActivity() {
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -35,8 +37,7 @@ class SettingsActivity : AppCompatActivity() {
         editor = sharedPreferences.edit()
 
         settingsListView.setOnItemClickListener { parent, view, position, id ->
-            val text = settingsList[position]
-            when (text) {
+            when (settingsList[position]) {
                 "Logout" -> logout()
                 "Join Team" -> joinTeam()
             }
@@ -60,10 +61,10 @@ class SettingsActivity : AppCompatActivity() {
 
         joinTeamLayout.visibility = View.VISIBLE
         joinTeamLayout.setOnClickListener {
+            hideKeyboard()
             teamKeyEditText.setText("")
             teamPasswordEditText.setText("")
             joinTeamLayout.visibility = View.GONE
-            hideKeyboard()
         }
 
         joinTeamBtn.setOnClickListener {

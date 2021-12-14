@@ -28,6 +28,12 @@ class TeamsFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_teams, container, false)
         val teamsListView = root.findViewById<ListView>(R.id.teamsListView)
         val createTeamBtn: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = root.findViewById(R.id.createTeamBtn)
+        val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
+
+        refreshLayout.setOnRefreshListener {
+            setTeamList(root)
+            refreshLayout.isRefreshing = false
+        }
 
         setTeamList(root)
 

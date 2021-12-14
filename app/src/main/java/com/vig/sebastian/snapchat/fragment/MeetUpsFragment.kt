@@ -41,6 +41,12 @@ class MeetUpsFragment : Fragment() {
         val backBtn : ImageView = root.findViewById(R.id.backBtn)
         val acceptMeetUpBtn: Button = root.findViewById(R.id.acceptMeetUpBtn)
         val declineMeetUpBtn: Button = root.findViewById(R.id.declineMeetUpBtn)
+        val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
+
+        refreshLayout.setOnRefreshListener {
+            setMeetUpList(root)
+            refreshLayout.isRefreshing = false
+        }
 
         backBtn.setOnClickListener {
             YoYo.with(Techniques.SlideOutRight).duration(300).playOn(meetUpDetailLayout)

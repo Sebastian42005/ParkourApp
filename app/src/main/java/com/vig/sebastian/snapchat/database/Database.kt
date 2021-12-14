@@ -6,6 +6,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import com.google.android.gms.common.internal.GmsLogger
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -177,6 +178,9 @@ object Database {
             }
         }
     }
+    fun declineFriendRequest(username: String) {
+        reference.child("User").child(Global.username).child("friendRequests").child(username).removeValue()
+    }
     fun removeFriendRequest(username: String) {
         reference.child("User").child(username).child("friendRequests").child(Global.username).removeValue()
     }
@@ -300,10 +304,22 @@ object Database {
     fun getTeamMembers(teamKey: String, unit: (memberList: ArrayList<String>) -> Unit) {
         getSingleDataFromDatabase("Teams", teamKey, "members") {snapshot ->
             val teamMemberList = ArrayList<String>()
+            val memberList = ArrayList<String>()
             for (member in snapshot.children) {
-                teamMemberList.add(member.key.toString())
+                memberList.add(member.value.toString())
             }
-            unit(teamMemberList)
+            for (member in memberList) {
+                teamMemberList.add(member)
+                if (!ImageUriListsObject.profilePicsList.contains(member)) {
+                    getUserProfilePic(member) {
+                        if (member == memberList[memberList.size - 1]) {
+                            unit(teamMemberList)
+                        }
+                    }
+                }else if (member == memberList[memberList.size - 1]) {
+                    unit(teamMemberList)
+                }
+            }
         }
     }
 
@@ -543,7 +559,11 @@ object Database {
                     }
                 }
             }
-            if (filteredPostList.size <  20) {
+            if (filteredPostList.size == 0) {
+                unit(filteredPostList)
+            }
+            filteredPostList.shuffle()
+            if (filteredPostList.size <  15) {
                 for (post in filteredPostList) {
                     if (!ImageUriListsObject.postsList.contains(post.key)) {
                         getImageUriFromUser(post.username, post.key) { uri ->
@@ -557,14 +577,14 @@ object Database {
                     }
                 }
             }else {
-                for (position in 0..20) {
+                for (position in 0..15) {
                     val post = filteredPostList[position]
                     if (!ImageUriListsObject.postsList.contains(post.key)) {
                         getImageUriFromUser(post.username, post.key) { uri ->
                             ImageUriListsObject.setPostImageUriHashMap(post.key, uri)
                             if (post.key == filteredPostList[filteredPostList.size - 1].key) {
                                 val endFilteredList = ArrayList<UploadPostClass>()
-                                for (uploadPostPosition in 0..20) {
+                                for (uploadPostPosition in 0..15) {
                                     endFilteredList.add(filteredPostList[uploadPostPosition])
                                 }
                                 unit(endFilteredList)
@@ -596,6 +616,7 @@ object Database {
                 list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, userAge), position, null, null))
                 position ++
             }
+            list.sort()
             list.reverse()
             unit(list)
         }

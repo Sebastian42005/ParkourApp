@@ -21,6 +21,7 @@ class FriendRequestAdapter(context: Context, private val int: Int, arrayList : A
         val view = inflater.inflate(int, parent, false)
 
         val acceptFriendRequestBtn = view.findViewById<ImageView>(R.id.acceptFriendRequestBtn)
+        val declineFriendRequestBtn = view.findViewById<ImageView>(R.id.declineFriendRequestBtn)
         val profilePicImageView = view.findViewById<ImageView>(R.id.profilePicImageView)
         val usernameTextView = view.findViewById<TextView>(R.id.usernameTextView)
 
@@ -32,6 +33,10 @@ class FriendRequestAdapter(context: Context, private val int: Int, arrayList : A
 
         acceptFriendRequestBtn.setOnClickListener {
             Database.acceptFriendRequest(username)
+        }
+
+        declineFriendRequestBtn.setOnClickListener {
+            Database.declineFriendRequest(username)
         }
 
         return view

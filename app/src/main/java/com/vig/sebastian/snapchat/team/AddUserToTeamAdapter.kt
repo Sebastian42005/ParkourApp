@@ -30,17 +30,14 @@ class AddUserToTeamAdapter(context: Context, private val int: Int, arrayList : A
         if (ImageUriListsObject.getProfilePic(username) != null) {
             Glide.with(context).load(ImageUriListsObject.getProfilePic(username)).into(profilePic)
         }
-        if (username == Global.username) checkBox.visibility = View.GONE
 
         checkBox.isChecked = isChecked
 
         usernameTextView.text = username
 
         usernameTextView.setOnClickListener {
-            if (username != Global.username) {
-                checkBox.isChecked = !checkBox.isChecked
-                getItem(position)!!.isChecked = checkBox.isChecked
-            }
+            checkBox.isChecked = !checkBox.isChecked
+            getItem(position)!!.isChecked = checkBox.isChecked
         }
 
         checkBox.setOnClickListener {

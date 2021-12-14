@@ -57,11 +57,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_- "
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
-                    android:hint="Team Name" />
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_- "
+                    android:hint="Team Name"
+                    android:inputType="text" />
 
             </RelativeLayout>
 
@@ -87,6 +88,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="40dp"
                     android:backgroundTint="#00000000"
+                    android:inputType="text"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
                     android:hint="Password" />
 

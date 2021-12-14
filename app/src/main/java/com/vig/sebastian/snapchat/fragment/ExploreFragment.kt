@@ -17,11 +17,16 @@ import kotlin.math.roundToInt
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
+import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.explore.*
@@ -63,21 +68,40 @@ class ExploreFragment : Fragment() {
         val showFilterBtn : TextView = root.findViewById(R.id.setFilterBtn)
         val postsListScrollView : ScrollView = root.findViewById(R.id.postsListScrollView)
         val searchUserBackBtn : ImageView = root.findViewById(R.id.searchUserBackBtn)
+        val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
         filterList = arrayListOf(filterUsername, filterCountry, filterCity, filterAge)
         val searchListView : ListView = root.findViewById(R.id.searchListView)
         layoutList = arrayListOf(layout1, layout2, layout3)
+
+        refreshLayout.setOnRefreshListener {
+            setPostsList()
+            refreshLayout.isRefreshing = false
+        }
 
         setPostsList()
         setFilter(root)
 
         showFilterBtn.setOnClickListener {
-            if (!showFilterLayout.isVisible) showFilterLayout.visibility = View.VISIBLE else showFilterLayout.visibility = View.GONE
+            if (!showFilterLayout.isVisible) {
+                showFilterLayout.visibility = View.VISIBLE
+                YoYo.with(Techniques.SlideInUp).duration(300).playOn(showFilterLayout)
+            } else {
+                hideKeyboard(requireActivity())
+                YoYo.with(Techniques.SlideOutDown).duration(300).playOn(showFilterLayout)
+                Global.wait(300) {
+                    showFilterLayout.visibility = View.GONE
+                }
+            }
         }
 
         saveFilterBtn.setOnClickListener {
+            hideKeyboard(requireActivity())
             postCountryFilter = countryFilterEditText.text.toString()
             postCityFilter = cityFilterEditText.text.toString()
-            showFilterLayout.visibility = View.GONE
+            YoYo.with(Techniques.SlideOutDown).duration(300).playOn(showFilterLayout)
+            Global.wait(300) {
+                showFilterLayout.visibility = View.GONE
+            }
             setPostsList()
         }
 
@@ -92,10 +116,7 @@ class ExploreFragment : Fragment() {
         }
 
         searchListView.setOnItemClickListener { parent, view, position, id ->
-            Database.getUserInfo(searchUserList[position].username) { user ->
-                ClickedProfileObject.user = user
-                startActivity(Intent(requireContext(), ClickedUserProfileActivity::class.java))
-            }
+            Global.showProfile(searchUserList[position].username, context)
         }
 
         searchEditText.addTextChangedListener(object : TextWatcher {
@@ -137,9 +158,9 @@ class ExploreFragment : Fragment() {
         for (filterTextView in filterList) {
             filterTextView.setOnClickListener {
                 for (filter in filterList) {
-                    filter.setBackgroundColor(Color.WHITE)
+                    filter.setTypeface(null, Typeface.NORMAL)
                 }
-                filterTextView.setBackgroundColor(Color.GRAY)
+                filterTextView.setTypeface(null, Typeface.BOLD)
                 currentFilterType = FilterType.valueOf(filterTextView.text.toString().toUpperCase())
                 setSearchList(root)
             }
@@ -155,8 +176,6 @@ class ExploreFragment : Fragment() {
             }
         }
     }
-
-
 
     private fun displayPost(post: UploadPostClass) {
         if (post.postType == PostType.PARKOUR_SPOT) {

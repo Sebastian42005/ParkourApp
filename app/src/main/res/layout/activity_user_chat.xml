@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/profileLayout"
         android:layout_width="match_parent"
-        android:background="@color/dark_aqua"
         android:layout_height="60dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -47,6 +46,12 @@
             tools:ignore="MissingPrefix,RtlCompat" />
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_below="@id/profileLayout"/>
 
     <ListView
         android:id="@+id/chatListView"
