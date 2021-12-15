@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.CountDownTimer
 import android.view.View
@@ -19,6 +20,14 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
 import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startActivity
+
+
+
+
+
+
 
 
 object Global {
@@ -92,6 +101,13 @@ object Global {
                 return "Jetzt"
             }else return "$seconds Sekunden"
         }
+    }
+
+    fun shareImage(uri: Uri, text: String, context: Context) {
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.setType("image/*");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri)
+        context.startActivity(Intent.createChooser(sharingIntent, "Share Image Using"))
     }
 
     fun showProfile(username: String, context: Context?) {

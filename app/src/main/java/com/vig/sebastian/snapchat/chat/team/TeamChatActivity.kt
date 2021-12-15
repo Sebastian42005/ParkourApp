@@ -130,6 +130,7 @@ class TeamChatActivity : AppCompatActivity() {
             startDateTextView.text = meetUpList[position].startDate
             locationTextView.text = meetUpList[position].location
             meetUpDetailLayout.visibility = View.VISIBLE
+            createMeetUpBtn.visibility = View.GONE
             YoYo.with(Techniques.SlideInRight).duration(300).playOn(meetUpDetailLayout)
         }
         setMeetUpList()
@@ -143,6 +144,7 @@ class TeamChatActivity : AppCompatActivity() {
         meetUpBackBtn.setOnClickListener {
             YoYo.with(Techniques.SlideOutRight).duration(300).playOn(meetUpDetailLayout)
             Global.wait(300) {
+                createMeetUpBtn.visibility = View.VISIBLE
                 meetUpDetailLayout.visibility = View.GONE
             }
         }
@@ -234,7 +236,6 @@ class TeamChatActivity : AppCompatActivity() {
     private fun setTeamMembersList() {
         val teamMemberListView : ListView = findViewById(R.id.teamMembersListView)
         Database.getTeamMembers(ClickedTeamChatObject.teamKey) {memberList ->
-            println("Members: " + memberList)
             val teamMemberList = ArrayList<String>()
             for (user in memberList) {
                 teamMemberList.add(user)

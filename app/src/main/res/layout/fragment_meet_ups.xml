@@ -14,16 +14,17 @@
         <TextView
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="45dp"
             android:gravity="center"
-            android:text="Meet Ups"
-            android:textColor="@color/black"
+            android:text="Parkour | Meet Ups"
+            android:textColor="@color/dark_blue"
+            android:textStyle="bold|italic"
             android:textSize="23sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black"
+            android:background="@color/dark_blue"
             android:layout_below="@id/actionBar"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

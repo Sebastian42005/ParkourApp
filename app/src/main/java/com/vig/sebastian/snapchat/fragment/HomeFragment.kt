@@ -1,6 +1,5 @@
 package com.vig.sebastian.snapchat.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,13 +21,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val refreshLayout = root.findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.refreshLayout)
-
-        refreshLayout.setColorSchemeColors(Color.rgb(0, 170, 170))
-        refreshLayout.setOnRefreshListener {
-            setPostsListView(root)
-            refreshLayout.isRefreshing = false
-        }
 
         setPostsListView(root)
         return root

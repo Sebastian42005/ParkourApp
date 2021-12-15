@@ -36,13 +36,51 @@
         android:layout_height="400dp"
         android:layout_below="@id/postUsername" />
 
-    <ImageView
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/postImage"
+        android:layout_alignTop="@id/postImage"
+        android:layout_alignEnd="@id/postImage"
+        android:layout_alignBottom="@id/postImage">
+
+        <ImageView
+            android:id="@+id/likedImageImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_baseline_star_24"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <com.like.LikeButton
         android:id="@+id/likePostImageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@id/postImage"
+        android:layout_gravity="center"
         android:layout_marginStart="5dp"
-        android:foreground="@drawable/ic_baseline_star_outline_24"
+        android:layout_marginTop="8dp"
+        app:anim_scale_factor="2"
+        app:circle_end_color="@color/aqua"
+        app:circle_start_color="@color/dark_aqua"
+        app:dots_primary_color="@color/dark_aqua"
+        app:dots_secondary_color="@color/aqua"
+        app:icon_size="40dp"
+        app:icon_type="star"
+        app:is_enabled="true"
+        app:liked="false" />
+
+    <ImageView
+        android:id="@+id/shareImageImageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/postImage"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/likePostImageView"
+        android:foreground="@drawable/share"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -60,11 +98,10 @@
         android:id="@+id/postDescriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         android:layout_below="@id/postLikeAmountTextView"
-        android:layout_marginStart="10dp"/>
-
-    
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
 
 </RelativeLayout>
