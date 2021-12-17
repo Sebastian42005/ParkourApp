@@ -1,17 +1,24 @@
 package com.vig.sebastian.snapchat.profile
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
+import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
+import kotlinx.coroutines.MainScope
+import java.io.FileNotFoundException
 import java.util.*
 
 class UploadPostActivity : AppCompatActivity() {
@@ -19,6 +26,7 @@ class UploadPostActivity : AppCompatActivity() {
     lateinit var countryEditText: EditText
     lateinit var cityEditText: EditText
     lateinit var locationEditText: EditText
+    lateinit var imageView: ImageView
     var uploadingPic = false
     val uri = PostObject.uri!!
     @RequiresApi(Build.VERSION_CODES.O)
@@ -27,7 +35,7 @@ class UploadPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload_post)
 
-        val imageView: ImageView = findViewById(R.id.uploadPostImageView)
+        imageView = findViewById(R.id.uploadPostImageView)
         val typeSwitch: Switch = findViewById(R.id.uploadPostTypeSwitch)
         descriptionEditText = findViewById(R.id.uploadPostDescriptionEditText)
         countryEditText = findViewById(R.id.uploadPostCountryEditText)
@@ -79,12 +87,20 @@ class UploadPostActivity : AppCompatActivity() {
         if (type == PostType.PARKOUR_SPOT) {
             Database.postImage(UploadPostClass(Global.username, type, key, country, city, location, description, Global.age), uri, this) {
                 Toast.makeText(this, "Spot successfully uploaded!", Toast.LENGTH_SHORT).show()
-                super.onBackPressed()
+                if (PostObject.type == PostObjectType.NORMAL) {
+                    super.onBackPressed()
+                }else {
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
             }
         }else {
             Database.postImage(UploadPostClass(Global.username, type, key, "", "", "", description, Global.age), uri, this) {
                 Toast.makeText(this, "Picture successfully uploaded!", Toast.LENGTH_SHORT).show()
-                super.onBackPressed()
+                if (PostObject.type == PostObjectType.NORMAL) {
+                    super.onBackPressed()
+                }else {
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
             }
         }
     }

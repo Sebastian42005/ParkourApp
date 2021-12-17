@@ -481,10 +481,16 @@ object Database {
                 val description = data.child("description").value.toString()
                 val teamKey = data.child("teamKey").value.toString()
                 val key = data.key.toString()
-                meetUpsList.add(MeetUp(startDate, duration, location, description, key, teamKey))
+                if (!Global.checkIfDateIsNegative(Global.getDateFromString(startDate.trim().replace(".", "-"), Global.basicFormat))) {
+                    meetUpsList.add(MeetUp(startDate, duration, location, description, key, teamKey))
+                }else deleteMeetUp(username, key)
             }
             unit(meetUpsList)
         }
+    }
+
+    fun deleteMeetUp(username: String, meetUpKey: String) {
+        reference.child("User").child(username).child("meetUps").child(meetUpKey).removeValue()
     }
 
     fun acceptMeetUp(key: String, teamKey: String) {
@@ -526,15 +532,17 @@ object Database {
         getSingleDataFromDatabase("Posts") {snapshot ->
             val postList = ArrayList<UploadPostClass>()
             for (data in snapshot.children) {
-                val username = data.child("username").value.toString()
-                val country = data.child("country").value.toString()
-                val key = data.child("key").value.toString()
-                val city = data.child("city").value.toString()
-                val location = data.child("location").value.toString()
-                val description = data.child("description").value.toString()
-                val userAge = data.child("userAge").value.toString().toInt()
                 val postType : PostType = PostType.valueOf(data.child("postType").value.toString().trim())
-                postList.add(UploadPostClass(username, postType, key, country, city, location, description, userAge))
+                if (postType == PostType.PARKOUR_SPOT) {
+                    val username = data.child("username").value.toString()
+                    val country = data.child("country").value.toString()
+                    val key = data.child("key").value.toString()
+                    val city = data.child("city").value.toString()
+                    val location = data.child("location").value.toString()
+                    val description = data.child("description").value.toString()
+                    val userAge = data.child("userAge").value.toString().toInt()
+                    postList.add(UploadPostClass(username, postType, key, country, city, location, description, userAge))
+                }
             }
             postList.shuffle()
             unit(postList)
@@ -562,22 +570,23 @@ object Database {
             if (filteredPostList.size == 0) {
                 unit(filteredPostList)
             }
-            filteredPostList.shuffle()
             if (filteredPostList.size <  15) {
                 for (post in filteredPostList) {
                     if (!ImageUriListsObject.postsList.contains(post.key)) {
                         getImageUriFromUser(post.username, post.key) { uri ->
                             ImageUriListsObject.setPostImageUriHashMap(post.key, uri)
                             if (post.key == filteredPostList[filteredPostList.size - 1].key) {
+                                println("SIZE2: " + filteredPostList.size)
                                 unit(filteredPostList)
                             }
                         }
                     }else if (post.key == filteredPostList[filteredPostList.size - 1].key) {
+                        println("SIZE2: " + filteredPostList.size)
                         unit(filteredPostList)
                     }
                 }
             }else {
-                for (position in 0..15) {
+                for (position in 0..14) {
                     val post = filteredPostList[position]
                     if (!ImageUriListsObject.postsList.contains(post.key)) {
                         getImageUriFromUser(post.username, post.key) { uri ->
@@ -617,7 +626,6 @@ object Database {
                 position ++
             }
             list.sort()
-            list.reverse()
             unit(list)
         }
     }
@@ -690,7 +698,7 @@ object Database {
                     }
                 } else {
                     val list = ArrayList<ExploreSearchClass>()
-                    for (userPosition in 0..10) {
+                    for (userPosition in 0..9) {
                         val user = userList[userPosition]
                         list.add(user)
                     }
@@ -764,11 +772,17 @@ object Database {
             unit(postKeyList)
         }
     }
+    fun deletePost(key: String) {
+        reference.child("User").child(Global.username).child("Posts").child(key).removeValue()
+        reference.child("Posts").child(key).removeValue()
+        storageReference.child(Global.username).child("Posts").child(key).delete()
+    }
 
     fun getFirst10PostsFromFriends(unit: (postKeyList: ArrayList<PostClass>) -> Unit) {
         getEveryPostFromFriendsNoUri {
             val postKeyList = it
             postKeyList.sort()
+            if (postKeyList.size == 0) unit(postKeyList)
             if (postKeyList.size < 10) {
                 for (post in postKeyList) {
                     if (!ImageUriListsObject.postsList.contains(post.uploadPostClass.key)) {
@@ -783,15 +797,15 @@ object Database {
                     }
                 }
             }else {
-                for (position in 0..10) {
+                for (position in 0..9) {
                     if (!ImageUriListsObject.postsList.contains(postKeyList[position].uploadPostClass.key)) {
                         getImageUriFromUser(postKeyList[position].uploadPostClass.username, postKeyList[position].uploadPostClass.key) { uri ->
                             ImageUriListsObject.setPostImageUriHashMap(postKeyList[position].uploadPostClass.key, uri)
-                            if (postKeyList[position].uploadPostClass.key == postKeyList[postKeyList.size - 1].uploadPostClass.key) {
+                            if (postKeyList[position].uploadPostClass.key == postKeyList[9].uploadPostClass.key) {
                                 unit(postKeyList)
                             }
                         }
-                    }else if (postKeyList[position].uploadPostClass.key == postKeyList[postKeyList.size - 1].uploadPostClass.key) {
+                    }else if (postKeyList[position].uploadPostClass.key == postKeyList[9].uploadPostClass.key) {
                         unit(postKeyList)
                     }
                 }

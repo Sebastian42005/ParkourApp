@@ -34,7 +34,7 @@ import com.vig.sebastian.snapchat.profile.PostType
 import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
 import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
 import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
-import java.lang.Exception
+import kotlin.Exception
 
 class ExploreFragment : Fragment() {
     lateinit var layoutList: ArrayList<LinearLayout>
@@ -178,9 +178,9 @@ class ExploreFragment : Fragment() {
     }
 
     private fun displayPost(post: UploadPostClass) {
-        if (post.postType == PostType.PARKOUR_SPOT) {
             val imageView = ImageView(context)
-            Glide.with(requireContext()).load(ImageUriListsObject.getPost(post.key)).into(imageView)
+            Glide.with(requireContext()).load(ImageUriListsObject.getPost(post.key))
+                .into(imageView)
             imageView.scaleType = ImageView.ScaleType.FIT_XY
             val width = (getWidth() / 3).toFloat().roundToInt()
             val params: ActionBar.LayoutParams = ActionBar.LayoutParams(width, width)
@@ -196,7 +196,7 @@ class ExploreFragment : Fragment() {
             imageView.layoutParams = params
             layoutList[layoutPosition].addView(imageView)
             if (layoutPosition != 2) layoutPosition++ else layoutPosition = 0
-        }
+
     }
 
     private fun clearAllViews() {

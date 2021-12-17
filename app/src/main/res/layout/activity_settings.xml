@@ -157,4 +157,28 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/showFriendsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@drawable/background">
+
+        <ImageView
+            android:id="@+id/showFriendsBackBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:foreground="@drawable/ic_baseline_arrow_back_24"
+            android:foregroundTint="@color/black"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"/>
+
+        <ListView
+            android:id="@+id/showFriendsListView"
+            android:layout_below="@id/showFriendsBackBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

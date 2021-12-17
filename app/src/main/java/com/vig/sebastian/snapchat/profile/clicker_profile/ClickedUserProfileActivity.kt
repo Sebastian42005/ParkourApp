@@ -16,10 +16,13 @@ import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.google.android.gms.common.internal.GmsLogger
 import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.chat.user.ClickedChatObject
 import com.vig.sebastian.snapchat.chat.user.UserChatActivity
 import com.vig.sebastian.snapchat.database.Database
+import com.vig.sebastian.snapchat.explore.ClickedPostObject
+import com.vig.sebastian.snapchat.explore.ShowPostActivity
 import com.vig.sebastian.snapchat.profile.PostObject
 import com.vig.sebastian.snapchat.profile.adapter.FriendRequestAdapter
 import com.vig.sebastian.snapchat.profile.adapter.PostAdapter
@@ -146,12 +149,9 @@ class ClickedUserProfileActivity : AppCompatActivity() {
                         params.bottomMargin = 10
                         imageView.layoutParams = params
                         imageView.setOnClickListener {
-                            postListLayout.visibility = View.VISIBLE
-                            YoYo.with(Techniques.SlideInRight).duration(200).playOn(postListLayout)
-                            Global.wait(50) {
-                                postListView.setSelection(PostObject.position)
-                            }
-                            PostObject.position = post.position
+                            ClickedPostObject.uploadPostClass = post.uploadPostClass
+                            ClickedPostObject.imageUri = ImageUriListsObject.getPost(post.uploadPostClass.key)
+                            startActivity(Intent(this, ShowPostActivity::class.java))
                         }
                         layoutList[position].addView(imageView)
                         if (position >= 2) position = 0 else position++
@@ -177,7 +177,7 @@ class ClickedUserProfileActivity : AppCompatActivity() {
         Database.getPostsFromUser(clickedUser.username) {
             postListView = findViewById(R.id.postListView)
             try {
-                adapter = PostAdapter(this, R.layout.post_layout, it)
+                adapter = PostAdapter(this, R.layout.post_layout, it, this)
                 postListView.adapter = adapter
             }catch (e: Exception){}
         }

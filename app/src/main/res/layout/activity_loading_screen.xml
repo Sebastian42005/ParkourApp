@@ -8,10 +8,22 @@
     tools:context=".LoadingScreenActivity">
 
     <ImageView
+        android:id="@+id/loadingScreenImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:foreground="@drawable/parkour"
         android:foregroundTint="@color/dark_aqua"
         android:layout_centerInParent="true"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loadingScreenImageView"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="20dp"
+        android:progressDrawable="@drawable/custom_progress_bar" />
 
 </RelativeLayout>

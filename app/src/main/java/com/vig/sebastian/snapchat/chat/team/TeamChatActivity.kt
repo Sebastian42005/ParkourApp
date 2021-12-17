@@ -28,7 +28,9 @@ import com.vig.sebastian.snapchat.team.AddUserToTeamClass
 import com.vig.sebastian.snapchat.team.UsernameProfileAdapter
 import java.lang.Exception
 
-class TeamChatActivity : AppCompatActivity() {
+class
+
+TeamChatActivity : AppCompatActivity() {
     var teamMembersList = ArrayList<String>()
     var editTeamMemberList = ArrayList<AddUserToTeamClass>()
     lateinit var chatListView : ListView
@@ -234,6 +236,7 @@ class TeamChatActivity : AppCompatActivity() {
     }
 
     private fun setTeamMembersList() {
+
         val teamMemberListView : ListView = findViewById(R.id.teamMembersListView)
         Database.getTeamMembers(ClickedTeamChatObject.teamKey) {memberList ->
             val teamMemberList = ArrayList<String>()

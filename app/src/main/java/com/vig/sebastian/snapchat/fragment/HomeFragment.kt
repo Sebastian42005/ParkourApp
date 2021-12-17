@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
             }
             postListView = root.findViewById(R.id.postListView)
             try {
-                adapter = PostAdapter(requireContext(), R.layout.post_layout, postList)
+                adapter = PostAdapter(requireContext(), R.layout.post_layout, postList, requireActivity())
                 postListView.adapter = adapter
             }catch (e: Exception){}
         }

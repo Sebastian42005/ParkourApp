@@ -32,6 +32,7 @@ import com.vig.sebastian.snapchat.login.LoginActivity
 import com.vig.sebastian.snapchat.profile.EditProfileActivity
 import com.vig.sebastian.snapchat.profile.adapter.PostAdapter
 import com.vig.sebastian.snapchat.profile.PostObject
+import com.vig.sebastian.snapchat.profile.PostObjectType
 import com.vig.sebastian.snapchat.profile.UploadPostActivity
 import com.vig.sebastian.snapchat.profile.adapter.FriendRequestAdapter
 import com.vig.sebastian.snapchat.profile.classes.PostClass
@@ -76,7 +77,7 @@ class ProfileFragment : Fragment() {
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
 
         refreshLayout.setOnRefreshListener {
-            setPostsList(root)
+            setPostsList()
             refreshLayout.isRefreshing = false
         }
 
@@ -117,7 +118,7 @@ class ProfileFragment : Fragment() {
         if (ImageUriListsObject.getProfilePic(Global.username) != null) {
             Glide.with(requireContext()).load(ImageUriListsObject.getProfilePic(Global.username)).into(profilePic)
         }
-        setPostsList(root)
+        setPostsList()
 
         postPicBtn.setOnClickListener {
             postImageType = "picture"
@@ -162,10 +163,13 @@ class ProfileFragment : Fragment() {
             }
         }else {
             PostObject.uri = imageUri
+            PostObject.type = PostObjectType.NORMAL
             startActivity(Intent(requireContext(), UploadPostActivity::class.java))
         }
     }
-    private fun setPostsList(root: View) {
+    private fun setPostsList(
+
+    ) {
         Database.getPostsFromUser(Global.username) {
             var position = 0
             clearAllViews()

@@ -23,13 +23,6 @@ import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActi
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.ContextCompat.startActivity
 
-
-
-
-
-
-
-
 object Global {
     var username = ""
     var password = ""
@@ -47,12 +40,17 @@ object Global {
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDateFromString(string: String, format: String) : Date{
-        return SimpleDateFormat(format).parse(string)
+        return SimpleDateFormat(format).parse(string)!!
     }
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
     fun getStringFromDate(date: Date, format: String) : String{
         return SimpleDateFormat(format).format(date)
+    }
+    fun checkIfDateIsNegative(oldDate: Date) : Boolean{
+        val newDate = Date()
+        val diff = newDate.time - oldDate.time
+        return diff < 0
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDiffBetweenDate(oldDate: Date) : String{
@@ -103,11 +101,13 @@ object Global {
         }
     }
 
-    fun shareImage(uri: Uri, text: String, context: Context) {
-        val sharingIntent = Intent(Intent.ACTION_SEND)
-        sharingIntent.setType("image/*");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri)
-        context.startActivity(Intent.createChooser(sharingIntent, "Share Image Using"))
+    fun shareImage(imageUri: Uri?, text: String, context: Context) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra(Intent.EXTRA_STREAM, imageUri!!)
+        intent.putExtra(Intent.EXTRA_TEXT, text)
+        intent.type = "image/png"
+        context.startActivity(Intent.createChooser(intent, "Share image"))
     }
 
     fun showProfile(username: String, context: Context?) {
