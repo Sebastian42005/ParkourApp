@@ -5,14 +5,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBar
-import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.vig.sebastian.snapchat.Global
@@ -20,7 +15,6 @@ import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.profile.PostType
-import uk.co.senab.photoview.PhotoViewAttacher
 
 class ShowPostActivity : AppCompatActivity() {
     private var doubleClickLastTime = 0L
@@ -32,6 +26,7 @@ class ShowPostActivity : AppCompatActivity() {
         val uploadPostClass = ClickedPostObject.uploadPostClass!!
         val key = uploadPostClass.key
         val username = uploadPostClass.username
+        val imageUri = ClickedPostObject.imageUri
         val country = uploadPostClass.country
         val city = uploadPostClass.city
         val location = uploadPostClass.location
@@ -47,28 +42,34 @@ class ShowPostActivity : AppCompatActivity() {
         val backBtn: ImageView = findViewById(R.id.backBtn)
         var likeList = ArrayList<String>()
         val optionsBtn : ImageView = findViewById(R.id.postOptionsImageView)
-        val optionsListView : ListView = findViewById(R.id.optionsListView)
-        val optionsList = arrayListOf("Share Image", "Save Image", "Delete Image")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, optionsList)
-        optionsListView.adapter = adapter
+
         optionsBtn.setOnClickListener {
-            if (optionsListView.isVisible) {
-                optionsListView.visibility = View.GONE
-            }else optionsListView.visibility = View.VISIBLE
-        }
-        optionsListView.setOnItemClickListener { _, _, listViewPosition, id ->
-            when (optionsList[listViewPosition]) {
-                "Share Image" -> shareImage(ClickedPostObject.uploadPostClass!!.postType, location, username, description, ClickedPostObject.imageUri!!)
-                "Save Image" -> saveImage(imageView, description)
-                "Delete Image" -> Database.deletePost(key)
-            }
-            optionsListView.visibility = View.GONE
+            val popupMenu = PopupMenu(this, optionsBtn)
+            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.shareImageItem -> {
+                        shareImage(ClickedPostObject.uploadPostClass!!.postType, location, username, description)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.saveImageItem -> {
+                        saveImage(imageView, description)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.deleteImageItem -> {
+                        Database.deletePost(ClickedPostObject.uploadPostClass!!.key)
+                        super.onBackPressed()
+                        return@OnMenuItemClickListener false
+                    }
+                    else -> return@OnMenuItemClickListener false
+                }
+            })
+            if (username != Global.username) {
+                popupMenu.inflate(R.menu.options_menu)
+            }else popupMenu.inflate(R.menu.options_profile_menu)
+            popupMenu.show()
         }
 
-        val photoViewAttacher = PhotoViewAttacher(imageView)
-        photoViewAttacher.update()
-
-        imageView.setOnTouchListener { v, event ->
+        imageView.setOnClickListener {
             if(System.currentTimeMillis() - doubleClickLastTime < 300){
                 doubleClickLastTime = 0
                 likedImageImageView.visibility = View.VISIBLE
@@ -90,7 +91,6 @@ class ShowPostActivity : AppCompatActivity() {
             }else{
                 doubleClickLastTime = System.currentTimeMillis()
             }
-            return@setOnTouchListener false
         }
 
         profilePicImageView.setOnClickListener {
@@ -141,15 +141,39 @@ class ShowPostActivity : AppCompatActivity() {
             }else likesAmountTextView.visibility = View.GONE
         }
 
-        Glide.with(this).load(ClickedPostObject.imageUri).into(imageView)
-
+        if (imageUri != null) {
+            Glide.with(this).load(imageUri).into(imageView)
+        }else {
+            if (!ImageUriListsObject.postsList.contains(key)) {
+                Database.getImageUriFromUser(username, key) {
+                    ImageUriListsObject.setPostImageUriHashMap(key, it)
+                    Glide.with(this).load(it).into(imageView)
+                }
+            }else {
+                Glide.with(this).load(ImageUriListsObject.getPost(key)).into(imageView)
+            }
+        }
     }
 
     private fun saveImage(imageView: ImageView?, description: String) {
 
     }
 
-    private fun shareImage(postType: Any, location: String, username: String, description: String, imageUri: Any) {
-
+    private fun shareImage(postType: Any, location: String, username: String, description: String) {
+        if (postType == PostType.PARKOUR_SPOT) {
+            Global.shareImage(
+                ClickedPostObject.imageUri,
+                getString(R.string.hey_look_at_this_spot) +
+                        "\n" + getString(R.string.location) + ": " + location +
+                        "\n" + getString(R.string.show_username) + " " + username +
+                        "\n" + getString(R.string.show_description) + " "+ description,
+                this)
+        }else {
+            Global.shareImage(
+                ClickedPostObject.imageUri,
+                getString(R.string.hey_look_at_this_picture) +
+                        "\n" + getString(R.string.show_username) + " " + username,
+                this)
+        }
     }
 }

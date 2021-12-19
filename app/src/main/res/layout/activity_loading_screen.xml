@@ -11,9 +11,8 @@
         android:id="@+id/loadingScreenImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:foreground="@drawable/parkour"
-        android:foregroundTint="@color/dark_aqua"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:foreground="@drawable/parkour"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -25,5 +24,16 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="20dp"
         android:progressDrawable="@drawable/custom_progress_bar" />
+
+    <TextView
+        android:id="@+id/loadingScreenProgressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="0%"
+        android:layout_below="@id/progressBar"
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>

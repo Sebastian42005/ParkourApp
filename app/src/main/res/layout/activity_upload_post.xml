@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="top"
-                android:hint="Description" />
+                android:hint="@string/description" />
 
             <EditText
                 android:id="@+id/uploadPostCountryEditText"
@@ -43,7 +43,7 @@
                 android:visibility="gone"
                 android:inputType="text"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/"
-                android:hint="Country" />
+                android:hint="@string/country" />
 
 
             <EditText
@@ -54,7 +54,7 @@
                 android:visibility="gone"
                 android:inputType="text"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/"
-                android:hint="City" />
+                android:hint="@string/city" />
 
             <EditText
                 android:id="@+id/uploadPostLocationEditText"
@@ -63,14 +63,14 @@
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/ "
-                android:hint="Location" />
+                android:hint="@string/location" />
 
             <Switch
                 android:id="@+id/uploadPostTypeSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Parkour Spot"
+                android:text="@string/parkour_spot"
                 android:layout_marginStart="2dp"
                 android:textSize="18sp"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Post Picture"/>
+                android:text="@string/post_picture"/>
 
         </LinearLayout>
 

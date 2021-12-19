@@ -6,4 +6,5 @@ object ClickedTeamChatObject {
     var teamKey = ""
     var teamName = ""
     var admin = ""
+    var password = ""
 }

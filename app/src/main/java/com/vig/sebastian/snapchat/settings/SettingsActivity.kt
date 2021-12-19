@@ -32,7 +32,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val settingsListView = findViewById<ListView>(R.id.settingsListView)
-        val settingsList = arrayListOf("Join Team", "Friends", "Logout")
+        val settingsList = arrayListOf(getString(R.string.join_team), getString(R.string.friends), getString(R.string.support), getString(R.string.logout))
         val adapter = SettingsAdapter(this, R.layout.settings_layout, settingsList)
         settingsListView.adapter = adapter
         val backBtn = findViewById<ImageView>(R.id.backBtn)
@@ -60,11 +60,16 @@ class SettingsActivity : AppCompatActivity() {
 
         settingsListView.setOnItemClickListener { parent, view, position, id ->
             when (settingsList[position]) {
-                "Logout" -> logout()
-                "Friends" -> showFriends()
-                "Join Team" -> joinTeam()
+                getString(R.string.logout) -> logout()
+                getString(R.string.friends) -> showFriends()
+                getString(R.string.support) -> sendMessageToSupport()
+                getString(R.string.join_team) -> joinTeam()
             }
         }
+
+    }
+
+    private fun sendMessageToSupport() {
 
     }
 
@@ -104,17 +109,25 @@ class SettingsActivity : AppCompatActivity() {
         joinTeamBtn.setOnClickListener {
             val teamKey = teamKeyEditText.text.toString().trim()
             val teamPassword = teamPasswordEditText.text.toString().trim()
-            Database.joinTeam(teamKey, teamPassword, this) {isSuccess ->
-                when (isSuccess) {
+            Database.joinTeam(teamKey, teamPassword, this) {error ->
+                when (error) {
                     "" -> {
                         joinTeamLayout.visibility = View.GONE
                         teamKeyEditText.setText("")
                         teamPasswordEditText.setText("")
                     }
-                    "password" -> teamPasswordEditText.error = "Wrong password!"
-                    "key" -> teamKeyEditText.error = "Wrong key!"
+                    "password" -> {
+                        YoYo.with(Techniques.Shake).duration(300).playOn(teamPasswordEditText)
+                        teamPasswordEditText.error = getString(R.string.wrong_password)
+                        teamPasswordEditText.requestFocus()
+                    }
+                    "key" -> {
+                        YoYo.with(Techniques.Shake).duration(300).playOn(teamKeyEditText)
+                        teamKeyEditText.error = getString(R.string.wrong_key)
+                        teamKeyEditText.requestFocus()
+                    }
                     "team" -> {
-                        Toast.makeText(this, "You are already in this team!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.already_in_team), Toast.LENGTH_SHORT).show()
                         teamKeyEditText.setText("")
                         teamPasswordEditText.setText("")
                     }
@@ -124,11 +137,11 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        AlertDialog.Builder(this).setTitle("Logout?").setPositiveButton("Logout") { _, _->
+        AlertDialog.Builder(this).setTitle(getString(R.string.logout) + "?").setPositiveButton(getString(R.string.logout)) { _, _->
             editor.clear()
             editor.apply()
             startActivity(Intent(this, LoginActivity::class.java))
-        }.setNegativeButton("Cancel") {_,_->}.show()
+        }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
     }
     private fun hideKeyboard() {
         val view = this.currentFocus

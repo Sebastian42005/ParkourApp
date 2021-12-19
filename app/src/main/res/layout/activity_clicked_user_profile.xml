@@ -23,8 +23,7 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
-                android:foregroundTint="@color/black" />
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"/>
 
             <TextView
                 android:id="@+id/profileUsername"
@@ -32,7 +31,6 @@
                 android:layout_height="50dp"
                 android:layout_toEndOf="@id/backToMainMenuBtn"
                 android:gravity="center_vertical"
-                android:text="Sebastian"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -44,8 +42,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
-                android:foreground="@drawable/ic_baseline_chat_24"
-                android:foregroundTint="@color/black" />
+                android:src="@drawable/ic_baseline_chat_24" />
 
         </RelativeLayout>
 
@@ -53,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/profileNameLayout"
-            android:overScrollMode="never"
             android:background="@drawable/background"
+            android:overScrollMode="never"
             android:scrollbars="none">
 
             <RelativeLayout
@@ -97,7 +94,7 @@
                     android:layout_below="@id/profilePicImageView"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="test\ntest"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -109,7 +106,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="30dp"
                     android:backgroundTint="@color/dark_aqua"
-                    android:text="Follow"
+                    android:text="@string/follow"
                     android:textColor="@color/white" />
 
                 <LinearLayout
@@ -143,6 +140,32 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="vertical" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/noUploadsLayout"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@id/profileImagesListLinearLayout"
+                    android:layout_marginTop="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:src="@drawable/ic_baseline_hide_image_24"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/user_no_uploads"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"/>
 
                 </LinearLayout>
 
@@ -214,7 +237,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Friend Requests"
+                android:text="@string/friend_requests"
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textStyle="bold"

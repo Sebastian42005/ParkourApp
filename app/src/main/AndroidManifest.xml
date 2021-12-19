@@ -11,7 +11,6 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <queries>
 
@@ -60,15 +59,13 @@
         <activity android:name=".login.LoginActivity" />
         <activity
             android:name="com.vig.sebastian.snapchat.LoadingScreenActivity"
-            android:icon="@drawable/parkour"
-            android:label="Parkour App" >
+            android:label="Parkour">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" /> <!-- Send action required to display activity in share list -->
+                <action android:name="android.intent.action.SEND" />
 
-                <category android:name="android.intent.category.DEFAULT" /> <!-- Make activity default to launch -->
+                <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="image/*" />
-                <data android:mimeType="text/*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

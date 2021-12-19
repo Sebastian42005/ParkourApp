@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
+import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.chat.MessageAdapter
 import com.vig.sebastian.snapchat.classes.MessageClass
@@ -23,6 +25,7 @@ class UserChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_chat)
+        val username = ClickedChatObject.username
         val profilePicImageView: ImageView = findViewById(R.id.profilePicImageView)
         val usernameTextView: TextView = findViewById(R.id.profileUsernameTextView)
         val backBtn: ImageView = findViewById(R.id.backBtn)
@@ -30,17 +33,29 @@ class UserChatActivity : AppCompatActivity() {
         val sendMessageBtn: ImageView = findViewById(R.id.sendMessageBtn)
         val messageEditText: EditText = findViewById(R.id.messageEditText)
 
-        Glide.with(this).load(ClickedChatObject.imageUri).into(profilePicImageView)
-        usernameTextView.text = ClickedChatObject.username
+        if (ImageUriListsObject.profilePicsList.contains(username)) {
+            if (ImageUriListsObject.getProfilePic(username) != null) {
+                Glide.with(this).load(ImageUriListsObject.getProfilePic(username))
+                    .into(profilePicImageView)
+            }
+        }else {
+            Database.getUserProfilePic(username) {
+                ImageUriListsObject.setProfilePicImageUriHashMap(username, it)
+                Glide.with(this).load(it).into(profilePicImageView)
+            }
+        }
+        usernameTextView.text = username
 
         backBtn.setOnClickListener {
             super.onBackPressed()
         }
 
         chatListView.setOnItemLongClickListener { parent, view, position, id ->
-            AlertDialog.Builder(this).setMessage("Delete message?").setPositiveButton("Delete") {_,_->
-                Database.deleteUserMessage(ClickedChatObject.username, chatList[position].key)
-            }.setNegativeButton("Cancel") {_,_->}.show()
+            if (chatList[position].username == Global.username) {
+                AlertDialog.Builder(this).setMessage(getString(R.string.delete_message)).setPositiveButton(getString(R.string.delete)) {_,_->
+                    Database.deleteUserMessage(username, chatList[position].key)
+                }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
+            }
             return@setOnItemLongClickListener false
         }
 

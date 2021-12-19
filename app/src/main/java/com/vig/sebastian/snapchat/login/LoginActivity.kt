@@ -73,13 +73,19 @@ class LoginActivity : AppCompatActivity() {
                 )
             ) {
                 val age = registerAge.text.toString().toInt()
-                Database.register(User(username, password, "", country, city, age)) {
-                    editor.putString("username", username)
-                    editor.putString("password", password)
-                    Global.username = username
-                    Global.password = password
-                    editor.apply()
-                    getDataFromDatabase()
+                Database.register(User(username, password, "", country, city, age)) { success ->
+                    if (success) {
+                        editor.putString("username", username)
+                        editor.putString("password", password)
+                        Global.username = username
+                        Global.password = password
+                        editor.apply()
+                        getDataFromDatabase()
+                    }else {
+                        YoYo.with(Techniques.Shake).duration(300).playOn(registerUsername)
+                        registerUsername.error = getString(R.string.user_already_exists)
+                        registerUsername.requestFocus()
+                    }
                 }
             }
         }
@@ -99,6 +105,10 @@ class LoginActivity : AppCompatActivity() {
                         editor.putString("password", password)
                         editor.apply()
                         getDataFromDatabase()
+                    }else {
+                        Toast.makeText(this, getString(R.string.error_user_or_password_wrong), Toast.LENGTH_SHORT).show()
+                        YoYo.with(Techniques.Shake).duration(300).playOn(loginUsername)
+                        YoYo.with(Techniques.Shake).duration(300).playOn(loginPassword)
                     }
                 }
             }
@@ -107,9 +117,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getDataFromDatabase() {
         Database.getUserProfilePic(Global.username) { uri ->
-            uri?.let {
-                ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, uri)
-            }
+            ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, uri)
             addData()
         }
 
@@ -130,9 +138,7 @@ class LoginActivity : AppCompatActivity() {
 
         Database.getFriendProfilePics { userList, uriList ->
             for (position in userList.indices) {
-                uriList[position]?.let {
-                    ImageUriListsObject.setProfilePicImageUriHashMap(userList[position], it)
-                }
+                ImageUriListsObject.setProfilePicImageUriHashMap(userList[position], uriList[position])
             }
             addData()
         }

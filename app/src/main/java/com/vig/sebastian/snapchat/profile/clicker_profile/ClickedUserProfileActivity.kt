@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.*
@@ -64,7 +65,14 @@ class ClickedUserProfileActivity : AppCompatActivity() {
         Database.getFriendsList(clickedUser.username) {
             if (it.contains(Global.username)) {
                 followBtn.setBackgroundColor(Color.GRAY)
-                followBtn.text = "Unfollow"
+                followBtn.text = getString(R.string.unfollow)
+            }else {
+                Database.getFriendRequestList(clickedUser.username) { friendRequestList ->
+                    if (friendRequestList.contains(Global.username)) {
+                        followBtn.setBackgroundColor(Color.GRAY)
+                        followBtn.text = getString(R.string.sent_friend_reqest)
+                    }else followBtn.text = getString(R.string.follow)
+                }
             }
         }
 
@@ -74,34 +82,34 @@ class ClickedUserProfileActivity : AppCompatActivity() {
         }
 
         followBtn.setOnClickListener {
-            if (followBtn.text.toString().toLowerCase() == "unfollow") {
-                AlertDialog.Builder(this).setTitle("Unfollow")
-                    .setMessage("Are you sure you want to unfollow " + clickedUser.username + "?\nYou need to send a friend request again to follow " + clickedUser.username)
-                    .setNegativeButton("No") {_,_ ->}
-                    .setPositiveButton("Yes") { _, _ ->
+            if (followBtn.text.toString().toLowerCase() == getString(R.string.unfollow).toLowerCase()) {
+                AlertDialog.Builder(this)
+                    .setMessage("${getString(R.string.unfollow_user)} ${clickedUser.username}?")
+                    .setNegativeButton(getString(R.string.cancel)) {_,_ ->}
+                    .setPositiveButton(getString(R.string.unfollow)) { _, _ ->
                         Database.unfollowFriend(clickedUser.username)
                         followBtn.setBackgroundColor(Color.rgb(0, 170, 170))
-                        followBtn.text = "Follow"
+                        followBtn.text = getString(R.string.follow)
+                    }.show()
+            }else if (followBtn.text.toString().toLowerCase() == getString(R.string.follow).toLowerCase()){
+                Database.getFriendRequestList(Global.username) {
+                    if (!it.contains(clickedUser.username)) {
+                        Database.sendFriendRequest(clickedUser.username)
+                        followBtn.setBackgroundColor(Color.GRAY)
+                        followBtn.text = getString(R.string.sent_friend_reqest)
+                    }else {
+                        YoYo.with(Techniques.Shake).duration(300).playOn(followBtn)
+                        Toast.makeText(this, getString(R.string.user_already_sent_friend_request), Toast.LENGTH_SHORT).show()
                     }
-            }else if (followBtn.text.toString().toLowerCase() == "follow"){
-                Database.sendFriendRequest(clickedUser.username)
-                followBtn.setBackgroundColor(Color.GRAY)
-                followBtn.text = "Sent Friend Request"
+                }
             }else {
                 Database.removeFriendRequest(clickedUser.username)
                 followBtn.setBackgroundColor(Color.rgb(0, 170, 170))
-                followBtn.text = "Follow"
+                followBtn.text = getString(R.string.follow)
             }
         }
 
         setPostsListView()
-
-        Database.getFriendRequestList(clickedUser.username) { friendRequestList ->
-            if (friendRequestList.contains(Global.username)) {
-                followBtn.setBackgroundColor(Color.GRAY)
-                followBtn.text = "Sent Friend Request"
-            }
-        }
 
         layoutList = arrayListOf(profileImageLayout1, profileImageLayout2, profileImageLayout3)
 
@@ -132,9 +140,11 @@ class ClickedUserProfileActivity : AppCompatActivity() {
     }
 
     private fun setPostsList() {
+        val noUploadsLayout : LinearLayout = findViewById(R.id.noUploadsLayout)
         Database.getPostsFromUser(clickedUser.username) {
             var position = 0
             clearAllViews()
+            if (it.isEmpty()) noUploadsLayout.visibility = View.VISIBLE
             for (post in it) {
                 Database.getImageUriFromUser(clickedUser.username, post.uploadPostClass.key) {
                     try {

@@ -10,9 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -22,10 +20,13 @@ import com.bumptech.glide.Glide
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.database.Database
+import com.vig.sebastian.snapchat.explore.ClickedPostObject
 import com.vig.sebastian.snapchat.profile.PostType
 import com.vig.sebastian.snapchat.profile.classes.PostClass
+
 
 class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<PostClass>, val activity: Activity) : ArrayAdapter<PostClass>(context, int, arrayList){
     private var doubleClickLastTime = 0L
@@ -52,24 +53,33 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         val likedImageImageView : ImageView = view.findViewById(R.id.likedImageImageView)
         var likeList = ArrayList<String>()
         val optionsBtn : ImageView = view.findViewById(R.id.postOptionsImageView)
-        val optionsListView : ListView = view.findViewById(R.id.optionsListView)
-        val optionsList = arrayListOf("Share Image", "Save Image")
-        val adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, optionsList)
-        optionsListView.adapter = adapter
+
         optionsBtn.setOnClickListener {
-            if (optionsListView.isVisible) {
-                optionsListView.visibility = View.GONE
-            }else optionsListView.visibility = View.VISIBLE
-        }
-        optionsListView.setOnItemClickListener { _, _, listViewPosition, id ->
-            when (optionsList[listViewPosition]) {
-                "Share Image" -> shareImage(postType, location, username, description, imageUri)
-                "Save Image" -> saveImage(imageView, description)
-            }
-            optionsListView.visibility = View.GONE
+            val popupMenu = PopupMenu(context, optionsBtn)
+            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.shareImageItem -> {
+                        shareImage(postType, location, username, description, imageUri)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.saveImageItem -> {
+                        saveImage(imageView, description)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.deleteImageItem -> {
+                        Database.deletePost(ClickedPostObject.uploadPostClass!!.key)
+                        return@OnMenuItemClickListener false
+                    }
+                    else -> return@OnMenuItemClickListener false
+                }
+            })
+            if (username != Global.username) {
+                popupMenu.inflate(R.menu.options_menu)
+            }else popupMenu.inflate(R.menu.options_profile_menu)
+            popupMenu.show()
         }
 
-        imageView.setOnTouchListener { v, event ->
+        imageView.setOnClickListener {
             if(System.currentTimeMillis() - doubleClickLastTime < 300){
                 doubleClickLastTime = 0
                 if (!likeList.contains(Global.username)) {
@@ -90,7 +100,6 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
             }else{
                 doubleClickLastTime = System.currentTimeMillis()
             }
-            return@setOnTouchListener false
         }
 
         descriptionTextView.text = description
@@ -132,8 +141,14 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
                 if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
             }else likesAmountTextView.visibility = View.GONE
         }
-
-        Glide.with(context).load(imageUri).into(imageView)
+        if (imageUri != null) {
+            Glide.with(context).load(imageUri).into(imageView)
+        }else {
+            Database.getImageUriFromUser(username, key) {
+                ImageUriListsObject.setPostImageUriHashMap(key, it)
+                Glide.with(context).load(it).into(imageView)
+            }
+        }
 
         return view
     }
@@ -145,13 +160,17 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
     private fun shareImage(postType: PostType, location: String, username: String, description: String, imageUri: Uri?) {
         if (postType == PostType.PARKOUR_SPOT) {
             Global.shareImage(
-                imageUri!!,
-                "Hey, look at this spot!\nSpot location: $location\nUsername: $username\nDescription: $description",
+                imageUri,
+                context.getString(R.string.hey_look_at_this_spot) +
+                        "\n" + context.getString(R.string.location) + ": " + location +
+                        "\n" + context.getString(R.string.show_username) + " " + username +
+                        "\n" + context.getString(R.string.show_description) + " "+ description,
                 context)
         }else {
             Global.shareImage(
-                imageUri!!,
-                "Hey, look at this picture from $username!\nDescription: $description",
+                imageUri,
+                context.getString(R.string.hey_look_at_this_picture) +
+                        "\n" + context.getString(R.string.show_username) + " " + username,
                 context)
         }
     }

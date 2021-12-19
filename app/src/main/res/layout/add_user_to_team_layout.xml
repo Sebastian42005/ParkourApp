@@ -28,7 +28,6 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/profilePicImageView"
             android:gravity="center_vertical"
-            android:text="Sebastian"
             android:textColor="@color/black"
             android:textSize="20sp" />
 

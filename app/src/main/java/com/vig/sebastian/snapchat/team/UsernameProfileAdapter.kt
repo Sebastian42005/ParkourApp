@@ -27,8 +27,16 @@ class UsernameProfileAdapter(context: Context, private val int: Int, arrayList :
 
         usernameTextView.text = username
 
-        if (ImageUriListsObject.getProfilePic(username) != null) {
-            Glide.with(context).load(ImageUriListsObject.getProfilePic(username)).into(profilePic)
+        if (ImageUriListsObject.profilePicsList.contains(username)) {
+            if (ImageUriListsObject.getProfilePic(username) != null) {
+                Glide.with(context).load(ImageUriListsObject.getProfilePic(username))
+                    .into(profilePic)
+            }
+        }else {
+            Database.getUserProfilePic(username) {
+                ImageUriListsObject.setProfilePicImageUriHashMap(username, it)
+                Glide.with(context).load(it).into(profilePic)
+            }
         }
 
         return view

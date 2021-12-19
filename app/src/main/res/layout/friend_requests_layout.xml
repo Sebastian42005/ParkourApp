@@ -19,7 +19,6 @@
         android:id="@+id/usernameTextView"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Sebastian"
         android:gravity="center_vertical"
         android:layout_toEndOf="@id/profilePicImageView"
         android:textColor="@color/black"

@@ -1,6 +1,7 @@
 package com.vig.sebastian.snapchat.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,7 @@ class TeamsFragment : Fragment() {
         val createTeamBtn: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = root.findViewById(R.id.createTeamBtn)
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
 
+        refreshLayout.setColorSchemeColors(Color.rgb(0, 170, 170))
         refreshLayout.setOnRefreshListener {
             setTeamList(root)
             refreshLayout.isRefreshing = false
@@ -45,8 +47,11 @@ class TeamsFragment : Fragment() {
             ClickedTeamChatObject.teamKey = teamsList[position].key
             ClickedTeamChatObject.teamName = teamsList[position].teamName
             Database.getTeamAdmin(ClickedTeamChatObject.teamKey) { admin ->
-                ClickedTeamChatObject.admin = admin
-                startActivity(Intent(requireContext(), TeamChatActivity::class.java))
+                Database.getTeamPassword(ClickedTeamChatObject.teamKey) { password ->
+                    ClickedTeamChatObject.admin = admin
+                    ClickedTeamChatObject.password = password
+                    startActivity(Intent(requireContext(), TeamChatActivity::class.java))
+                }
             }
         }
 

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:gravity="center"
-            android:text="Parkour | Meet Ups"
+            android:text="@string/parkour_meet_ups"
             android:textColor="@color/dark_blue"
             android:textStyle="bold|italic"
             android:textSize="23sp" />
@@ -73,7 +73,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location:"
+                android:text="@string/show_location"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -82,14 +82,29 @@
                 android:id="@+id/locationTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bahnhof Meidling"
                 android:textSize="18sp"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Duration:"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="@string/show_start_date"/>
+
+            <TextView
+                android:id="@+id/startDateTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_end_date"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
@@ -98,7 +113,22 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2 Stunden"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:id="@+id/endDateTextView"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_duration"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:id="@+id/durationTextView"/>
@@ -106,24 +136,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="Start Date:"/>
-
-            <TextView
-                android:id="@+id/startDateTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:text="28.07.2005 | 18:00"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description: "
+                android:text="@string/show_description"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -133,7 +146,6 @@
                 android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is the test description"
                 android:textSize="18sp"
                 android:textColor="@color/black"/>
 
@@ -151,7 +163,7 @@
                     android:gravity="center"
                     android:textColor="@color/green"
                     android:textSize="20sp"
-                    android:text="Accept"
+                    android:text="@string/accept"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/post_picture_drawable"/>
 
@@ -164,7 +176,7 @@
                     android:layout_marginStart="5dp"
                     android:textColor="@color/red"
                     android:textSize="20sp"
-                    android:text="Decline"
+                    android:text="@string/decline"
                     android:background="@drawable/post_picture_drawable"/>
 
             </LinearLayout>

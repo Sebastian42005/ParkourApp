@@ -28,6 +28,25 @@
                 android:foregroundTint="@color/black"
                 tools:ignore="UnusedAttribute" />
 
+            <RelativeLayout
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="2dp"
+                android:layout_toStartOf="@id/postPictureBtn">
+
+                <TextView
+                    android:id="@+id/friendRequestAmountTextView"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/round_drawable"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:textColor="@color/black" />
+
+            </RelativeLayout>
+
             <ImageView
                 android:id="@+id/postPictureBtn"
                 android:layout_width="30dp"
@@ -58,7 +77,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_toStartOf="@id/showFriendsRequestsBtn"
                 android:gravity="center_vertical"
-                android:text="Sebastian"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -122,7 +140,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/button_drawable"
-                        android:text="Edit Profile"
+                        android:text="@string/edit_profile"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
@@ -133,7 +151,6 @@
                         android:layout_below="@id/profilePicImageView"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="test\ntest"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -194,7 +211,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Friend Requests"
+                android:text="@string/friend_requests"
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textStyle="bold"
@@ -208,7 +225,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
-                android:foregroundTint="@color/dark_grey"/>
+                android:foregroundTint="@color/black"/>
 
         </RelativeLayout>
 

@@ -50,7 +50,7 @@
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/profilePicImageView"
             android:gravity="center_vertical"
-            android:layout_toStartOf="@id/postOptionsImageView"
+            android:layout_toStartOf="@id/optionsLayout"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -137,17 +137,6 @@
             android:textSize="15sp"
             android:layout_below="@id/postLikeAmountTextView"
             android:layout_marginStart="10dp"/>
-
-        <ListView
-            android:id="@+id/optionsListView"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            android:background="@color/white"
-            android:visibility="gone"
-            android:layout_below="@id/optionsLayout"
-            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

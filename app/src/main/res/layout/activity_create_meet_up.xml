@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/createTeamLayout"
             android:layout_centerHorizontal="true"
-            android:text="Meet Up"
+            android:text="@string/title_meet_ups"
             android:textColor="@color/dark_blue"
             android:textSize="50sp"
             android:textStyle="bold" />
@@ -61,7 +61,7 @@
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/ "
-                    android:hint="Location"
+                    android:hint="@string/location"
                     android:inputType="text" />
 
             </RelativeLayout>
@@ -88,7 +88,7 @@
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
                     android:digits="1234567890.: "
-                    android:hint="Date (dd.MM.yyyy HH:mm)"
+                    android:hint="@string/start_date"
                     android:inputType="text"
                     android:maxLength="16" />
 
@@ -113,22 +113,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_background"
-                    android:layout_alignBottom="@id/meetUpDurationEditText"
-                    android:layout_alignEnd="@id/meetUpDurationEditText"
-                    android:layout_alignStart="@id/meetUpDurationEditText"
-                    android:layout_alignTop="@id/meetUpDurationEditText"/>
+                    android:layout_alignBottom="@id/meetUpEndDateEditText"
+                    android:layout_alignEnd="@id/meetUpEndDateEditText"
+                    android:layout_alignStart="@id/meetUpEndDateEditText"
+                    android:layout_alignTop="@id/meetUpEndDateEditText"/>
 
                 <EditText
-                    android:id="@+id/meetUpDurationEditText"
+                    android:id="@+id/meetUpEndDateEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:inputType="text"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_ "
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
-                    android:hint="Duration" />
+                    android:digits="1234567890.: "
+                    android:hint="@string/end_date"
+                    android:inputType="text"
+                    android:maxLength="16" />
+
+                <ImageView
+                    android:id="@+id/meetUpEndDatePickerImageView"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignEnd="@id/meetUpEndDateEditText"
+                    android:layout_alignBottom="@id/meetUpEndDateEditText"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="8dp"
+                    android:foreground="@drawable/date_drawable"
+                    android:foregroundTint="@color/black" />
 
             </RelativeLayout>
 
@@ -154,7 +166,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="40dp"
                     android:backgroundTint="#00000000"
-                    android:hint="Description" />
+                    android:hint="@string/location" />
 
             </RelativeLayout>
 
@@ -168,35 +180,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/dark_blue"
-            android:text="Create" />
+            android:text="@string/create" />
 
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#B0808080"
-        android:visibility="gone"
-        android:id="@+id/meetUpShowDateTimeLayout"/>
-
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:visibility="gone"
-        android:id="@+id/meetUpDatePicker"/>
-
-    <Button
-        android:id="@+id/meetUpSaveDateTimeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/meetUpDatePicker"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:text="Save"
-        android:backgroundTint="@color/dark_blue"
-        android:visibility="gone" />
 
 </RelativeLayout>

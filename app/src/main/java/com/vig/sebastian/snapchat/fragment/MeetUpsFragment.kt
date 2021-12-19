@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.fragment
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
@@ -24,6 +26,7 @@ class MeetUpsFragment : Fragment() {
     var meetUpList = ArrayList<MeetUp>()
     var currentMeetUpTeamKey = ""
     var currentMeetUpKey = ""
+    var canClick = true
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -35,6 +38,7 @@ class MeetUpsFragment : Fragment() {
         val meetUpListView = root.findViewById<ListView>(R.id.meetUpListView)
         val meetUpDetailLayout: RelativeLayout = root.findViewById(R.id.meetUpDetailLayout)
         val descriptionTextView : TextView = root.findViewById(R.id.descriptionTextView)
+        val endDateTextView : TextView = root.findViewById(R.id.endDateTextView)
         val durationTextView : TextView = root.findViewById(R.id.durationTextView)
         val locationTextView : TextView = root.findViewById(R.id.locationTextView)
         val startDateTextView : TextView = root.findViewById(R.id.startDateTextView)
@@ -43,31 +47,35 @@ class MeetUpsFragment : Fragment() {
         val declineMeetUpBtn: Button = root.findViewById(R.id.declineMeetUpBtn)
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
 
+        refreshLayout.setColorSchemeColors(Color.rgb(0, 170, 170))
         refreshLayout.setOnRefreshListener {
             setMeetUpList(root)
             refreshLayout.isRefreshing = false
         }
 
         backBtn.setOnClickListener {
+            canClick = false
+            meetUpListView.visibility = View.VISIBLE
             YoYo.with(Techniques.SlideOutRight).duration(300).playOn(meetUpDetailLayout)
             Global.wait(300) {
                 meetUpDetailLayout.visibility = View.GONE
+                canClick = true
             }
         }
 
         acceptMeetUpBtn.setOnClickListener {
-            if (acceptMeetUpBtn.text.toString().toLowerCase() != "accepted") {
+            if (acceptMeetUpBtn.text.toString().toLowerCase() != getString(R.string.accepted).toLowerCase()) {
                 Database.acceptMeetUp(currentMeetUpKey, currentMeetUpTeamKey)
                 declineMeetUpBtn.visibility = View.GONE
-                acceptMeetUpBtn.text = "Accepted"
+                acceptMeetUpBtn.text = getString(R.string.accepted)
             }else {
-                AlertDialog.Builder(context).setMessage("Decline this meet up?").setPositiveButton("Decline") {_,_->
+                AlertDialog.Builder(context).setMessage(getString(R.string.decline_meet_up)).setPositiveButton(getString(R.string.decline)) {_,_->
                     Database.declineMeetUp(currentMeetUpKey, currentMeetUpTeamKey)
                     YoYo.with(Techniques.SlideOutRight).duration(300).playOn(meetUpDetailLayout)
                     Global.wait(300) {
                         meetUpDetailLayout.visibility = View.GONE
                     }
-                }.setNegativeButton("Cancel") {_,_->}.show()
+                }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
             }
         }
 
@@ -80,20 +88,30 @@ class MeetUpsFragment : Fragment() {
         }
 
         meetUpListView.setOnItemClickListener { parent, view, position, id ->
-            Database.getAccepted(meetUpList[position].key) {
-                if (it) {
-                    declineMeetUpBtn.visibility = View.GONE
-                    acceptMeetUpBtn.text = "Accepted"
+            val meetUp = meetUpList[position]
+            if (canClick) {
+                canClick = false
+                Database.getAccepted(meetUpList[position].key) {
+                    if (it) {
+                        declineMeetUpBtn.visibility = View.GONE
+                        acceptMeetUpBtn.text = getString(R.string.accepted)
+                    }
                 }
+                try {
+                    durationTextView.text = Global.getDiffBetweenDate(Global.getDateFromString(meetUp.startDate, Global.basicFormat),Global.getDateFromString(meetUp.endDate, Global.basicFormat), requireContext())
+                    descriptionTextView.text = meetUp.description
+                    endDateTextView.text = meetUp.endDate
+                    startDateTextView.text = meetUp.startDate
+                    locationTextView.text = meetUp.location
+                    currentMeetUpTeamKey = meetUp.teamKey
+                    currentMeetUpKey = meetUp.key
+                    meetUpDetailLayout.visibility = View.VISIBLE
+                    YoYo.with(Techniques.SlideInRight).duration(300).playOn(meetUpDetailLayout)
+                    Global.wait(300) {
+                        meetUpListView.visibility = View.GONE
+                    }
+                }catch (e: Exception) {}
             }
-            descriptionTextView.text = meetUpList[position].description
-            durationTextView.text = meetUpList[position].duration
-            startDateTextView.text = meetUpList[position].startDate
-            locationTextView.text = meetUpList[position].location
-            currentMeetUpTeamKey = meetUpList[position].teamKey
-            currentMeetUpKey = meetUpList[position].key
-            meetUpDetailLayout.visibility = View.VISIBLE
-            YoYo.with(Techniques.SlideInRight).duration(300).playOn(meetUpDetailLayout)
         }
         setMeetUpList(root)
 

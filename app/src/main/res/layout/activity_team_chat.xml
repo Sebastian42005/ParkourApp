@@ -11,12 +11,29 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
+        <RelativeLayout
+            android:id="@+id/optionsLayout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/teamOptionsImageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/options_drawable" />
+
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/profileUsernameTextView"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:layout_toStartOf="@id/optionsLayout"
             android:layout_toEndOf="@id/backBtn"
             android:gravity="center_vertical"
             android:textColor="@color/white"
@@ -33,40 +50,6 @@
             android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
             android:foregroundTint="@color/white"
             tools:ignore="MissingPrefix,RtlCompat" />
-
-        <ImageView
-            android:id="@+id/showMeetUpListBtn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="5dp"
-            android:foreground="@drawable/ic_baseline_format_list_bulleted_24"
-            android:foregroundTint="@color/white"
-            tools:ignore="MissingPrefix,RtlCompat" />
-
-        <ImageView
-            android:id="@+id/showTeamMembersBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@id/showMeetUpListBtn"
-            android:foreground="@drawable/ic_baseline_groups_24"
-            android:foregroundTint="@color/white"
-            tools:ignore="MissingPrefix,RtlCompat" />
-
-        <ImageView
-            android:id="@+id/sendTeamKeyBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@id/showTeamMembersBtn"
-            android:foreground="@drawable/share"
-            android:foregroundTint="@color/white"
-            tools:ignore="MissingPrefix,RtlCompat" />
-
 
     </RelativeLayout>
 
@@ -128,7 +111,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="11dp"
         android:background="@null"
-        android:hint="Message"
+        android:hint="@string/message"
         android:maxHeight="120dp"
         android:textColor="@color/black"
         android:textColorHint="@color/dark_grey"
@@ -169,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center"
-                    android:text="Meet Ups"
+                    android:text="@string/title_meet_ups"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
@@ -230,7 +213,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Location:"
+                    android:text="@string/show_location"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
@@ -239,14 +222,29 @@
                     android:id="@+id/locationTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Bahnhof Meidling"
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Duration:"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="@string/show_start_date"/>
+
+                <TextView
+                    android:id="@+id/startDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/end_date"
                     android:textSize="18sp"
                     android:layout_marginTop="10dp"
                     android:textStyle="bold"
@@ -255,7 +253,22 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2 Stunden"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:id="@+id/endDateTextView"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/show_duration"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:id="@+id/durationTextView"/>
@@ -263,24 +276,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:text="Start Date:"/>
-
-                <TextView
-                    android:id="@+id/startDateTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:text="28.07.2005 | 18:00"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Description:"
+                    android:text="@string/show_description"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -290,14 +286,13 @@
                     android:id="@+id/descriptionTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="This is the test description"
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Accepted Users:"
+                    android:text="@string/show_accept_users"
                     android:textSize="18sp"
                     android:textColor="@color/dark_green"
                     android:textStyle="bold"
@@ -307,14 +302,13 @@
                     android:id="@+id/acceptedUsersTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sebastian, Patrick, Julian"
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Declined Users:"
+                    android:text="@string/show_declined_users"
                     android:textSize="18sp"
                     android:textColor="@color/dark_red"
                     android:textStyle="bold"
@@ -324,7 +318,6 @@
                     android:id="@+id/declinedUsersTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sebastian, Patrick, Julian"
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
 
@@ -366,7 +359,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="Team Members"
+                android:text="@string/team_members"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
@@ -421,7 +414,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:visibility="gone"
-            android:text="Save" />
+            android:text="@string/save" />
 
     </RelativeLayout>
 

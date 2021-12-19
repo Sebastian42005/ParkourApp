@@ -50,12 +50,12 @@ class UploadPostActivity : AppCompatActivity() {
                 countryEditText.visibility = View.GONE
                 cityEditText.visibility = View.GONE
                 locationEditText.visibility = View.GONE
-                uploadBtn.text = "Upload Picture"
+                uploadBtn.text = getString(R.string.post_picture)
             }else {
                 countryEditText.visibility = View.VISIBLE
                 cityEditText.visibility = View.VISIBLE
                 locationEditText.visibility = View.VISIBLE
-                uploadBtn.text = "Upload Spot"
+                uploadBtn.text = getString(R.string.post_spot)
             }
         }
 
@@ -86,7 +86,7 @@ class UploadPostActivity : AppCompatActivity() {
         ImageUriListsObject.setPostImageUriHashMap(key, uri)
         if (type == PostType.PARKOUR_SPOT) {
             Database.postImage(UploadPostClass(Global.username, type, key, country, city, location, description, Global.age), uri, this) {
-                Toast.makeText(this, "Spot successfully uploaded!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.spot_uploaded), Toast.LENGTH_SHORT).show()
                 if (PostObject.type == PostObjectType.NORMAL) {
                     super.onBackPressed()
                 }else {
@@ -95,13 +95,21 @@ class UploadPostActivity : AppCompatActivity() {
             }
         }else {
             Database.postImage(UploadPostClass(Global.username, type, key, "", "", "", description, Global.age), uri, this) {
-                Toast.makeText(this, "Picture successfully uploaded!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.picture_uploaded), Toast.LENGTH_SHORT).show()
                 if (PostObject.type == PostObjectType.NORMAL) {
                     super.onBackPressed()
                 }else {
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (PostObject.type == PostObjectType.NORMAL) {
+            super.onBackPressed()
+        }else {
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 }

@@ -48,22 +48,52 @@
             android:layout_toEndOf="@id/searchImage"
             android:layout_marginEnd="15dp"
             android:maxLines="1"
-            android:hint="Search"/>
+            android:hint="@string/search"/>
 
     </RelativeLayout>
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_below="@id/searchLayout">
+
+    <Switch
+        android:id="@+id/onlySpotsSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/only_spots"
+        android:textSize="18sp"
+        android:layout_centerVertical="true"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:id="@+id/setFilterBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  Filter  "
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_alignParentEnd="true"
         android:layout_below="@id/searchLayout"
-        android:layout_marginEnd="15dp"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="5dp"
-        android:background="@drawable/button_drawable"/>
+        android:layout_marginEnd="15dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Filter"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
@@ -112,61 +142,6 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/setPostsFilterLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/settings_background_drawable"
-        android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Country:"
-            android:textColor="@color/black"
-            android:textSize="17sp" />
-
-        <EditText
-            android:id="@+id/filterCountryEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:hint="Austria" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="City:"
-            android:textColor="@color/black"
-            android:textSize="17sp" />
-
-        <EditText
-            android:id="@+id/filterCityEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:hint="Vienna" />
-
-        <Button
-            android:id="@+id/saveFilterBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="20dp"
-            android:text="Save" />
-
-    </LinearLayout>
-
     <ListView
         android:id="@+id/searchListView"
         android:layout_width="match_parent"
@@ -189,7 +164,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="Username"
+            android:text="@string/username"
             android:textSize="18sp"
             android:gravity="center"
             android:textColor="@color/black"/>
@@ -199,7 +174,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="Country"
+            android:text="@string/country"
             android:textSize="18sp"
             android:gravity="center"
             android:textColor="@color/black"/>
@@ -209,7 +184,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="City"
+            android:text="@string/city"
             android:textSize="18sp"
             android:gravity="center"
             android:textColor="@color/black"/>
@@ -219,11 +194,74 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="Age"
+            android:text="@string/age"
             android:textSize="18sp"
             android:gravity="center"
             android:textColor="@color/black"/>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/setPostsFilterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:id="@+id/setPostsFilterLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/settings_background_drawable"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/show_country"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/filterCountryEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:hint="@string/austria" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/show_city"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/filterCityEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:hint="@string/vienna" />
+
+            <Button
+                android:id="@+id/saveFilterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/save" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
@@ -41,6 +43,16 @@ class CreateTeamActivity : AppCompatActivity() {
                     Database.getFriendsList(Global.username) {
                         if (it.size != 0) addUserToTeamLayout.visibility = View.VISIBLE else super.onBackPressed()
                     }
+                }else {
+                    if (key == "password") {
+                        YoYo.with(Techniques.Shake).duration(300).playOn(teamPasswordEditText)
+                        teamPasswordEditText.error = getString(R.string.error_empty)
+                        teamPasswordEditText.requestFocus()
+                    }else {
+                        YoYo.with(Techniques.Shake).duration(300).playOn(teamNameEditText)
+                        teamNameEditText.error = getString(R.string.error_empty)
+                        teamNameEditText.requestFocus()
+                    }
                 }
             }
         }
@@ -57,7 +69,7 @@ class CreateTeamActivity : AppCompatActivity() {
             for (user in addUserToTeamList) {
                 if (user.isChecked) list.add(user.username)
             }
-            Toast.makeText(this, "Team successfully created!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.team_created), Toast.LENGTH_SHORT).show()
             Database.addUsersToTeam(list, key, teamName)
             super.onBackPressed()
         }

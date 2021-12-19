@@ -5,8 +5,6 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.net.toUri
-import com.google.android.gms.common.internal.GmsLogger
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -24,12 +22,14 @@ import com.vig.sebastian.snapchat.meetup.MeetUp
 import com.vig.sebastian.snapchat.profile.classes.PostClass
 import com.vig.sebastian.snapchat.profile.PostType
 import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
-import com.vig.sebastian.snapchat.team.Team
-import kotlinx.coroutines.runInterruptible
-import java.net.URLStreamHandler
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import android.content.ContentResolver
+import android.media.Image
+
+import androidx.annotation.AnyRes
+import com.vig.sebastian.snapchat.R
+
 
 object Database {
 
@@ -87,13 +87,15 @@ object Database {
                __/ |
               |___/
      */
-    fun register(user: User, unit : () -> Unit) {
+    fun register(user: User, unit : (success: Boolean) -> Unit) {
         getSingleDataFromDatabase("User", user.username) {snapshot ->
             if (snapshot.value == null) {
                 val hm = HashMap<String, Any?>()
                 hm[user.username] = user
                 reference.child("User").updateChildren(hm)
-                unit()
+                unit(true)
+            }else {
+                unit(false)
             }
         }
     }
@@ -140,12 +142,12 @@ object Database {
         }
     }
 
-    fun getFriendProfilePics(unit: (usernameList: ArrayList<String>, profilePicList: ArrayList<Uri?>) -> Unit) {
+    fun getFriendProfilePics(unit: (usernameList: ArrayList<String>, profilePicList: ArrayList<Uri>) -> Unit) {
         getFriendsList(Global.username) {
             val friendsList = it
             friendsList.add(Global.username)
             var position = 0
-            val profilePicList = ArrayList<Uri?>()
+            val profilePicList = ArrayList<Uri>()
             val usernameList = ArrayList<String>()
             for (user in friendsList) {
                 getUserProfilePic(user) { uri ->
@@ -249,8 +251,8 @@ object Database {
                 reference.child("Teams").child(key).child("admin").setValue(Global.username).addOnSuccessListener {
                     unit(true, key)
                 }
-            }else unit(false, "")
-        }else unit(false, "")
+            }else unit(false, "password")
+        }else unit(false, "teamName")
     }
     fun getTeamName(teamKey: String, unit: (teamName: String) -> Unit) {
         getSingleDataFromDatabase("Teams", teamKey, "teamName") {
@@ -258,7 +260,7 @@ object Database {
         }
     }
 
-    fun joinTeam(teamKey: String, password: String, context: Context, unit: (failed : String) -> Unit) {
+    fun joinTeam(teamKey: String, password: String, context: Context, unit: (error : String) -> Unit) {
         getSingleDataFromDatabase("Teams", teamKey) {
             if (it.value.toString() != "null") {
                 if (it.child("password").value.toString() == password) {
@@ -300,6 +302,11 @@ object Database {
             unit(it.value.toString().trim())
         }
     }
+    fun getTeamPassword(teamKey: String, unit: (password: String) -> Unit) {
+        getSingleDataFromDatabase("Teams", teamKey, "password") {
+            unit(it.value.toString())
+        }
+    }
 
     fun getTeamMembers(teamKey: String, unit: (memberList: ArrayList<String>) -> Unit) {
         getSingleDataFromDatabase("Teams", teamKey, "members") {snapshot ->
@@ -312,6 +319,7 @@ object Database {
                 teamMemberList.add(member)
                 if (!ImageUriListsObject.profilePicsList.contains(member)) {
                     getUserProfilePic(member) {
+                        ImageUriListsObject.setProfilePicImageUriHashMap(member, it)
                         if (member == memberList[memberList.size - 1]) {
                             unit(teamMemberList)
                         }
@@ -353,20 +361,24 @@ object Database {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendMessageToUser(username: String, message: String) {
-        val messageTime = Global.getStringFromDate(Global.getCurrentTime(), Global.basicFormat)
-        val key = Global.getKey()
-        val hm = HashMap<String, Any?>()
-        hm[key] = MessageClass(message, Global.username, messageTime, key)
-        reference.child("Chats").child(getMessagePath(username)).updateChildren(hm)
+        if (message.trim() != "") {
+            val messageTime = Global.getStringFromDate(Global.getCurrentTime(), Global.basicFormat)
+            val key = Global.getKey()
+            val hm = HashMap<String, Any?>()
+            hm[key] = MessageClass(message, Global.username, messageTime, key)
+            reference.child("Chats").child(getMessagePath(username)).updateChildren(hm)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendMessageToTeam(teamKey: String, message: String) {
-        val messageTime = Global.getStringFromDate(Global.getCurrentTime(), Global.basicFormat)
-        val key = Global.getKey()
-        val hm = HashMap<String, Any?>()
-        hm[key] = MessageClass(message, Global.username, messageTime, key)
-        reference.child("Teams").child(teamKey).child("Chat").updateChildren(hm)
+        if (message.trim() != "") {
+            val messageTime = Global.getStringFromDate(Global.getCurrentTime(), Global.basicFormat)
+            val key = Global.getKey()
+            val hm = HashMap<String, Any?>()
+            hm[key] = MessageClass(message, Global.username, messageTime, key)
+            reference.child("Teams").child(teamKey).child("Chat").updateChildren(hm)
+        }
     }
 
     fun getMessagesFromTeam(teamKey: String, unit: (messagesList: ArrayList<MessageClass>) -> Unit) {
@@ -444,7 +456,7 @@ object Database {
     fun createMeetUp(meetUp: MeetUp) {
         val hm = HashMap<String, Any?>()
         val key = Global.getKey()
-        hm[key] = MeetUp(meetUp.startDate, meetUp.duration, meetUp.location, meetUp.description, key, meetUp.teamKey)
+        hm[key] = MeetUp(meetUp.startDate, meetUp.endDate, meetUp.location, meetUp.description, key, meetUp.teamKey)
         reference.child("Teams").child(meetUp.key).child("meetUps").updateChildren(hm)
         getTeamMembers(meetUp.key) { memberList ->
             for (member in memberList) {
@@ -458,15 +470,54 @@ object Database {
         getDataFromDatabase("Teams", teamKey, "meetUps") {snapshot ->
             val meetUpsList = ArrayList<MeetUp>()
             for (data in snapshot.children) {
-                val startDateDatabase = data.child("startDate").value.toString()
-                val duration = data.child("duration").value.toString()
+                val startDate = data.child("startDate").value.toString()
+                val endDate = data.child("endDate").value.toString()
                 val location = data.child("location").value.toString()
                 val description = data.child("description").value.toString()
                 val key = data.key.toString()
-                val startDate = startDateDatabase.replace("-", ".").trim().replace(" ", " | ")
-                meetUpsList.add(MeetUp(startDate, duration, location, description, key, teamKey))
+                if (!Global.checkIfDateIsExpired(Global.getDateFromString(endDate.trim(), Global.basicFormat))) {
+                    meetUpsList.add(MeetUp(startDate, endDate, location, description, key, teamKey))
+                }else deleteTeamMeetUp(teamKey, key)
             }
             unit(meetUpsList)
+        }
+    }
+
+    fun deleteTeamMeetUp(teamKey: String, key: String) {
+        reference.child("Teams").child(teamKey).child("meetUps").child(key).removeValue()
+        getTeamMembers(teamKey) {
+            for (member in it) {
+                deleteMeetUp(member, key)
+            }
+        }
+    }
+
+    fun deleteTeam(teamKey: String) {
+        getTeamMembers(teamKey) {
+            val memberList = it
+            for (member in memberList) {
+                reference.child("User").child(member).child("Teams").child(teamKey).removeValue()
+            }
+            reference.child("Teams").child(teamKey).removeValue()
+        }
+    }
+
+    fun leaveTeam(teamKey: String) {
+        getTeamAdmin(teamKey) {admin ->
+            getTeamMembers(teamKey) {
+                val memberList = it
+                memberList.remove(Global.username)
+                if (memberList.size != 0) {
+                    if (admin == Global.username) {
+                        val randomInt = memberList.indices.random()
+                        reference.child("Teams").child(teamKey).child("admin")
+                            .setValue(memberList[randomInt])
+                    }
+                    reference.child("Teams").child(teamKey).child("members").child(Global.username)
+                        .removeValue()
+                }else reference.child("Teams").child(teamKey).removeValue()
+                reference.child("User").child(Global.username).child("Teams").child(teamKey).removeValue()
+            }
         }
     }
 
@@ -476,13 +527,13 @@ object Database {
             val meetUpsList = ArrayList<MeetUp>()
             for (data in snapshot.children) {
                 val startDate = data.child("startDate").value.toString()
-                val duration = data.child("duration").value.toString()
+                val endDate = data.child("endDate").value.toString()
                 val location = data.child("location").value.toString()
                 val description = data.child("description").value.toString()
                 val teamKey = data.child("teamKey").value.toString()
                 val key = data.key.toString()
-                if (!Global.checkIfDateIsNegative(Global.getDateFromString(startDate.trim().replace(".", "-"), Global.basicFormat))) {
-                    meetUpsList.add(MeetUp(startDate, duration, location, description, key, teamKey))
+                if (!Global.checkIfDateIsExpired(Global.getDateFromString(endDate.trim(), Global.basicFormat))) {
+                    meetUpsList.add(MeetUp(startDate, endDate, location, description, key, teamKey))
                 }else deleteMeetUp(username, key)
             }
             unit(meetUpsList)
@@ -528,29 +579,31 @@ object Database {
         }
     }
 
-    fun getExplorePostsNoUri(unit: (postList: ArrayList<UploadPostClass>) -> Unit) {
+    fun getExplorePostsNoUri(onlySpots: Boolean, unit: (postList: ArrayList<UploadPostClass>) -> Unit) {
         getSingleDataFromDatabase("Posts") {snapshot ->
             val postList = ArrayList<UploadPostClass>()
             for (data in snapshot.children) {
                 val postType : PostType = PostType.valueOf(data.child("postType").value.toString().trim())
-                if (postType == PostType.PARKOUR_SPOT) {
-                    val username = data.child("username").value.toString()
-                    val country = data.child("country").value.toString()
-                    val key = data.child("key").value.toString()
-                    val city = data.child("city").value.toString()
-                    val location = data.child("location").value.toString()
-                    val description = data.child("description").value.toString()
-                    val userAge = data.child("userAge").value.toString().toInt()
-                    postList.add(UploadPostClass(username, postType, key, country, city, location, description, userAge))
-                }
+                val username = data.child("username").value.toString()
+                val country = data.child("country").value.toString()
+                val key = data.child("key").value.toString()
+                val city = data.child("city").value.toString()
+                val location = data.child("location").value.toString()
+                val description = data.child("description").value.toString()
+                val userAge = data.child("userAge").value.toString().toInt()
+                if (onlySpots) {
+                    if (postType == PostType.PARKOUR_SPOT) {
+                        postList.add(UploadPostClass(username, postType, key, country, city, location, description, userAge))
+                    }
+                }else postList.add(UploadPostClass(username, postType, key, country, city, location, description, userAge))
             }
             postList.shuffle()
             unit(postList)
         }
     }
 
-    fun getExplorePosts(countryFilter: String, cityFilter: String, unit: (postList: ArrayList<UploadPostClass>) -> Unit) {
-        getExplorePostsNoUri { postList ->
+    fun getExplorePosts(onlySpots: Boolean, countryFilter: String, cityFilter: String, unit: (postList: ArrayList<UploadPostClass>) -> Unit) {
+        getExplorePostsNoUri(onlySpots) { postList ->
             val filteredPostList = ArrayList<UploadPostClass>()
             for (post in postList) {
                 if (countryFilter == "") {
@@ -576,12 +629,10 @@ object Database {
                         getImageUriFromUser(post.username, post.key) { uri ->
                             ImageUriListsObject.setPostImageUriHashMap(post.key, uri)
                             if (post.key == filteredPostList[filteredPostList.size - 1].key) {
-                                println("SIZE2: " + filteredPostList.size)
                                 unit(filteredPostList)
                             }
                         }
                     }else if (post.key == filteredPostList[filteredPostList.size - 1].key) {
-                        println("SIZE2: " + filteredPostList.size)
                         unit(filteredPostList)
                     }
                 }
@@ -635,11 +686,15 @@ object Database {
             unit(it)
         }
     }
-    fun getUserProfilePic(username: String, unit : (uri: Uri?) -> Unit) {
+    fun getUserProfilePic(username: String, unit : (uri: Uri) -> Unit) {
         storageReference.child(username).child("ProfilePic").downloadUrl.addOnSuccessListener {
             unit(it)
-        }.addOnFailureListener { unit(null) }
+        }.addOnFailureListener {
+            val uri = Uri.parse("android.resource://com.vig.sebastian.snapchat/drawable/profile")
+            unit(uri)
+        }
     }
+
     fun getUserInfo(username: String, unit : (user: User) -> Unit) {
         getSingleDataFromDatabase("User", username) {
             val databaseUsername = it.child("username").value.toString()
@@ -658,23 +713,23 @@ object Database {
             for (data in it.children) {
                 if (data.key.toString() != Global.username) {
                     if (filter == "") {
-                        userList.add(ExploreSearchClass(data.key.toString(), getImportance(data), null))
+                        userList.add(ExploreSearchClass(data.key.toString(), getImportance(data)))
                     }else {
                         if (filterType == FilterType.COUNTRY) {
                             if (checkFilter(data.child("country").value, filter)) {
-                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data), null))
+                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data)))
                             }
                         }else if (filterType == FilterType.CITY) {
                             if (checkFilter(data.child("city").value, filter)) {
-                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data), null))
+                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data)))
                             }
                         }else if (filterType == FilterType.USERNAME) {
                             if (checkFilter(data.key, filter)) {
-                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data), null))
+                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data)))
                             }
                         }else if (filterType == FilterType.AGE) {
                             if (checkFilter(data.child("age").value, filter)) {
-                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data), null))
+                                userList.add(ExploreSearchClass(data.key.toString(), getImportance(data)))
                             }
                         }
                     }
@@ -686,10 +741,7 @@ object Database {
                     for (user in userList) {
                         if (!ImageUriListsObject.profilePicsList.contains(user.username)) {
                             getUserProfilePic(user.username) { uri ->
-                                if (uri != null) ImageUriListsObject.setProfilePicImageUriHashMap(
-                                    user.username,
-                                    uri
-                                )
+                                ImageUriListsObject.setProfilePicImageUriHashMap(user.username, uri)
                                 if (user.username == userList[userList.size - 1].username) {
                                     unit(userList)
                                 }
@@ -705,10 +757,7 @@ object Database {
                     for (user in list) {
                         if (!ImageUriListsObject.profilePicsList.contains(user.username)) {
                             getUserProfilePic(user.username) { uri ->
-                                if (uri != null) ImageUriListsObject.setProfilePicImageUriHashMap(
-                                    user.username,
-                                    uri
-                                )
+                                ImageUriListsObject.setProfilePicImageUriHashMap(user.username, uri)
                                 if (user.username == list[list.size - 1].username) unit(list)
                             }
                         }else if (user.username == list[list.size - 1].username) unit(list)
@@ -717,15 +766,7 @@ object Database {
             }else unit(userList)
         }
     }
-    fun getEveryUsername(unit: (userList: ArrayList<String>) -> Unit) {
-        getSingleDataFromDatabase("User") {
-            val userList = ArrayList<String>()
-            for (data in it.children) {
-                userList.add(data.key.toString())
-            }
-            unit(userList)
-        }
-    }
+
     private fun checkFilter(string: Any?, filter: String): Boolean {
         val s = string.toString().trim().toLowerCase()
         return s.contains(filter)

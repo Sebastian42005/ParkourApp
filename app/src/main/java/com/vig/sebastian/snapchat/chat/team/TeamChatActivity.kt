@@ -1,5 +1,6 @@
 package com.vig.sebastian.snapchat.chat.team
 
+import android.R.attr
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
@@ -21,12 +22,16 @@ import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.meetup.CreateMeetUpActivity
 import com.vig.sebastian.snapchat.meetup.MeetUp
 import com.vig.sebastian.snapchat.meetup.MeetUpAdapter
-import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
-import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
 import com.vig.sebastian.snapchat.team.AddUserToTeamAdapter
 import com.vig.sebastian.snapchat.team.AddUserToTeamClass
 import com.vig.sebastian.snapchat.team.UsernameProfileAdapter
 import java.lang.Exception
+import android.R.attr.label
+
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+
 
 class
 
@@ -49,16 +54,6 @@ TeamChatActivity : AppCompatActivity() {
         chatListView = findViewById(R.id.chatListView)
         val sendMessageBtn: ImageView = findViewById(R.id.sendMessageBtn)
         val messageEditText: EditText = findViewById(R.id.messageEditText)
-        val shareTeamKeyBtn : ImageView = findViewById(R.id.sendTeamKeyBtn)
-
-        shareTeamKeyBtn.setOnClickListener {
-            val intent = Intent()
-            intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, ClickedTeamChatObject.teamKey)
-            intent.type = "text/plain"
-            val intent2 = Intent.createChooser(intent, null)
-            startActivity(intent2)
-        }
 
         usernameTextView.text = ClickedTeamChatObject.teamName
 
@@ -67,9 +62,11 @@ TeamChatActivity : AppCompatActivity() {
         }
 
         chatListView.setOnItemLongClickListener { parent, view, position, id ->
-            AlertDialog.Builder(this).setMessage("Delete message?").setPositiveButton("Delete") {_,_->
-                Database.deleteTeamMessage(ClickedTeamChatObject.teamKey, chatList[position].key)
-            }.setNegativeButton("Cancel") {_,_->}.show()
+            if (chatList[position].username == Global.username) {
+                AlertDialog.Builder(this).setMessage(getString(R.string.delete_message)).setPositiveButton(getString(R.string.delete)) { _, _->
+                    Database.deleteTeamMessage(ClickedTeamChatObject.teamKey, chatList[position].key)
+                }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
+            }
             return@setOnItemLongClickListener false
         }
 
@@ -94,10 +91,10 @@ TeamChatActivity : AppCompatActivity() {
         val durationTextView : TextView = findViewById(R.id.durationTextView)
         val locationTextView : TextView = findViewById(R.id.locationTextView)
         val startDateTextView : TextView = findViewById(R.id.startDateTextView)
+        val endDateTextView : TextView = findViewById(R.id.endDateTextView)
         val meetUpBackBtn : ImageView = findViewById(R.id.meetUpBackBtn)
         val showTeamChatBtn: ImageView = findViewById(R.id.showTeamChatBtn)
         val teamMeetUpsLayout: RelativeLayout = findViewById(R.id.teamMeetUpsLayout)
-        val showMeetUpsBtn: ImageView = findViewById(R.id.showMeetUpListBtn)
         val createMeetUpBtn: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = findViewById(R.id.createMeetUpBtn)
         val declinedUsersTextView: TextView = findViewById(R.id.declinedUsersTextView)
         val acceptedUsersTextView: TextView = findViewById(R.id.acceptedUsersTextView)
@@ -109,32 +106,42 @@ TeamChatActivity : AppCompatActivity() {
             }
         }
 
-        showMeetUpsBtn.setOnClickListener {
-            teamMeetUpsLayout.visibility = View.VISIBLE
-            YoYo.with(Techniques.SlideInUp).duration(300).playOn(teamMeetUpsLayout)
-        }
-
         meetUpListView.setOnItemClickListener { parent, view, position, id ->
-            Database.getMeetUpAcceptedUsers(meetUpList[position].key, meetUpList[position].teamKey) {
+            val meetUp = meetUpList[position]
+            Database.getMeetUpAcceptedUsers(meetUp.key, meetUp.teamKey) {
                 if (it.isNotEmpty()) {
                     acceptedUsersTextView.setTypeface(null, Typeface.BOLD)
                     acceptedUsersTextView.text = it.toString().replace("]", "").replace("[", "")
-                }else acceptedUsersTextView.text = "Nobody has accepted yet"
+                }else acceptedUsersTextView.text = getString(R.string.nobody_accepted)
             }
-            Database.getMeetUpDeclinedUsers(meetUpList[position].key, meetUpList[position].teamKey) {
+            Database.getMeetUpDeclinedUsers(meetUp.key, meetUp.teamKey) {
                 if (it.isNotEmpty()) {
                     declinedUsersTextView.setTypeface(null, Typeface.BOLD)
                     declinedUsersTextView.text = it.toString().replace("]", "").replace("[", "")
-                }else declinedUsersTextView.text = "Nobody has declined yet"
+                }else declinedUsersTextView.text = getString(R.string.nobody_declined)
             }
-            descriptionTextView.text = meetUpList[position].description
-            durationTextView.text = meetUpList[position].duration
-            startDateTextView.text = meetUpList[position].startDate
-            locationTextView.text = meetUpList[position].location
+            descriptionTextView.text = meetUp.description
+            endDateTextView.text = meetUp.endDate
+            durationTextView.text = Global.getDiffBetweenDate(Global.getDateFromString(meetUp.startDate, Global.basicFormat),Global.getDateFromString(meetUp.endDate, Global.basicFormat), this)
+            startDateTextView.text = meetUp.startDate
+            locationTextView.text = meetUp.location
             meetUpDetailLayout.visibility = View.VISIBLE
             createMeetUpBtn.visibility = View.GONE
             YoYo.with(Techniques.SlideInRight).duration(300).playOn(meetUpDetailLayout)
+            Global.wait(300) {
+                meetUpListView.visibility = View.GONE
+            }
         }
+
+        meetUpListView.setOnItemLongClickListener { parent, view, position, id ->
+            if (ClickedTeamChatObject.admin == Global.username) {
+                AlertDialog.Builder(this).setMessage(getString(R.string.delete_meet_up)).setPositiveButton(getString(R.string.delete)) {_,_->
+                    Database.deleteTeamMeetUp(meetUpList[position].teamKey, meetUpList[position].key)
+                }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
+            }
+            return@setOnItemLongClickListener false
+        }
+
         setMeetUpList()
 
         createMeetUpBtn.setOnClickListener {
@@ -144,9 +151,10 @@ TeamChatActivity : AppCompatActivity() {
         }
 
         meetUpBackBtn.setOnClickListener {
+            meetUpListView.visibility = View.VISIBLE
             YoYo.with(Techniques.SlideOutRight).duration(300).playOn(meetUpDetailLayout)
             Global.wait(300) {
-                createMeetUpBtn.visibility = View.VISIBLE
+                if (ClickedTeamChatObject.admin == Global.username) createMeetUpBtn.visibility = View.VISIBLE
                 meetUpDetailLayout.visibility = View.GONE
             }
         }
@@ -157,7 +165,6 @@ TeamChatActivity : AppCompatActivity() {
         val teamMembersListView: ListView = findViewById(R.id.teamMembersListView)
         val editTeamMembersListView: ListView = findViewById(R.id.editTeamMembersListView)
         val teamMembersBackBtn : ImageView = findViewById(R.id.dontShowTeamMembersChatBtn)
-        val showTeamMembersBtn: ImageView = findViewById(R.id.showTeamMembersBtn)
         val editTeamMemberListBtn: ImageView = findViewById(R.id.editTeamMembersBtn)
         val saveTeamMemberChangesBtn: Button = findViewById(R.id.saveTeamMemberChangesBtn)
 
@@ -167,12 +174,7 @@ TeamChatActivity : AppCompatActivity() {
 
         if (ClickedTeamChatObject.admin != Global.username.trim()) {
             editTeamMemberListBtn.visibility = View.GONE
-        }
-
-        showTeamMembersBtn.setOnClickListener {
-            setTeamMembersList()
-            teamMembersLayout.visibility = View.VISIBLE
-            YoYo.with(Techniques.SlideInUp).duration(300).playOn(teamMembersLayout)
+            createMeetUpBtn.visibility = View.GONE
         }
 
         editTeamMemberListBtn.setOnClickListener {
@@ -195,6 +197,7 @@ TeamChatActivity : AppCompatActivity() {
             saveTeamMemberChangesBtn.visibility = View.GONE
             editTeamMembersListView.visibility = View.GONE
             teamMembersListView.visibility = View.VISIBLE
+            editTeamMemberListBtn.foreground = getDrawable(R.drawable.edit)
             setTeamMembersList()
             for (user in editTeamMemberList) {
                 if (teamMembersList.contains(user.username)) {
@@ -216,6 +219,60 @@ TeamChatActivity : AppCompatActivity() {
             Global.wait(300) {
                 teamMembersLayout.visibility = View.GONE
             }
+        }
+
+        //Options
+        val optionsBtn : ImageView = findViewById(R.id.teamOptionsImageView)
+
+        optionsBtn.setOnClickListener {
+            val popupMenu = PopupMenu(this, optionsBtn)
+            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.shareTeamItem -> {
+                        val intent = Intent()
+                        intent.action = Intent.ACTION_SEND
+                        intent.putExtra(Intent.EXTRA_TEXT, ClickedTeamChatObject.teamKey)
+                        intent.type = "text/plain"
+                        val intent2 = Intent.createChooser(intent, null)
+                        startActivity(intent2)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.showTeamMembersItem -> {
+                        setTeamMembersList()
+                        teamMembersLayout.visibility = View.VISIBLE
+                        YoYo.with(Techniques.SlideInUp).duration(300).playOn(teamMembersLayout)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.showTeamMeetUpsItem -> {
+                        teamMeetUpsLayout.visibility = View.VISIBLE
+                        meetUpListView.visibility = View.VISIBLE
+                        YoYo.with(Techniques.SlideInUp).duration(300).playOn(teamMeetUpsLayout)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.getPasswordItem -> {
+                        Global.setClipboard(this, ClickedTeamChatObject.password)
+                        Toast.makeText(this, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.leaveTeamItem -> {
+                        AlertDialog.Builder(this).setMessage(getString(R.string.leave_team)).setPositiveButton(getString(R.string.leave)) {_,_ ->
+                            Database.leaveTeam(ClickedTeamChatObject.teamKey)
+                            super.onBackPressed()
+                        }.setNegativeButton(getString(R.string.cancel)){_,_->}.show()
+                        return@OnMenuItemClickListener false
+                    }
+                    else -> {
+                        AlertDialog.Builder(this).setMessage(getString(R.string.delete_team)).setPositiveButton(getString(R.string.delete)) {_,_ ->
+                            Database.deleteTeam(ClickedTeamChatObject.teamKey)
+                            super.onBackPressed()
+                        }.setNegativeButton(getString(R.string.cancel)){_,_->}.show()
+                        return@OnMenuItemClickListener false
+                    }
+                }
+            })
+            if (ClickedTeamChatObject.admin == Global.username) popupMenu.inflate(R.menu.team_options_admin_menu)
+            else popupMenu.inflate(R.menu.team_options_menu)
+            popupMenu.show()
         }
     }
 
@@ -252,7 +309,6 @@ TeamChatActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setMeetUpList() {
         Database.getTeamMeetUps(ClickedTeamChatObject.teamKey) { meetUpList ->
-            meetUpList.sortWith(compareBy{it.startDate})
             meetUpList.sort()
             this.meetUpList = meetUpList
             val meetUpListView = findViewById<ListView>(R.id.meetUpListView)

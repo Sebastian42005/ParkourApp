@@ -21,10 +21,10 @@
             android:id="@+id/teamTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Team"
-            android:textColor="@color/dark_blue"
             android:layout_above="@id/createTeamLayout"
+            android:layout_centerHorizontal="true"
+            android:text="@string/team"
+            android:textColor="@color/dark_blue"
             android:textSize="50sp"
             android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_- "
-                    android:hint="Team Name"
+                    android:hint="@string/team_name"
                     android:inputType="text" />
 
             </RelativeLayout>
@@ -88,9 +88,9 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="40dp"
                     android:backgroundTint="#00000000"
-                    android:inputType="text"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
-                    android:hint="Password" />
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
 
             </RelativeLayout>
 
@@ -104,7 +104,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/dark_blue"
-            android:text="Create" />
+            android:text="@string/create" />
 
     </RelativeLayout>
 

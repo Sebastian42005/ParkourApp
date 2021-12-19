@@ -9,8 +9,11 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.login.LoginActivity
 import com.vig.sebastian.snapchat.profile.PostObject
@@ -21,14 +24,19 @@ import java.io.FileNotFoundException
 class LoadingScreenActivity : AppCompatActivity() {
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
+    lateinit var loadingScreenImageView: ImageView
+    lateinit var loadingScreenProgressTextView: TextView
     var currentProgress = 0
     lateinit var progressBar: ProgressBar
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(R.layout.activity_loading_screen)
         progressBar = findViewById(R.id.progressBar)
+        loadingScreenImageView = findViewById(R.id.loadingScreenImageView)
+        loadingScreenProgressTextView = findViewById(R.id.loadingScreenProgressTextView)
         sharedPreferences = application.getSharedPreferences("save", Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
@@ -36,13 +44,15 @@ class LoadingScreenActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }else login {
             Database.getUserProfilePic(Global.username) { uri ->
-                uri?.let {
-                    ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, uri)
-                }
+                ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, uri)
                 addData()
             }
 
             Database.getFirst10PostsFromFriends {
+                addData()
+            }
+
+            Database.getExplorePosts(false, "", "") {
                 addData()
             }
 
@@ -59,14 +69,13 @@ class LoadingScreenActivity : AppCompatActivity() {
 
             Database.getFriendProfilePics { userList, uriList ->
                 for (position in userList.indices) {
-                    uriList[position]?.let {
-                        ImageUriListsObject.setProfilePicImageUriHashMap(userList[position], it)
-                    }
+                    ImageUriListsObject.setProfilePicImageUriHashMap(userList[position], uriList[position])
                 }
                 addData()
             }
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("CommitPrefEdits")
     private fun login(unit: () -> Unit) {
         val username = sharedPreferences.getString("username", "").toString()
@@ -89,36 +98,47 @@ class LoadingScreenActivity : AppCompatActivity() {
             }
         }
     }
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addData() {
         progressBar.max = 4
         progressBar.min = 0
         currentProgress ++
         progressBar.progress = currentProgress
-        if (currentProgress == 4) {
-            onSharedIntent()
+        if (progressBar.progress != 5) loadingScreenProgressTextView.text = "${progressBar.progress * 25}%"
+        when (currentProgress) {
+            1 -> loadingScreenImageView.foreground = getDrawable(R.drawable.parkour_1)
+            2 -> loadingScreenImageView.foreground = getDrawable(R.drawable.parkour_2)
+            3 -> loadingScreenImageView.foreground = getDrawable(R.drawable.parkour_3)
+            4 -> loadingScreenImageView.foreground = getDrawable(R.drawable.parkour_4)
+            5 -> onSharedIntent()
         }
     }
     private fun onSharedIntent() {
-        val receiverdIntent = intent
-        val receivedAction = receiverdIntent.action
-        val receivedType = receiverdIntent.type
-        if (receivedAction == Intent.ACTION_SEND) {
-            if (receivedType != null) {
-                if (receivedType.startsWith("image/")) {
-                    val receiveUri = receiverdIntent
-                        .getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri?
-                    if (receiveUri != null) {
-                        try {
-                            PostObject.uri = receiveUri
-                            PostObject.type = PostObjectType.INTENT
-                            startActivity(Intent(this, UploadPostActivity::class.java))
-                        } catch (e: FileNotFoundException) {
-                            e.printStackTrace()
+        if (TestObject.canStart) {
+            TestObject.canStart = false
+            val receiverdIntent = intent
+            val receivedAction = receiverdIntent.action
+            val receivedType = receiverdIntent.type
+            if (receivedAction == Intent.ACTION_SEND) {
+                if (receivedType != null) {
+                    if (receivedType.startsWith("image/")) {
+                        val receiveUri = receiverdIntent
+                            .getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri?
+                        if (receiveUri != null) {
+                            try {
+                                PostObject.uri = receiveUri
+                                PostObject.type = PostObjectType.INTENT
+                                startActivity(Intent(this, UploadPostActivity::class.java))
+                            } catch (e: FileNotFoundException) {
+                                e.printStackTrace()
+                            }
                         }
-                    }
-                }else startActivity(Intent(this, MainActivity::class.java))
-            }else startActivity(Intent(this, MainActivity::class.java))
-        }else startActivity(Intent(this, MainActivity::class.java))
+                    } else startActivity(Intent(this, MainActivity::class.java))
+                } else startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+        }
     }
 }

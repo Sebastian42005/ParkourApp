@@ -18,22 +18,18 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
-import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.daimajia.easing.linear.Linear
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.explore.*
-import com.vig.sebastian.snapchat.profile.PostType
 import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
-import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
-import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
 import kotlin.Exception
 
 class ExploreFragment : Fragment() {
@@ -45,7 +41,7 @@ class ExploreFragment : Fragment() {
     var postCountryFilter = ""
     var postCityFilter = ""
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility", "UseSwitchCompatOrMaterialCode")
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -62,10 +58,12 @@ class ExploreFragment : Fragment() {
         val filterCity: TextView = root.findViewById(R.id.filterCityTextView)
         val filterAge: TextView = root.findViewById(R.id.filterAgeTextView)
         val saveFilterBtn : Button = root.findViewById(R.id.saveFilterBtn)
-        val showFilterLayout : LinearLayout = root.findViewById(R.id.setPostsFilterLayout)
+        val showFilterRelativeLayout : RelativeLayout = root.findViewById(R.id.setPostsFilterLayout)
+        val showFilterLayout : LinearLayout = root.findViewById(R.id.setPostsFilterLinearLayout)
         val countryFilterEditText: EditText = root.findViewById(R.id.filterCountryEditText)
         val cityFilterEditText: EditText = root.findViewById(R.id.filterCityEditText)
-        val showFilterBtn : TextView = root.findViewById(R.id.setFilterBtn)
+        val showFilterBtn : LinearLayout = root.findViewById(R.id.setFilterBtn)
+        val onlySpotsSwitch: Switch = root.findViewById(R.id.onlySpotsSwitch)
         val postsListScrollView : ScrollView = root.findViewById(R.id.postsListScrollView)
         val searchUserBackBtn : ImageView = root.findViewById(R.id.searchUserBackBtn)
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
@@ -73,23 +71,38 @@ class ExploreFragment : Fragment() {
         val searchListView : ListView = root.findViewById(R.id.searchListView)
         layoutList = arrayListOf(layout1, layout2, layout3)
 
+        onlySpotsSwitch.setOnClickListener {
+            setPostsList(onlySpotsSwitch.isChecked)
+        }
+
+        refreshLayout.setColorSchemeColors(Color.rgb(0, 170, 170))
         refreshLayout.setOnRefreshListener {
-            setPostsList()
+            setPostsList(onlySpotsSwitch.isChecked)
             refreshLayout.isRefreshing = false
         }
 
-        setPostsList()
+        setPostsList(onlySpotsSwitch.isChecked)
         setFilter(root)
 
+        showFilterRelativeLayout.setOnClickListener {
+            hideKeyboard(requireActivity())
+            YoYo.with(Techniques.SlideOutDown).duration(300).playOn(showFilterLayout)
+            Global.wait(300) {
+                showFilterLayout.visibility = View.GONE
+                showFilterRelativeLayout.visibility = View.GONE
+            }
+        }
+
         showFilterBtn.setOnClickListener {
-            if (!showFilterLayout.isVisible) {
+            if (!showFilterRelativeLayout.isVisible) {
+                showFilterRelativeLayout.visibility = View.VISIBLE
                 showFilterLayout.visibility = View.VISIBLE
                 YoYo.with(Techniques.SlideInUp).duration(300).playOn(showFilterLayout)
             } else {
                 hideKeyboard(requireActivity())
-                YoYo.with(Techniques.SlideOutDown).duration(300).playOn(showFilterLayout)
                 Global.wait(300) {
                     showFilterLayout.visibility = View.GONE
+                    showFilterRelativeLayout.visibility = View.GONE
                 }
             }
         }
@@ -98,22 +111,14 @@ class ExploreFragment : Fragment() {
             hideKeyboard(requireActivity())
             postCountryFilter = countryFilterEditText.text.toString()
             postCityFilter = cityFilterEditText.text.toString()
+            showFilterRelativeLayout.visibility = View.GONE
             YoYo.with(Techniques.SlideOutDown).duration(300).playOn(showFilterLayout)
             Global.wait(300) {
                 showFilterLayout.visibility = View.GONE
             }
-            setPostsList()
+            setPostsList(onlySpotsSwitch.isChecked)
         }
-
-        Database.getEveryUsername {
-            for (username in it) {
-                Database.getUserProfilePic(username) {uri ->
-                    if (username == it[it.size - 1]) {
-                        setSearchList(root)
-                    }
-                }
-            }
-        }
+        setSearchList(root)
 
         searchListView.setOnItemClickListener { parent, view, position, id ->
             Global.showProfile(searchUserList[position].username, context)
@@ -133,10 +138,10 @@ class ExploreFragment : Fragment() {
             searchListView.visibility = View.VISIBLE
             filterLayout.visibility = View.VISIBLE
             showFilterBtn.visibility = View.GONE
+            onlySpotsSwitch.visibility = View.GONE
             showFilterLayout.visibility = View.GONE
             postsListScrollView.visibility = View.GONE
             searchUserBackBtn.visibility = View.VISIBLE
-
             return@setOnTouchListener false
         }
 
@@ -145,6 +150,7 @@ class ExploreFragment : Fragment() {
             filterLayout.visibility = View.GONE
             postsListScrollView.visibility = View.VISIBLE
             searchEditText.setText("")
+            onlySpotsSwitch.visibility = View.VISIBLE
             showFilterBtn.visibility = View.VISIBLE
             searchUserBackBtn.visibility = View.GONE
             hideKeyboard(requireActivity())
@@ -167,8 +173,8 @@ class ExploreFragment : Fragment() {
         }
     }
     var layoutPosition = 0
-    private fun setPostsList() {
-        Database.getExplorePosts(postCountryFilter, postCityFilter) { postList ->
+    private fun setPostsList(onlySpots: Boolean) {
+        Database.getExplorePosts(onlySpots, postCountryFilter, postCityFilter) { postList ->
             layoutPosition = 0
             clearAllViews()
             for (post in postList) {
@@ -214,7 +220,7 @@ class ExploreFragment : Fragment() {
         Database.getEveryUser(searchEditText.text.toString().toLowerCase().trim(), currentFilterType) { userList ->
             searchUserList.clear()
             for (user in userList) {
-                searchUserList.add(ExploreSearchClass(user.username, user.importance, ImageUriListsObject.getProfilePic(user.username)))
+                searchUserList.add(ExploreSearchClass(user.username, user.importance))
             }
             try {
                 val adapter =

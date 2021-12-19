@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/image"
             android:layout_centerHorizontal="true"
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@color/dark_blue"
             android:textSize="50sp"
             android:textStyle="bold" />
@@ -59,10 +59,10 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="20dp"
-                    android:inputType="text"
                     android:backgroundTint="#00000000"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
-                    android:hint="Username" />
+                    android:hint="@string/username"
+                    android:inputType="text" />
 
             </RelativeLayout>
 
@@ -87,9 +87,10 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="40dp"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-!.,;"
                     android:backgroundTint="#00000000"
-                    android:hint="Password" />
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-!.,;"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
 
             </RelativeLayout>
 
@@ -103,7 +104,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/dark_blue"
-            android:text="Login" />
+            android:text="@string/login" />
 
         <TextView
             android:id="@+id/registerTextView"
@@ -112,7 +113,7 @@
             android:layout_below="@id/loginBtn"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:text="Register?" />
+            android:text="@string/register" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -194,10 +195,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="50dp"
+                        android:inputType="text"
                         android:layout_marginRight="20dp"
                         android:backgroundTint="#00000000"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
-                        android:hint="Username" />
+                        android:hint="@string/username" />
 
                 </RelativeLayout>
 
@@ -221,9 +223,10 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
+                        android:inputType="textPassword"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_!-"
                         android:backgroundTint="#00000000"
-                        android:hint="Password" />
+                        android:hint="@string/password" />
 
                 </RelativeLayout>
 
@@ -245,11 +248,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
+                        android:inputType="text"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-"
                         android:backgroundTint="#00000000"
-                        android:hint="Country" />
+                        android:hint="@string/country" />
 
                 </RelativeLayout>
 
@@ -273,9 +277,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
+                        android:inputType="text"
                         android:layout_marginRight="20dp"
                         android:backgroundTint="#00000000"
-                        android:hint="City" />
+                        android:hint="@string/city" />
 
                 </RelativeLayout>
 
@@ -301,7 +306,7 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="40dp"
                         android:backgroundTint="#00000000"
-                        android:hint="Age"
+                        android:hint="@string/age"
                         android:inputType="number" />
 
                 </RelativeLayout>
@@ -316,7 +321,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/dark_blue"
-                android:text="Register" />
+                android:text="@string/register" />
 
             <ProgressBar
                 android:id="@+id/registerProgressBar"
