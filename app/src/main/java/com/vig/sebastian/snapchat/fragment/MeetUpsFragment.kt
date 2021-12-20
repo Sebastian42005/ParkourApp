@@ -27,6 +27,7 @@ class MeetUpsFragment : Fragment() {
     var currentMeetUpTeamKey = ""
     var currentMeetUpKey = ""
     var canClick = true
+    lateinit var noUploadsLayout: LinearLayout
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -43,6 +44,7 @@ class MeetUpsFragment : Fragment() {
         val locationTextView : TextView = root.findViewById(R.id.locationTextView)
         val startDateTextView : TextView = root.findViewById(R.id.startDateTextView)
         val backBtn : ImageView = root.findViewById(R.id.backBtn)
+        noUploadsLayout = root.findViewById(R.id.noUploadsLayout)
         val acceptMeetUpBtn: Button = root.findViewById(R.id.acceptMeetUpBtn)
         val declineMeetUpBtn: Button = root.findViewById(R.id.declineMeetUpBtn)
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
@@ -120,6 +122,9 @@ class MeetUpsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setMeetUpList(root: View) {
         Database.getUserMeetUps(Global.username) { meetUpList ->
+            if (meetUpList.isEmpty()) {
+                noUploadsLayout.visibility = View.VISIBLE
+            }else noUploadsLayout.visibility = View.GONE
             meetUpList.sortWith(compareBy{it.startDate})
             meetUpList.sort()
             this.meetUpList = meetUpList

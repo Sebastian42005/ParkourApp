@@ -1,8 +1,8 @@
 package com.vig.sebastian.snapchat.profile.adapter
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -44,6 +44,7 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         val profileImageUri = getItem(position)!!.profilePicImageUri
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(int, parent, false)
+        val postLayout : RelativeLayout = view.findViewById(R.id.postLayout)
         val imageView = view.findViewById<ImageView>(R.id.postImage)
         val profilePicImageView = view.findViewById<ImageView>(R.id.profilePicImageView)
         val likesAmountTextView: TextView = view.findViewById(R.id.postLikeAmountTextView)
@@ -67,7 +68,10 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
                         return@OnMenuItemClickListener false
                     }
                     R.id.deleteImageItem -> {
-                        Database.deletePost(ClickedPostObject.uploadPostClass!!.key)
+                        AlertDialog.Builder(context).setMessage(context.getString(R.string.delete_post_question)).setPositiveButton(context.getString(R.string.delete)){_,_->
+                            Database.deletePost(key)
+                            postLayout.visibility = View.GONE
+                        }.setNegativeButton(context.getString(R.string.cancel)) {_,_->}.show()
                         return@OnMenuItemClickListener false
                     }
                     else -> return@OnMenuItemClickListener false

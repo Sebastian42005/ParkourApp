@@ -97,4 +97,16 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="email">Email</string>
     <string name="show_email">Email:</string>
+    <string name="email_must_be_verified">Email must be verified, check your mails!</string>
+    <string name="login_failed">Login failed!</string>
+    <string name="password_at_least_6_characters">Password must be at least 6 characters</string>
+    <string name="password_reset_check_mails">Check your mails to reset your password</string>
+    <string name="reset_password">Reset password</string>
+    <string name="reset">Reset</string>
+    <string name="delete_post_question">Delete this post?</string>
+    <string name="friends_no_posts">Your friends haven\'t upload any posts yet</string>
+    <string name="no_posts_with_filter">No posts with this filter found</string>
+    <string name="profile_no_uploads">You haven\'t upload anything yet</string>
+    <string name="no_meet_ups">There are no meet ups at the moment</string>
+    <string name="no_teams">You are not currently on any team</string>
 </resources>

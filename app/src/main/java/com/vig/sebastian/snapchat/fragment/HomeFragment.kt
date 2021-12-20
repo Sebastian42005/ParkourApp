@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
@@ -35,7 +37,11 @@ class HomeFragment : Fragment() {
     var postList = ArrayList<PostClass>()
     lateinit var adapter : PostAdapter
     private fun setPostsListView(root: View) {
+        val noUploadsLayout: LinearLayout = root.findViewById(R.id.noUploadsLayout)
         Database.getFirst10PostsFromFriends {
+            if (it.isEmpty()) {
+                noUploadsLayout.visibility = View.VISIBLE
+            }else noUploadsLayout.visibility = View.GONE
             postList.clear()
             for (post in it) {
                 postList.add(PostClass(post.uploadPostClass, post.position, ImageUriListsObject.getPost(post.uploadPostClass.key), ImageUriListsObject.getProfilePic(post.uploadPostClass.username)))

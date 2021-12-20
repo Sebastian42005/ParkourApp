@@ -52,6 +52,7 @@ class ProfileFragment : Fragment() {
     lateinit var profilePicImageUri : Uri
     lateinit var imageUri: Uri
     lateinit var profilePic: ImageView
+    lateinit var noUploadsLayout: LinearLayout
     lateinit var layoutList: ArrayList<LinearLayout>
     var postImageType = "profile"
     @SuppressLint("CommitPrefEdits")
@@ -71,6 +72,7 @@ class ProfileFragment : Fragment() {
         val profileImageLayout3 = root.findViewById<LinearLayout>(R.id.layout3)
         val profileDescriptionTextView = root.findViewById<TextView>(R.id.profileDescriptionTextView)
         val postPicBtn : ImageView = root.findViewById(R.id.postPictureBtn)
+        noUploadsLayout = root.findViewById(R.id.noUploadsLayout)
         val showFriendsRequestBtn: ImageView = root.findViewById(R.id.showFriendsRequestsBtn)
         val friendRequestsLayout: RelativeLayout = root.findViewById(R.id.friendsRequestsLayout)
         val friendRequestsBackBtn: ImageView = root.findViewById(R.id.friendsRequestsBackBtn)
@@ -187,6 +189,9 @@ class ProfileFragment : Fragment() {
 
     ) {
         Database.getPostsFromUser(Global.username) {
+            if (it.isEmpty()) {
+                noUploadsLayout.visibility = View.VISIBLE
+            }else noUploadsLayout.visibility = View.GONE
             var position = 0
             clearAllViews()
             for (post in it) {

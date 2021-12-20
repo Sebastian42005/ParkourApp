@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.vig.sebastian.snapchat.Global
@@ -21,6 +22,7 @@ import java.lang.Exception
 
 class TeamsFragment : Fragment() {
     val teamsList = ArrayList<DisplayedTeam>()
+    lateinit var noUploadsLayout: LinearLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +32,7 @@ class TeamsFragment : Fragment() {
         val teamsListView = root.findViewById<ListView>(R.id.teamsListView)
         val createTeamBtn: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = root.findViewById(R.id.createTeamBtn)
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
+        noUploadsLayout = root.findViewById(R.id.noUploadsLayout)
 
         refreshLayout.setColorSchemeColors(Color.rgb(0, 170, 170))
         refreshLayout.setOnRefreshListener {
@@ -59,6 +62,9 @@ class TeamsFragment : Fragment() {
     }
     private fun setTeamList(root: View) {
         Database.getUserTeams(Global.username) { databaseTeamsList ->
+            if (databaseTeamsList.isEmpty()) {
+                noUploadsLayout.visibility = View.VISIBLE
+            }else noUploadsLayout.visibility = View.GONE
             teamsList.clear()
             for (team in databaseTeamsList) {
                 teamsList.add(DisplayedTeam(team.key, team.teamName))

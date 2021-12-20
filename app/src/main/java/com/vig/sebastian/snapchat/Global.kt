@@ -24,6 +24,7 @@ import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
 import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.ContextCompat.startActivity
+import com.vig.sebastian.snapchat.explore.FilterType
 import java.util.function.BinaryOperator
 
 object Global {
@@ -93,6 +94,15 @@ object Global {
             context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
         val clip = ClipData.newPlainText("Copied Text", text)
         clipboard.setPrimaryClip(clip)
+    }
+    fun getFilterType(filterType: String) : FilterType {
+        return when(filterType) {
+            "BENUTZERNAME" -> FilterType.USERNAME
+            "LAND" -> FilterType.COUNTRY
+            "STADT" -> FilterType.CITY
+            "ALTER" -> FilterType.AGE
+            else -> FilterType.valueOf(filterType)
+        }
     }
 
     fun showProfile(username: String, context: Context?) {

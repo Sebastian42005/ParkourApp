@@ -27,7 +27,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Snapchat">
-
+        <activity
+            android:name=".login.ResetPasswordActivity"
+            android:exported="false" />
         <activity
             android:name=".settings.SettingsActivity"
             android:exported="false" />
@@ -58,7 +60,7 @@
         <activity android:name=".meetup.CreateMeetUpActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity
-            android:name="com.vig.sebastian.snapchat.LoadingScreenActivity"
+            android:name=".LoadingScreenActivity"
             android:label="Parkour">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

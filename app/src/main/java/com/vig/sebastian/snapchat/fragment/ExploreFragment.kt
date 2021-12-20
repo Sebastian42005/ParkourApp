@@ -21,10 +21,10 @@ import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.ViewUtils
 import androidx.core.view.isVisible
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.daimajia.easing.linear.Linear
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.database.Database
@@ -37,6 +37,7 @@ class ExploreFragment : Fragment() {
     var searchUserList = ArrayList<ExploreSearchClass>()
     lateinit var searchEditText: EditText
     lateinit var filterList: ArrayList<TextView>
+    lateinit var noUploadsLayout: LinearLayout
     var currentFilterType = FilterType.USERNAME
     var postCountryFilter = ""
     var postCityFilter = ""
@@ -66,6 +67,7 @@ class ExploreFragment : Fragment() {
         val onlySpotsSwitch: Switch = root.findViewById(R.id.onlySpotsSwitch)
         val postsListScrollView : ScrollView = root.findViewById(R.id.postsListScrollView)
         val searchUserBackBtn : ImageView = root.findViewById(R.id.searchUserBackBtn)
+        noUploadsLayout = root.findViewById(R.id.noUploadsLayout)
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
         filterList = arrayListOf(filterUsername, filterCountry, filterCity, filterAge)
         val searchListView : ListView = root.findViewById(R.id.searchListView)
@@ -167,7 +169,7 @@ class ExploreFragment : Fragment() {
                     filter.setTypeface(null, Typeface.NORMAL)
                 }
                 filterTextView.setTypeface(null, Typeface.BOLD)
-                currentFilterType = FilterType.valueOf(filterTextView.text.toString().toUpperCase())
+                currentFilterType = Global.getFilterType(filterTextView.text.toString().toUpperCase())
                 setSearchList(root)
             }
         }
@@ -175,6 +177,9 @@ class ExploreFragment : Fragment() {
     var layoutPosition = 0
     private fun setPostsList(onlySpots: Boolean) {
         Database.getExplorePosts(onlySpots, postCountryFilter, postCityFilter) { postList ->
+            if (postList.isEmpty()) {
+                noUploadsLayout.visibility = View.VISIBLE
+            }else noUploadsLayout.visibility = View.GONE
             layoutPosition = 0
             clearAllViews()
             for (post in postList) {

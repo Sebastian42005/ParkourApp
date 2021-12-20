@@ -47,19 +47,22 @@ class LoadingScreenActivity : AppCompatActivity() {
         }else login {
             Database.getUserProfilePic(Global.username) { uri ->
                 ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, uri)
+                println("5")
                 addData()
             }
 
             Database.getFirst10PostsFromFriends {
+                println("4")
                 addData()
             }
 
             Database.getExplorePosts(false, "", "") {
+                println("3")
                 addData()
             }
 
             Database.getPostsFromUser(Global.username) {postList ->
-                println("LISTE: " + postList.size)
+                println("2")
                 postList.sort()
                 if (postList.size == 0) addData()
                 for (post in postList) {
@@ -71,6 +74,7 @@ class LoadingScreenActivity : AppCompatActivity() {
             }
 
             Database.getFriendProfilePics { userList, uriList ->
+                println("1")
                 for (position in userList.indices) {
                     ImageUriListsObject.setProfilePicImageUriHashMap(userList[position], uriList[position])
                 }

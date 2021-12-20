@@ -1,6 +1,7 @@
 package com.vig.sebastian.snapchat.explore
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -56,8 +57,10 @@ class ShowPostActivity : AppCompatActivity() {
                         return@OnMenuItemClickListener false
                     }
                     R.id.deleteImageItem -> {
-                        Database.deletePost(ClickedPostObject.uploadPostClass!!.key)
-                        super.onBackPressed()
+                        AlertDialog.Builder(this).setMessage(getString(R.string.delete_post_question)).setPositiveButton(getString(R.string.delete)){ _, _->
+                            Database.deletePost(ClickedPostObject.uploadPostClass!!.key)
+                            super.onBackPressed()
+                        }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
                         return@OnMenuItemClickListener false
                     }
                     else -> return@OnMenuItemClickListener false

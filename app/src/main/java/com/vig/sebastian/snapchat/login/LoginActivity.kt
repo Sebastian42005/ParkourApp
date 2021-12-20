@@ -10,14 +10,12 @@ import android.widget.*
 import androidx.core.view.isVisible
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.google.firebase.database.FirebaseDatabase
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.classes.User
 import com.vig.sebastian.snapchat.database.Database
-import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity() {
     val finishedDataList = ArrayList<Boolean>()
@@ -45,16 +43,40 @@ class LoginActivity : AppCompatActivity() {
         val registerEmail = findViewById<EditText>(R.id.registerEmailEditText)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val backBtn = findViewById<ImageView>(R.id.backBtn)
-        val resetPasswordBtn : TextView = findViewById(R.id.passwordResetTextView)
+        val resetPasswordTextView : TextView = findViewById(R.id.passwordResetTextView)
+        val resetPasswordBtn: Button = findViewById(R.id.resetPasswordBtn)
+        val resetEmailEditText : EditText = findViewById(R.id.resetEmailEditText)
+        val registerBackBtn : ImageView = findViewById(R.id.registerBackBtn)
+        val resetPasswordBackBtn: ImageView = findViewById(R.id.resetPasswordBackBtn)
+        val resetPasswordLayout  : RelativeLayout = findViewById(R.id.resetPasswordRelativeLayout)
+
+        registerBackBtn.setOnClickListener {
+            YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
+            Global.wait(400) {
+                registerLayout.visibility = View.GONE
+            }
+        }
+
+        resetPasswordBackBtn.setOnClickListener {
+            YoYo.with(Techniques.SlideOutRight).duration(400).playOn(resetPasswordLayout)
+            Global.wait(400) {
+                resetPasswordLayout.visibility = View.GONE
+            }
+        }
+
+        resetPasswordBtn.setOnClickListener {
+            Toast.makeText(this, getString(R.string.password_reset_check_mails), Toast.LENGTH_SHORT).show()
+            Database.resetPassword(resetEmailEditText.text.toString().trim())
+        }
 
         registerTextView.setOnClickListener {
             registerLayout.visibility = View.VISIBLE
             YoYo.with(Techniques.SlideInLeft).duration(400).playOn(registerLayout)
         }
 
-        resetPasswordBtn.setOnClickListener{
-            Toast.makeText(this, "Check your mails!", Toast.LENGTH_SHORT).show()
-            Database.resetPassword("sebi4ederer@gmail.com")
+        resetPasswordTextView.setOnClickListener{
+            resetPasswordLayout.visibility = View.VISIBLE
+            YoYo.with(Techniques.SlideInRight).duration(400).playOn(resetPasswordLayout)
         }
 
         backBtn.setOnClickListener {
@@ -81,8 +103,8 @@ class LoginActivity : AppCompatActivity() {
                 )
             ) {
                 val age = registerAge.text.toString().toInt()
-                Database.register(User(username, email, "", country, city, age), password) { success ->
-                    if (success == "") {
+                Database.register(User(username, email, "", country, city, age), password) { exception ->
+                    if (exception == "") {
                         editor.putString("email", email)
                         editor.putString("password", password)
                         Global.username = username
@@ -95,27 +117,17 @@ class LoginActivity : AppCompatActivity() {
                         }
                         Toast.makeText(this, "Check your mails to verify!", Toast.LENGTH_SHORT).show()
                     }else {
-                        when (success) {
-                            "password" -> {
-                                YoYo.with(Techniques.Shake).duration(300).playOn(registerPassword)
-                                registerPassword.error = "Password can't be empty"
-                                registerPassword.requestFocus()
-                            }
-                            "username" -> {
-                                YoYo.with(Techniques.Shake).duration(300).playOn(registerUsername)
-                                registerUsername.error = "Username can't be empty"
-                                registerUsername.requestFocus()
-                            }
+                        when (exception) {
                             "6" -> {
                                 YoYo.with(Techniques.Shake).duration(300).playOn(registerPassword)
-                                registerPassword.error = "Password must be at least 6 characters"
+                                registerPassword.error = getString(R.string.password_at_least_6_characters)
                                 registerPassword.requestFocus()
                             }
                         }
                     }
                 }
             }else {
-                Toast.makeText(this, "Text Fields can't be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error_empty), Toast.LENGTH_SHORT).show()
             }
         }
         loginBtn.setOnClickListener {

@@ -97,4 +97,17 @@
     <string name="members">Teilnehmer</string>
     <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
     <string name="email">Email</string>
+    <string name="show_email">Email:</string>
+    <string name="email_must_be_verified">Email muss verifiziert werden, check deine Mails!</string>
+    <string name="login_failed">Login fehlgeschlagen!</string>
+    <string name="password_at_least_6_characters">Passwort muss wenigstens 6 Zeichen lang sein</string>
+    <string name="password_reset_check_mails">Schau in deine Mails um dein Passwort zurückzusetzen</string>
+    <string name="reset_password">Passwort zurücksetzen</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="delete_post_question">Dieses Bild löschen?</string>
+    <string name="friends_no_posts">Deine Freunde haben noch keine Posts hochgeladen</string>
+    <string name="no_posts_with_filter">Es wurden keine Posts mit diesem Filter gefunden</string>
+    <string name="profile_no_uploads">Du hast noch nichts gepostet</string>
+    <string name="no_meet_ups">Es gibt keine Meet Ups zurzeit</string>
+    <string name="no_teams">Du bist derzeit in keinem Team</string>
 </resources>

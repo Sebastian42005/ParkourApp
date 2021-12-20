@@ -94,21 +94,17 @@ object Database {
               |___/
      */
     fun register(user: User, password: String, unit : (exception: String) -> Unit) {
-        if (user.email.trim() != "") {
-            if (password.trim() != "") {
-                if (password.trim().length >= 6) {
-                    mAuth.createUserWithEmailAndPassword(user.email, password)
-                        .addOnCompleteListener {
-                            it.result.user!!.sendEmailVerification()
-                            val hm = HashMap<String, Any?>()
-                            hm[user.username] = user
-                            reference.child("User").updateChildren(hm)
-                            reference.child("Emails").child(Global.getKeyFromEmail(user.email)).setValue(user.username)
-                            unit("")
-                        }
-                }else unit("6")
-            }else unit("password")
-        }else unit("username")
+        if (password.trim().length >= 6) {
+            mAuth.createUserWithEmailAndPassword(user.email, password)
+                .addOnCompleteListener {
+                    it.result.user!!.sendEmailVerification()
+                    val hm = HashMap<String, Any?>()
+                    hm[user.username] = user
+                    reference.child("User").updateChildren(hm)
+                    reference.child("Emails").child(Global.getKeyFromEmail(user.email)).setValue(user.username)
+                    unit("")
+                }
+        }else unit("6")
     }
 
     fun resetPassword(email: String) {
@@ -126,13 +122,13 @@ object Database {
                     }
                 }else {
                     it.result.user!!.sendEmailVerification();
-                    Toast.makeText(context, "Email must be verified! Check Mails!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.email_must_be_verified), Toast.LENGTH_LONG).show()
                 }
             }else {
                 unit( null)
                 editor.clear()
                 editor.apply()
-                Toast.makeText(context, "Login failed!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.login_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -612,12 +608,11 @@ object Database {
                 val city = data.child("city").value.toString()
                 val location = data.child("location").value.toString()
                 val description = data.child("description").value.toString()
-                val userAge = data.child("userAge").value.toString().toInt()
                 if (onlySpots) {
                     if (postType == PostType.PARKOUR_SPOT) {
-                        postList.add(UploadPostClass(username, postType, key, country, city, location, description, userAge))
+                        postList.add(UploadPostClass(username, postType, key, country, city, location, description))
                     }
-                }else postList.add(UploadPostClass(username, postType, key, country, city, location, description, userAge))
+                }else postList.add(UploadPostClass(username, postType, key, country, city, location, description))
             }
             postList.shuffle()
             unit(postList)
@@ -692,17 +687,17 @@ object Database {
             for (data in snapshot.children) {
                 keyList.add(data.key.toString())
             }
+            if (keyList.isEmpty()) unit(arrayListOf())
             for (data in snapshot.children) {
                 val postType = PostType.valueOf(data.child("postType").value.toString())
                 val country = data.child("country").value.toString()
                 val city = data.child("city").value.toString()
                 val location = data.child("location").value.toString()
                 val description = data.child("description").value.toString()
-                val userAge = data.child("userAge").value.toString().toInt()
                 if (!ImageUriListsObject.postsList.contains(data.key.toString())) {
                     getImageUriFromUser(username, data.key.toString()) {uri ->
                     ImageUriListsObject.setPostImageUriHashMap(data.key.toString(), uri)
-                        list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, userAge), position, null, null))
+                        list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description), position, null, null))
                         position ++
                         if (data.key.toString() == keyList[position - 1]) {
                             list.sort()
@@ -710,7 +705,7 @@ object Database {
                         }
                     }
                 }else {
-                    list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, userAge), position, null, null))
+                    list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description), position, null, null))
                     position ++
                     if (data.key.toString() == keyList[position - 1]) {
                         list.sort()
@@ -838,7 +833,6 @@ object Database {
                     val city = data2.child("city").value.toString()
                     val location = data2.child("location").value.toString()
                     val description = data2.child("description").value.toString()
-                    val userAge = data2.child("userAge").value.toString().toInt()
                     postKeyList.add(PostClass(UploadPostClass(
                         friend,
                         postType,
@@ -846,8 +840,7 @@ object Database {
                         country,
                         city,
                         location,
-                        description,
-                        userAge), 0, null, null))
+                        description), 0, null, null))
                 }
             }
             unit(postKeyList)
