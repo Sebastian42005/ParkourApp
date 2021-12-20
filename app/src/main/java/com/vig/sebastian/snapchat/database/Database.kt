@@ -25,9 +25,14 @@ import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import android.content.ContentResolver
+import android.content.SharedPreferences
 import android.media.Image
+import android.text.TextUtils
 
 import androidx.annotation.AnyRes
+import androidx.core.view.accessibility.AccessibilityManagerCompat
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.vig.sebastian.snapchat.R
 
 
@@ -43,7 +48,8 @@ object Database {
      */
 
     val reference = FirebaseDatabase.getInstance("https://parkour-b3ba9-default-rtdb.europe-west1.firebasedatabase.app/").reference
-    val storageReference = FirebaseStorage.getInstance("gs://parkour-b3ba9.appspot.com/").getReference("profiles")
+    val storageReference = FirebaseStorage.getInstance().getReference("profiles")
+    val mAuth = FirebaseAuth.getInstance(reference.database.app)
     val helper = FirebaseHelper.getInstance(reference)
 
     fun getSingleDataFromDatabase(vararg pathList: String, unit: (snapshot: DataSnapshot) -> Unit) {
@@ -87,41 +93,53 @@ object Database {
                __/ |
               |___/
      */
-    fun register(user: User, unit : (success: Boolean) -> Unit) {
-        getSingleDataFromDatabase("User", user.username) {snapshot ->
-            if (snapshot.value == null) {
-                val hm = HashMap<String, Any?>()
-                hm[user.username] = user
-                reference.child("User").updateChildren(hm)
-                unit(true)
+    fun register(user: User, password: String, unit : (exception: String) -> Unit) {
+        if (user.email.trim() != "") {
+            if (password.trim() != "") {
+                if (password.trim().length >= 6) {
+                    mAuth.createUserWithEmailAndPassword(user.email, password)
+                        .addOnCompleteListener {
+                            it.result.user!!.sendEmailVerification()
+                            val hm = HashMap<String, Any?>()
+                            hm[user.username] = user
+                            reference.child("User").updateChildren(hm)
+                            reference.child("Emails").child(Global.getKeyFromEmail(user.email)).setValue(user.username)
+                            unit("")
+                        }
+                }else unit("6")
+            }else unit("password")
+        }else unit("username")
+    }
+
+    fun resetPassword(email: String) {
+        mAuth.sendPasswordResetEmail(email)
+    }
+
+    fun login(editor: SharedPreferences.Editor, context: Context, email: String, password: String, unit : (user: User?) -> Unit) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+            if (it.isSuccessful) {
+                if(it.result.user!!.isEmailVerified) {
+                    getUsername(email) { username ->
+                        getUserInfo(username) { user ->
+                            unit(user)
+                        }
+                    }
+                }else {
+                    it.result.user!!.sendEmailVerification();
+                    Toast.makeText(context, "Email must be verified! Check Mails!", Toast.LENGTH_LONG).show()
+                }
             }else {
-                unit(false)
+                unit( null)
+                editor.clear()
+                editor.apply()
+                Toast.makeText(context, "Login failed!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun login(context: Context, username: String, password: String, unit : (user: User?) -> Unit) {
-        getSingleDataFromDatabase("User", username) {snapshot ->
-            if (snapshot.value != null) {
-                getSingleDataFromDatabase( "User", username) {snapshot1 ->
-                    val username1 = snapshot1.child("username").value.toString()
-                    val password1 = snapshot1.child("password").value.toString()
-                    val country = snapshot1.child("country").value.toString()
-                    val city = snapshot1.child("city").value.toString()
-                    val age = snapshot1.child("age").value.toString().toInt()
-                    val description = snapshot1.child("description").value.toString()
-                    val userClass = User(username1, password1, description, country, city, age)
-                    if (userClass.password == password.trim()) {
-                        unit(userClass)
-                    }else {
-                        Toast.makeText(context, "Login Failed!", Toast.LENGTH_SHORT).show()
-                        unit(null)
-                    }
-                }
-            }else {
-                Toast.makeText(context, "Login Failed!", Toast.LENGTH_SHORT).show()
-                unit(null)
-            }
+    fun getUsername(email: String, unit: (username: String) -> Unit) {
+        getSingleDataFromDatabase("Emails", Global.getKeyFromEmail(email)) {
+            unit(it.value.toString())
         }
     }
     /*
@@ -560,11 +578,15 @@ object Database {
      */
 
     fun updateProfile(user: User) {
-        reference.child("User").child(Global.username).child("password").setValue(user.password)
-        reference.child("User").child(Global.username).child("description").setValue(user.description)
-        reference.child("User").child(Global.username).child("age").setValue(user.age)
-        reference.child("User").child(Global.username).child("country").setValue(user.country)
-        reference.child("User").child(Global.username).child("city").setValue(user.city)
+        Global.username = user.username
+        Global.city = user.city
+        Global.country = user.country
+        Global.age = user.age
+        reference.child("User").child(Global.email).child("description").setValue(user.description)
+        reference.child("User").child(Global.email).child("username").setValue(user.username)
+        reference.child("User").child(Global.email).child("age").setValue(user.age)
+        reference.child("User").child(Global.email).child("country").setValue(user.country)
+        reference.child("User").child(Global.email).child("city").setValue(user.city)
     }
 
     fun postImage(uploadPostClass: UploadPostClass, imageUri: Uri, context: Context, unit: () -> Unit) {
@@ -666,6 +688,10 @@ object Database {
         getDataFromDatabase("User", username, "Posts") {snapshot ->
             val list = ArrayList<PostClass>()
             var position = 0
+            val keyList = ArrayList<String>()
+            for (data in snapshot.children) {
+                keyList.add(data.key.toString())
+            }
             for (data in snapshot.children) {
                 val postType = PostType.valueOf(data.child("postType").value.toString())
                 val country = data.child("country").value.toString()
@@ -673,11 +699,25 @@ object Database {
                 val location = data.child("location").value.toString()
                 val description = data.child("description").value.toString()
                 val userAge = data.child("userAge").value.toString().toInt()
-                list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, userAge), position, null, null))
-                position ++
+                if (!ImageUriListsObject.postsList.contains(data.key.toString())) {
+                    getImageUriFromUser(username, data.key.toString()) {uri ->
+                    ImageUriListsObject.setPostImageUriHashMap(data.key.toString(), uri)
+                        list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, userAge), position, null, null))
+                        position ++
+                        if (data.key.toString() == keyList[position - 1]) {
+                            list.sort()
+                            unit(list)
+                        }
+                    }
+                }else {
+                    list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, userAge), position, null, null))
+                    position ++
+                    if (data.key.toString() == keyList[position - 1]) {
+                        list.sort()
+                        unit(list)
+                    }
+                }
             }
-            list.sort()
-            unit(list)
         }
     }
 
@@ -698,12 +738,12 @@ object Database {
     fun getUserInfo(username: String, unit : (user: User) -> Unit) {
         getSingleDataFromDatabase("User", username) {
             val databaseUsername = it.child("username").value.toString()
-            val password = it.child("password").value.toString()
             val country = it.child("country").value.toString()
             val city = it.child("city").value.toString()
             val description = it.child("description").value.toString()
             val age = it.child("age").value.toString().toInt()
-            unit(User(databaseUsername, password, description, country, city, age))
+            val email = it.child("email").value.toString()
+            unit(User(databaseUsername, email, description, country, city, age))
 
         }
     }

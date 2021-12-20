@@ -95,4 +95,6 @@
     <string name="share">Share</string>
     <string name="members">Members</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="email">Email</string>
+    <string name="show_email">Email:</string>
 </resources>

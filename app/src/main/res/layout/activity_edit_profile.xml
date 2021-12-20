@@ -43,32 +43,32 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/editUsernameTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
-                    android:layout_marginTop="5dp"
+                    android:editable="false"
                     android:layout_marginStart="3dp"
                     android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/show_password"
+                    android:text="@string/show_email"
                     android:textSize="17sp"
                     android:layout_marginStart="3dp"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
                 <EditText
-                    android:id="@+id/editPasswordEditText"
+                    android:id="@+id/editEmailTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_!-"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    android:editable="false"
+                    android:layout_marginStart="3dp"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -9,11 +9,13 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.provider.ContactsContract
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.database.FirebaseDatabase
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.login.LoginActivity
 import com.vig.sebastian.snapchat.profile.PostObject
@@ -29,7 +31,7 @@ class LoadingScreenActivity : AppCompatActivity() {
     var currentProgress = 0
     lateinit var progressBar: ProgressBar
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint("CommitPrefEdits", "RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -40,7 +42,7 @@ class LoadingScreenActivity : AppCompatActivity() {
         sharedPreferences = application.getSharedPreferences("save", Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
-        if (sharedPreferences.getString("username", "") == "") {
+        if (sharedPreferences.getString("email", "") == "") {
             startActivity(Intent(this, LoginActivity::class.java))
         }else login {
             Database.getUserProfilePic(Global.username) { uri ->
@@ -57,6 +59,7 @@ class LoadingScreenActivity : AppCompatActivity() {
             }
 
             Database.getPostsFromUser(Global.username) {postList ->
+                println("LISTE: " + postList.size)
                 postList.sort()
                 if (postList.size == 0) addData()
                 for (post in postList) {
@@ -78,16 +81,16 @@ class LoadingScreenActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("CommitPrefEdits")
     private fun login(unit: () -> Unit) {
-        val username = sharedPreferences.getString("username", "").toString()
+        val email = sharedPreferences.getString("email", "").toString()
         val password = sharedPreferences.getString("password", "").toString()
-        if (!Global.checkIfStringsAreEmpty(username, password)) {
-            Database.login(this, username, password) {
-                if (it == null) {
+        if (!Global.checkIfStringsAreEmpty(email, password)) {
+            Database.login(editor, this, email, password) { user ->
+                if (user == null) {
                     startActivity(Intent(this, LoginActivity::class.java))
                 }else {
-                    Database.getUserInfo(username) { user ->
+                    Database.getUsername(email) {
                         Global.username = user.username
-                        Global.password = user.password
+                        Global.email = user.email
                         Global.description = user.description
                         Global.country = user.country
                         Global.city = user.city

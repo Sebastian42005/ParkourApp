@@ -29,6 +29,7 @@ import java.util.function.BinaryOperator
 object Global {
     var username = ""
     var password = ""
+    var email = ""
     var country = ""
     var description = ""
     var city = ""
@@ -130,5 +131,17 @@ object Global {
             }
         }
         return bool
+    }
+    fun getKeyFromEmail(email: String) : String {
+        return email.replace("[", "<")
+            .replace("]", ">")
+            .replace(".", ";")
+            .replace("$", ":")
+    }
+    fun getEmailFromKey(key: String) : String{
+        return email.replace("<", "[")
+            .replace(">", "]")
+            .replace(";", ".")
+            .replace(":", "$")
     }
 }

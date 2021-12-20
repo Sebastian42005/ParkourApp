@@ -10,12 +10,14 @@ import android.widget.*
 import androidx.core.view.isVisible
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.google.firebase.database.FirebaseDatabase
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.classes.User
 import com.vig.sebastian.snapchat.database.Database
+import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity() {
     val finishedDataList = ArrayList<Boolean>()
@@ -32,22 +34,27 @@ class LoginActivity : AppCompatActivity() {
         registerLayout = findViewById(R.id.registerRelativeLayout)
         loginLayout = findViewById(R.id.loginRelativeLayout)
         val registerTextView = findViewById<TextView>(R.id.registerTextView)
-        val loginUsername = findViewById<EditText>(R.id.loginUsernameEditText)
-        val loginPassword = findViewById<EditText>(R.id.loginPasswordEditText)
+        val loginEmailEditText = findViewById<EditText>(R.id.loginEmailEditText)
+        val loginPasswordEditText = findViewById<EditText>(R.id.loginPasswordEditText)
         val registerUsername = findViewById<EditText>(R.id.registerUsernameEditText)
         val registerPassword = findViewById<EditText>(R.id.registerPasswordEditText)
         val registerCountry = findViewById<EditText>(R.id.registerCountryEditText)
         val registerCity = findViewById<EditText>(R.id.registerCityEditText)
         val registerAge = findViewById<EditText>(R.id.registerAgeEditText)
         val registerBtn = findViewById<Button>(R.id.registerBtn)
+        val registerEmail = findViewById<EditText>(R.id.registerEmailEditText)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val backBtn = findViewById<ImageView>(R.id.backBtn)
-
-
+        val resetPasswordBtn : TextView = findViewById(R.id.passwordResetTextView)
 
         registerTextView.setOnClickListener {
             registerLayout.visibility = View.VISIBLE
             YoYo.with(Techniques.SlideInLeft).duration(400).playOn(registerLayout)
+        }
+
+        resetPasswordBtn.setOnClickListener{
+            Toast.makeText(this, "Check your mails!", Toast.LENGTH_SHORT).show()
+            Database.resetPassword("sebi4ederer@gmail.com")
         }
 
         backBtn.setOnClickListener {
@@ -64,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
             val password = registerPassword.text.toString().trim()
             val country = registerCountry.text.toString().trim()
             val city = registerCity.text.toString().trim()
+            val email = registerEmail.text.toString().trim()
             if (!Global.checkIfStringsAreEmpty(
                     username,
                     password,
@@ -73,42 +81,59 @@ class LoginActivity : AppCompatActivity() {
                 )
             ) {
                 val age = registerAge.text.toString().toInt()
-                Database.register(User(username, password, "", country, city, age)) { success ->
-                    if (success) {
-                        editor.putString("username", username)
+                Database.register(User(username, email, "", country, city, age), password) { success ->
+                    if (success == "") {
+                        editor.putString("email", email)
                         editor.putString("password", password)
                         Global.username = username
+                        Global.email = email
                         Global.password = password
                         editor.apply()
-                        getDataFromDatabase()
+                        YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
+                        Global.wait(400) {
+                            registerLayout.visibility = View.GONE
+                        }
+                        Toast.makeText(this, "Check your mails to verify!", Toast.LENGTH_SHORT).show()
                     }else {
-                        YoYo.with(Techniques.Shake).duration(300).playOn(registerUsername)
-                        registerUsername.error = getString(R.string.user_already_exists)
-                        registerUsername.requestFocus()
+                        when (success) {
+                            "password" -> {
+                                YoYo.with(Techniques.Shake).duration(300).playOn(registerPassword)
+                                registerPassword.error = "Password can't be empty"
+                                registerPassword.requestFocus()
+                            }
+                            "username" -> {
+                                YoYo.with(Techniques.Shake).duration(300).playOn(registerUsername)
+                                registerUsername.error = "Username can't be empty"
+                                registerUsername.requestFocus()
+                            }
+                            "6" -> {
+                                YoYo.with(Techniques.Shake).duration(300).playOn(registerPassword)
+                                registerPassword.error = "Password must be at least 6 characters"
+                                registerPassword.requestFocus()
+                            }
+                        }
                     }
                 }
+            }else {
+                Toast.makeText(this, "Text Fields can't be empty", Toast.LENGTH_SHORT).show()
             }
         }
         loginBtn.setOnClickListener {
-            val username = loginUsername.text.toString().trim()
-            val password = loginPassword.text.toString().trim()
-            if (!Global.checkIfStringsAreEmpty(username, password)) {
-                Database.login(this, username, password) {
+            val email = loginEmailEditText.text.toString().trim()
+            val password = loginPasswordEditText.text.toString().trim()
+            if (!Global.checkIfStringsAreEmpty(email, password)) {
+                Database.login(editor, this, email, password) {
                     if (it != null) {
                         Global.username = it.username
-                        Global.password = it.password
                         Global.description = it.description
                         Global.country = it.country
+                        Global.email = email
                         Global.city = it.city
                         Global.age = it.age
-                        editor.putString("username", username)
+                        editor.putString("email", email)
                         editor.putString("password", password)
                         editor.apply()
                         getDataFromDatabase()
-                    }else {
-                        Toast.makeText(this, getString(R.string.error_user_or_password_wrong), Toast.LENGTH_SHORT).show()
-                        YoYo.with(Techniques.Shake).duration(300).playOn(loginUsername)
-                        YoYo.with(Techniques.Shake).duration(300).playOn(loginPassword)
                     }
                 }
             }

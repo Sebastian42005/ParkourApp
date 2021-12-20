@@ -47,22 +47,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_background"
-                    android:layout_alignBottom="@id/loginUsernameEditText"
-                    android:layout_alignEnd="@id/loginUsernameEditText"
-                    android:layout_alignStart="@id/loginUsernameEditText"
-                    android:layout_alignTop="@id/loginUsernameEditText"/>
+                    android:layout_alignBottom="@id/loginEmailEditText"
+                    android:layout_alignEnd="@id/loginEmailEditText"
+                    android:layout_alignStart="@id/loginEmailEditText"
+                    android:layout_alignTop="@id/loginEmailEditText"/>
 
                 <EditText
-                    android:id="@+id/loginUsernameEditText"
+                    android:id="@+id/loginEmailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
-                    android:hint="@string/username"
-                    android:inputType="text" />
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
 
             </RelativeLayout>
 
@@ -114,6 +113,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:text="@string/register" />
+
+        <TextView
+            android:id="@+id/passwordResetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/registerTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="Reset password" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -195,11 +203,37 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="50dp"
-                        android:inputType="text"
                         android:layout_marginRight="20dp"
                         android:backgroundTint="#00000000"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_"
-                        android:hint="@string/username" />
+                        android:hint="@string/username"
+                        android:inputType="text" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_background"
+                        android:layout_alignBottom="@id/registerEmailEditText"
+                        android:layout_alignEnd="@id/registerEmailEditText"
+                        android:layout_alignStart="@id/registerEmailEditText"
+                        android:layout_alignTop="@id/registerEmailEditText"/>
+
+                    <EditText
+                        android:id="@+id/registerEmailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:backgroundTint="#00000000"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress" />
 
                 </RelativeLayout>
 
