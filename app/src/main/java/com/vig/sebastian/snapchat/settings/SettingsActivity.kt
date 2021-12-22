@@ -32,7 +32,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val settingsListView = findViewById<ListView>(R.id.settingsListView)
-        val settingsList = arrayListOf(getString(R.string.join_team), getString(R.string.friends), getString(R.string.support), getString(R.string.logout))
+        val settingsList = arrayListOf(getString(R.string.join_team), getString(R.string.friends), getString(R.string.support), getString(R.string.logout), getString(R.string.delete_account))
         val adapter = SettingsAdapter(this, R.layout.settings_layout, settingsList)
         settingsListView.adapter = adapter
         val backBtn = findViewById<ImageView>(R.id.backBtn)
@@ -61,12 +61,23 @@ class SettingsActivity : AppCompatActivity() {
         settingsListView.setOnItemClickListener { parent, view, position, id ->
             when (settingsList[position]) {
                 getString(R.string.logout) -> logout()
+                getString(R.string.delete_account) -> deleteAccount()
                 getString(R.string.friends) -> showFriends()
                 getString(R.string.support) -> sendMessageToSupport()
                 getString(R.string.join_team) -> joinTeam()
             }
         }
 
+    }
+
+    private fun deleteAccount() {
+        AlertDialog.Builder(this).setTitle(getString(R.string.delete_account) + "?").setPositiveButton(getString(R.string.delete)) { _, _->
+            Database.deleteAccount {
+                editor.clear()
+                editor.apply()
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+        }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
     }
 
     private fun sendMessageToSupport() {

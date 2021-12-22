@@ -42,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
         val registerBtn = findViewById<Button>(R.id.registerBtn)
         val registerEmail = findViewById<EditText>(R.id.registerEmailEditText)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
         val resetPasswordTextView : TextView = findViewById(R.id.passwordResetTextView)
         val resetPasswordBtn: Button = findViewById(R.id.resetPasswordBtn)
         val resetEmailEditText : EditText = findViewById(R.id.resetEmailEditText)
@@ -79,15 +78,6 @@ class LoginActivity : AppCompatActivity() {
             YoYo.with(Techniques.SlideInRight).duration(400).playOn(resetPasswordLayout)
         }
 
-        backBtn.setOnClickListener {
-            if (registerLayout.isVisible) {
-                YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
-                Global.wait(400) {
-                    registerLayout.visibility = View.GONE
-                }
-            }
-        }
-
         registerBtn.setOnClickListener {
             val username = registerUsername.text.toString().trim()
             val password = registerPassword.text.toString().trim()
@@ -122,6 +112,11 @@ class LoginActivity : AppCompatActivity() {
                                 YoYo.with(Techniques.Shake).duration(300).playOn(registerPassword)
                                 registerPassword.error = getString(R.string.password_at_least_6_characters)
                                 registerPassword.requestFocus()
+                            }
+                            "email" -> {
+                                YoYo.with(Techniques.Shake).duration(300).playOn(registerEmail)
+                                registerEmail.error = getString(R.string.email_exists)
+                                registerEmail.requestFocus()
                             }
                         }
                     }

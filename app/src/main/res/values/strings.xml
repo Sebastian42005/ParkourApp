@@ -109,4 +109,6 @@
     <string name="profile_no_uploads">You haven\'t upload anything yet</string>
     <string name="no_meet_ups">There are no meet ups at the moment</string>
     <string name="no_teams">You are not currently on any team</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="email_exists">Email already exists</string>
 </resources>

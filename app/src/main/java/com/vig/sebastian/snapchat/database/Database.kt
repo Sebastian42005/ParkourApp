@@ -97,12 +97,16 @@ object Database {
         if (password.trim().length >= 6) {
             mAuth.createUserWithEmailAndPassword(user.email, password)
                 .addOnCompleteListener {
-                    it.result.user!!.sendEmailVerification()
-                    val hm = HashMap<String, Any?>()
-                    hm[user.username] = user
-                    reference.child("User").updateChildren(hm)
-                    reference.child("Emails").child(Global.getKeyFromEmail(user.email)).setValue(user.username)
-                    unit("")
+                    try {
+                        it.result.user!!.sendEmailVerification()
+                        val hm = HashMap<String, Any?>()
+                        hm[user.username] = user
+                        reference.child("User").updateChildren(hm)
+                        reference.child("Emails").child(Global.getKeyFromEmail(user.email)).setValue(user.username)
+                        unit("")
+                    }catch (e: Exception) {
+                        unit("email")
+                    }
                 }
         }else unit("6")
     }
@@ -719,6 +723,9 @@ object Database {
     fun getImageUriFromUser(username: String, key: String, unit: (uri: Uri) -> Unit) {
         storageReference.child(username).child("Posts").child(key).downloadUrl.addOnSuccessListener {
             unit(it)
+        }.addOnFailureListener {
+            val uri = Uri.parse("android.resource://com.vig.sebastian.snapchat/drawable/profile")
+            unit(uri)
         }
     }
     fun getUserProfilePic(username: String, unit : (uri: Uri) -> Unit) {
@@ -908,6 +915,30 @@ object Database {
     fun getAccepted(key: String, unit: (accepted: Boolean) -> Unit) {
         getSingleDataFromDatabase("User", Global.username, "meetUps", key, "accepted") {
             if (it.value.toString() == "null") unit(false) else unit(true)
+        }
+    }
+    fun getUserPostKeys(username: String, unit: (keyList: ArrayList<String>) -> Unit) {
+        val keyList = ArrayList<String>()
+        getSingleDataFromDatabase("User", username, "Posts") {
+            for (data in it.children) {
+                keyList.add(data.key.toString())
+            }
+            unit(keyList)
+        }
+    }
+
+    fun deleteAccount(unit: () -> Unit) {
+         reference.child("Emails").child(Global.getKeyFromEmail(Global.email)).removeValue()
+        reference.child("User").child(Global.username).removeValue()
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.delete()
+        storageReference.child(Global.username).child("ProfilePic").delete()
+        getUserPostKeys(Global.username) {
+            for (key in it) {
+                reference.child("Posts").child(key).removeValue()
+                storageReference.child(Global.username).child("Posts").child(key).delete()
+            }
+            unit
         }
     }
 }

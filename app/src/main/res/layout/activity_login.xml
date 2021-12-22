@@ -159,13 +159,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:foreground="@drawable/ic_baseline_arrow_back_24"
-                android:foregroundTint="@color/black"
-                android:id="@+id/backBtn"/>
-
             <TextView
                 android:id="@+id/registerTitleTextView"
                 android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,8 @@ class SettingsAdapter(context: Context, private val int: Int, arrayList : ArrayL
 
         val textView = view.findViewById<TextView>(R.id.settingsTextView)
         textView.text = text
+
+        if (text == context.getString(R.string.delete_account)) textView.setTextColor(Color.rgb(135, 0, 0))
 
         return view
     }
