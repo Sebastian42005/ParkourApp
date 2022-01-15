@@ -2,7 +2,11 @@ package com.vig.sebastian.snapchat.fragment
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
@@ -43,6 +46,8 @@ class MeetUpsFragment : Fragment() {
         val durationTextView : TextView = root.findViewById(R.id.durationTextView)
         val locationTextView : TextView = root.findViewById(R.id.locationTextView)
         val startDateTextView : TextView = root.findViewById(R.id.startDateTextView)
+        val navigateToMeetUpBtn: Button = root.findViewById(R.id.navigateToMeetUpBtn)
+        val showStreetViewBtn: Button = root.findViewById(R.id.showMeetUpStreetView)
         val backBtn : ImageView = root.findViewById(R.id.backBtn)
         noUploadsLayout = root.findViewById(R.id.noUploadsLayout)
         val acceptMeetUpBtn: Button = root.findViewById(R.id.acceptMeetUpBtn)
@@ -101,6 +106,18 @@ class MeetUpsFragment : Fragment() {
                 }
                 try {
                     durationTextView.text = Global.getDiffBetweenDate(Global.getDateFromString(meetUp.startDate, Global.basicFormat),Global.getDateFromString(meetUp.endDate, Global.basicFormat), requireContext())
+                    navigateToMeetUpBtn.setOnClickListener {
+                        val gmmIntentUri = Uri.parse("google.navigation:q=${meetUp.latitude},${meetUp.longitude}&mode=b")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        startActivity(mapIntent)
+                    }
+                    showStreetViewBtn.setOnClickListener {
+                        val gmmIntentUri = Uri.parse("google.streetview:cbll=${meetUp.latitude},${meetUp.longitude}&cbp=0,30,0,0,-15")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        startActivity(mapIntent)
+                    }
                     descriptionTextView.text = meetUp.description
                     endDateTextView.text = meetUp.endDate
                     startDateTextView.text = meetUp.startDate

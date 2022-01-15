@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/profileNameLayout"
             android:layout_width="match_parent"
-            android:background="@color/dark_aqua"
+            android:background="@color/background_color"
             android:layout_height="50dp">
 
             <ImageView
@@ -25,7 +25,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_toStartOf="@id/postPictureBtn"
                 android:foreground="@drawable/ic_baseline_person_add_24"
-                android:foregroundTint="@color/black"
+                android:foregroundTint="@color/text_color"
                 tools:ignore="UnusedAttribute" />
 
             <RelativeLayout
@@ -43,7 +43,7 @@
                     android:background="@drawable/round_drawable"
                     android:gravity="center"
                     android:visibility="gone"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/text_color" />
 
             </RelativeLayout>
 
@@ -56,7 +56,7 @@
                 android:layout_toStartOf="@id/settingsBtn"
                 android:background="@drawable/post_picture_drawable"
                 android:foreground="@drawable/ic_baseline_add_24"
-                android:foregroundTint="@color/black"
+                android:foregroundTint="@color/text_color"
                 tools:ignore="UnusedAttribute" />
 
             <ImageView
@@ -67,7 +67,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="10dp"
                 android:foreground="@drawable/ic_baseline_settings_24"
-                android:foregroundTint="@color/black"
+                android:foregroundTint="@color/text_color"
                 tools:ignore="UnusedAttribute" />
 
             <TextView
@@ -77,7 +77,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_toStartOf="@id/showFriendsRequestsBtn"
                 android:gravity="center_vertical"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -127,8 +127,21 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="0dp"
                         android:src="@drawable/profile"
-                        app:civ_border_color="#000000"
+                        app:civ_border_color="@color/text_color"
                         app:civ_border_width="3dp" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/profilePicImageView"
+                        android:layout_alignEnd="@id/profilePicImageView"
+                        android:layout_alignBottom="@id/profilePicImageView"
+                        android:layout_alignTop="@id/profilePicImageView"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:indeterminateTint="@color/dark_aqua"
+                        android:visibility="gone"
+                        android:layout_centerInParent="true"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/editProfileBtn"
@@ -141,7 +154,7 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/button_drawable"
                         android:text="@string/edit_profile"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         android:textStyle="bold" />
 
                     <TextView
@@ -151,7 +164,7 @@
                         android:layout_below="@id/profilePicImageView"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         android:textSize="18sp" />
 
                     <LinearLayout
@@ -215,7 +228,7 @@
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_color"/>
 
             <ImageView
                 android:id="@+id/friendsRequestsBackBtn"
@@ -225,7 +238,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
-                android:foregroundTint="@color/black"/>
+                android:foregroundTint="@color/text_color"/>
 
         </RelativeLayout>
 
@@ -243,6 +256,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:layout_marginBottom="150dp"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
@@ -257,7 +271,7 @@
             android:gravity="center"
             android:text="@string/profile_no_uploads"
             android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/text_color"/>
 
     </LinearLayout>
 

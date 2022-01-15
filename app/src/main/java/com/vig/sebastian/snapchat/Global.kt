@@ -3,30 +3,32 @@ package com.vig.sebastian.snapchat
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.os.CountDownTimer
-import android.text.ClipboardManager
-import android.view.View
-import android.view.inputmethod.InputMethodManager
+import androidx.annotation.AnyRes
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.collections.ArrayList
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.vig.sebastian.snapchat.database.Database
+import com.vig.sebastian.snapchat.explore.FilterType
+import com.vig.sebastian.snapchat.parkour_spots.LocationClass
+import com.vig.sebastian.snapchat.profile.PostType
+import com.vig.sebastian.snapchat.profile.SpotType
 import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedProfileObject
 import com.vig.sebastian.snapchat.profile.clicker_profile.ClickedUserProfileActivity
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.content.ContextCompat.startActivity
-import com.vig.sebastian.snapchat.explore.FilterType
-import java.util.function.BinaryOperator
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
+
+@SuppressLint("StaticFieldLeak")
 object Global {
     var username = ""
     var password = ""
@@ -105,6 +107,32 @@ object Global {
         }
     }
 
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    fun getLocation(context: Context, activity: Activity, unit: (location: LocationClass) -> Unit){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
+                val location = task.result
+                if (location != null) {
+                    try {
+                        val geocoder = Geocoder(context, Locale.getDefault())
+                        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                        val latitude = addresses[0].latitude
+                        val longitude = addresses[0].longitude
+                        val country = addresses[0].countryName
+                        val city = addresses[0].locality
+                        val address = addresses[0].getAddressLine(0)
+                        unit(LocationClass(latitude, longitude, country, city, address))
+                    }catch (e : IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }else {
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 44)
+        }
+    }
+
     fun showProfile(username: String, context: Context?) {
         if (username != Global.username) {
             Database.getUserInfo(username) { user ->
@@ -112,6 +140,23 @@ object Global {
                 context?.startActivity(Intent(context, ClickedUserProfileActivity::class.java))
             }
         }
+    }
+    fun getUriToDrawable(
+        context: Context,
+        @AnyRes drawableId: Int
+    ): Uri {
+        return Uri.parse(
+            ContentResolver.SCHEME_ANDROID_RESOURCE
+                    + "://" + context.resources.getResourcePackageName(drawableId)
+                    + '/' + context.resources.getResourceTypeName(drawableId)
+                    + '/' + context.resources.getResourceEntryName(drawableId)
+        )
+    }
+
+    fun getFullTime(time: String) : String{
+        return if (time.length == 1) {
+            "0$time"
+        }else time
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -149,9 +194,20 @@ object Global {
             .replace("$", ":")
     }
     fun getEmailFromKey(key: String) : String{
-        return email.replace("<", "[")
+        return key.replace("<", "[")
             .replace(">", "]")
             .replace(";", ".")
             .replace(":", "$")
+    }
+    fun getStringFromSpotType(context: Context, spotType: SpotType) : String{
+        return when(spotType) {
+            SpotType.STAIRS -> context.getString(R.string.stairs)
+            SpotType.WALL_JUMPS -> context.getString(R.string.wall_jumps)
+            SpotType.PARKOUR_PARK -> context.getString(R.string.parkour_park)
+            SpotType.CALISTHENICS -> context.getString(R.string.calisthenics)
+            SpotType.PLAYGROUND -> context.getString(R.string.playground)
+            SpotType.BIG_AREA -> context.getString(R.string.big_area)
+            SpotType.OTHER -> context.getString(R.string.other)
+        }
     }
 }

@@ -6,6 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@drawable/background"
         android:layout_height="60dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -15,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
             android:src="@drawable/profile"
-            app:civ_border_color="#000000"
+            app:civ_border_color="@color/text_color"
             app:civ_border_width="2dp" />
 
         <TextView
@@ -26,7 +27,7 @@
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/profilePicImageView"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textSize="20sp" />
 
     </RelativeLayout>

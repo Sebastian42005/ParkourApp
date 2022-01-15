@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.profile.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.database.Database
 
@@ -27,8 +29,19 @@ class FriendRequestAdapter(context: Context, private val int: Int, arrayList : A
 
         usernameTextView.text = username
 
-        Database.getUserProfilePic(username) {
-            Glide.with(context).load(it).into(profilePicImageView)
+        if (ImageUriListsObject.profilePicsList.contains(username)) {
+            if (ImageUriListsObject.getProfilePic(username) != Uri.parse("not_found")) {
+                Glide.with(context).load(ImageUriListsObject.getProfilePic(username))
+                    .into(profilePicImageView)
+            }
+        }else {
+            Database.getUserProfilePic(username) {
+                ImageUriListsObject.setProfilePicImageUriHashMap(username, it)
+                if (ImageUriListsObject.getProfilePic(username) != Uri.parse("not_found")) {
+                    Glide.with(context).load(it)
+                        .into(profilePicImageView)
+                }
+            }
         }
 
         acceptFriendRequestBtn.setOnClickListener {

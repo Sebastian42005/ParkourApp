@@ -1,5 +1,6 @@
 package com.vig.sebastian.snapchat
 
 object TestObject {
-    var canStart = true
+    var canStart = 1
+    var currentProgress = 0
 }

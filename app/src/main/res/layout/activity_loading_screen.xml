@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     tools:context=".LoadingScreenActivity">
 
     <ImageView
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:text="0%"
         android:layout_below="@id/progressBar"
         android:layout_marginTop="10dp"/>

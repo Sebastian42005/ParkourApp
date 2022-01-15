@@ -13,14 +13,14 @@
         android:layout_height="45dp"
         android:gravity="center"
         android:text="Parkour | Home"
-        android:textColor="@color/dark_blue"
-        android:textStyle="bold|italic"
-        android:textSize="23sp" />
+        android:textColor="@color/text_color"
+        android:textSize="23sp"
+        android:textStyle="bold|italic" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/dark_blue"
+        android:background="@color/text_color"
         android:layout_below="@id/actionBar"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -62,7 +62,7 @@
             android:gravity="center"
             android:text="@string/friends_no_posts"
             android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/text_color"/>
 
     </LinearLayout>
 

@@ -11,11 +11,11 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/backBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:foreground="@drawable/ic_baseline_arrow_back_24"
-            android:foregroundTint="@color/black"
-            android:id="@+id/backBtn"/>
+            android:foregroundTint="@color/text_color" />
 
         <TextView
             android:id="@+id/teamTextView"
@@ -60,9 +60,8 @@
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="20dp"
                     android:backgroundTint="#00000000"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/ "
-                    android:hint="@string/location"
-                    android:inputType="text" />
+                    android:editable="false"
+                    android:hint="@string/location" />
 
             </RelativeLayout>
 
@@ -181,6 +180,176 @@
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/dark_blue"
             android:text="@string/create" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/googleMapsLayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mapLayout">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/googleMapsBackBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginBottom="25dp"
+                android:backgroundTint="@color/dark_aqua"
+                android:foreground="@drawable/ic_baseline_arrow_back_24"
+                android:foregroundGravity="center"
+                android:foregroundTint="@color/white"
+                tools:targetApi="lollipop" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/searchSpotsBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="25dp"
+                android:backgroundTint="@color/dark_aqua"
+                android:foreground="@drawable/ic_baseline_search_24"
+                android:foregroundGravity="center"
+                android:foregroundTint="@color/white"
+                tools:targetApi="lollipop" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/goToUserBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="25dp"
+                android:backgroundTint="@color/dark_aqua"
+                android:foreground="@drawable/profile"
+                android:foregroundGravity="center"
+                android:foregroundTint="@color/white"
+                tools:targetApi="lollipop" />
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background"
+            android:visibility="gone"
+            android:id="@+id/searchSpotLayout">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:layout_alignTop="@id/searchLayout"
+                android:id="@+id/searchSpotBackBtn"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/searchSpotBackBtn"
+                android:id="@+id/searchLayout">
+
+                <ImageView
+                    android:id="@+id/searchBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/search_drawable" />
+
+                <EditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignStart="@id/searchBackground"
+                    android:layout_toStartOf="@id/searchImage"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@null"
+                    android:hint="@string/search"
+                    android:maxLines="1" />
+
+                <ImageView
+                    android:id="@+id/searchImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignEnd="@id/searchBackground"
+                    android:layout_marginEnd="10dp"
+                    android:foreground="@drawable/ic_baseline_search_24"
+                    android:foregroundTint="@color/dark_grey"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/searchLayout"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/wallJumpsSpotTypeCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/wall_jumps"
+                    android:buttonTint="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/stairsSpotTypeCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stairs"
+                    android:checked="true"
+                    android:buttonTint="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/parkourParkSpotTypeCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/parkour_park"
+                    android:buttonTint="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/otherSpotTypeCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/other"
+                    android:buttonTint="@color/black"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/useFilterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/use"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

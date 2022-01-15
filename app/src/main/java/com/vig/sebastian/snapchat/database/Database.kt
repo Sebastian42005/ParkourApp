@@ -1,39 +1,34 @@
 package com.vig.sebastian.snapchat.database
 
+import android.content.ContentResolver
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.vig.sebastian.snapchat.classes.Achievement
-import com.vig.sebastian.snapchat.team.DisplayedTeam
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
-import com.vig.sebastian.snapchat.classes.User
+import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.classes.Achievement
 import com.vig.sebastian.snapchat.classes.MessageClass
+import com.vig.sebastian.snapchat.classes.User
 import com.vig.sebastian.snapchat.explore.ExploreSearchClass
 import com.vig.sebastian.snapchat.explore.FilterType
 import com.vig.sebastian.snapchat.meetup.MeetUp
-import com.vig.sebastian.snapchat.profile.classes.PostClass
+import com.vig.sebastian.snapchat.parkour_spots.SpotDatabaseClass
 import com.vig.sebastian.snapchat.profile.PostType
+import com.vig.sebastian.snapchat.profile.SpotType
+import com.vig.sebastian.snapchat.profile.classes.PostClass
 import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import android.content.ContentResolver
-import android.content.SharedPreferences
-import android.media.Image
-import android.text.TextUtils
-
-import androidx.annotation.AnyRes
-import androidx.core.view.accessibility.AccessibilityManagerCompat
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.team.DisplayedTeam
 
 
 object Database {
@@ -48,7 +43,9 @@ object Database {
      */
 
     val reference = FirebaseDatabase.getInstance("https://parkour-b3ba9-default-rtdb.europe-west1.firebasedatabase.app/").reference
+    val referenceSupport = FirebaseDatabase.getInstance("https://parkoursupport-default-rtdb.europe-west1.firebasedatabase.app/").reference
     val storageReference = FirebaseStorage.getInstance().getReference("profiles")
+    val teamStorageReference = FirebaseStorage.getInstance().getReference("teams")
     val mAuth = FirebaseAuth.getInstance(reference.database.app)
     val helper = FirebaseHelper.getInstance(reference)
 
@@ -112,7 +109,9 @@ object Database {
     }
 
     fun resetPassword(email: String) {
-        mAuth.sendPasswordResetEmail(email)
+        if (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mAuth.sendPasswordResetEmail(email)
+        }
     }
 
     fun login(editor: SharedPreferences.Editor, context: Context, email: String, password: String, unit : (user: User?) -> Unit) {
@@ -474,7 +473,7 @@ object Database {
     fun createMeetUp(meetUp: MeetUp) {
         val hm = HashMap<String, Any?>()
         val key = Global.getKey()
-        hm[key] = MeetUp(meetUp.startDate, meetUp.endDate, meetUp.location, meetUp.description, key, meetUp.teamKey)
+        hm[key] = MeetUp(meetUp.startDate, meetUp.endDate, meetUp.location, meetUp.latitude, meetUp.longitude, meetUp.description, key, meetUp.teamKey)
         reference.child("Teams").child(meetUp.key).child("meetUps").updateChildren(hm)
         getTeamMembers(meetUp.key) { memberList ->
             for (member in memberList) {
@@ -491,10 +490,12 @@ object Database {
                 val startDate = data.child("startDate").value.toString()
                 val endDate = data.child("endDate").value.toString()
                 val location = data.child("location").value.toString()
+                val latitude = data.child("latitude").value.toString().toDouble()
+                val longitude = data.child("longitude").value.toString().toDouble()
                 val description = data.child("description").value.toString()
                 val key = data.key.toString()
                 if (!Global.checkIfDateIsExpired(Global.getDateFromString(endDate.trim(), Global.basicFormat))) {
-                    meetUpsList.add(MeetUp(startDate, endDate, location, description, key, teamKey))
+                    meetUpsList.add(MeetUp(startDate, endDate, location, latitude, longitude, description, key, teamKey))
                 }else deleteTeamMeetUp(teamKey, key)
             }
             unit(meetUpsList)
@@ -547,11 +548,13 @@ object Database {
                 val startDate = data.child("startDate").value.toString()
                 val endDate = data.child("endDate").value.toString()
                 val location = data.child("location").value.toString()
+                val latitude = data.child("latitude").value.toString().toDouble()
+                val longitude = data.child("longitude").value.toString().toDouble()
                 val description = data.child("description").value.toString()
                 val teamKey = data.child("teamKey").value.toString()
                 val key = data.key.toString()
                 if (!Global.checkIfDateIsExpired(Global.getDateFromString(endDate.trim(), Global.basicFormat))) {
-                    meetUpsList.add(MeetUp(startDate, endDate, location, description, key, teamKey))
+                    meetUpsList.add(MeetUp(startDate, endDate, location, latitude, longitude, description, key, teamKey))
                 }else deleteMeetUp(username, key)
             }
             unit(meetUpsList)
@@ -612,11 +615,12 @@ object Database {
                 val city = data.child("city").value.toString()
                 val location = data.child("location").value.toString()
                 val description = data.child("description").value.toString()
+                val spotType = SpotType.valueOf(data.child("spotType").value.toString())
                 if (onlySpots) {
                     if (postType == PostType.PARKOUR_SPOT) {
-                        postList.add(UploadPostClass(username, postType, key, country, city, location, description))
+                        postList.add(UploadPostClass(username, postType, key, country, city, location, description, spotType))
                     }
-                }else postList.add(UploadPostClass(username, postType, key, country, city, location, description))
+                }else postList.add(UploadPostClass(username, postType, key, country, city, location, description, spotType))
             }
             postList.shuffle()
             unit(postList)
@@ -698,22 +702,27 @@ object Database {
                 val city = data.child("city").value.toString()
                 val location = data.child("location").value.toString()
                 val description = data.child("description").value.toString()
-                if (!ImageUriListsObject.postsList.contains(data.key.toString())) {
-                    getImageUriFromUser(username, data.key.toString()) {uri ->
-                    ImageUriListsObject.setPostImageUriHashMap(data.key.toString(), uri)
-                        list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description), position, null, null))
+                val spotType = SpotType.valueOf(data.child("spotType").value.toString())
+                getPostLikeList(data.key.toString()) { likeList ->
+                    if (!ImageUriListsObject.postsList.contains(data.key.toString())) {
+                        getImageUriFromUser(username, data.key.toString()) {uri ->
+                        ImageUriListsObject.setPostImageUriHashMap(data.key.toString(), uri)
+                            list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, spotType),likeList , null, null))
+                            position ++
+                            if (data.key.toString() == keyList[keyList.size - 1]) {
+                                list.sort()
+                                println("ListSIze1: " + list.size)
+                                unit(list)
+                            }
+                        }
+                    }else {
+                        list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description, spotType), likeList, null, null))
                         position ++
-                        if (data.key.toString() == keyList[position - 1]) {
+                        if (data.key.toString() == keyList[keyList.size - 1]) {
                             list.sort()
+                            println("ListSIze2: " + list.size)
                             unit(list)
                         }
-                    }
-                }else {
-                    list.add(PostClass(UploadPostClass(username, postType, data.key.toString(), country, city, location, description), position, null, null))
-                    position ++
-                    if (data.key.toString() == keyList[position - 1]) {
-                        list.sort()
-                        unit(list)
                     }
                 }
             }
@@ -724,16 +733,30 @@ object Database {
         storageReference.child(username).child("Posts").child(key).downloadUrl.addOnSuccessListener {
             unit(it)
         }.addOnFailureListener {
-            val uri = Uri.parse("android.resource://com.vig.sebastian.snapchat/drawable/profile")
+            val uri = Uri.parse("not_found")
             unit(uri)
         }
     }
+
     fun getUserProfilePic(username: String, unit : (uri: Uri) -> Unit) {
-        storageReference.child(username).child("ProfilePic").downloadUrl.addOnSuccessListener {
-            unit(it)
-        }.addOnFailureListener {
-            val uri = Uri.parse("android.resource://com.vig.sebastian.snapchat/drawable/profile")
-            unit(uri)
+        if (!ImageUriListsObject.profilePicsList.contains(username)) {
+            storageReference.child(username).child("ProfilePic").downloadUrl.addOnSuccessListener {
+                unit(it)
+                ImageUriListsObject.setProfilePicImageUriHashMap(username, it)
+            }.addOnFailureListener {
+                val uri = Uri.parse("not_found")
+                ImageUriListsObject.setProfilePicImageUriHashMap(username, uri)
+                unit(uri)
+            }
+        }else if (username == Global.username) {
+            storageReference.child(username).child("ProfilePic").downloadUrl.addOnSuccessListener {
+                unit(it)
+                ImageUriListsObject.setProfilePicImageUriHashMap(username, it)
+            }.addOnFailureListener {
+                val uri = Uri.parse("not_found")
+                ImageUriListsObject.setProfilePicImageUriHashMap(username, uri)
+                unit(uri)
+            }
         }
     }
 
@@ -833,24 +856,44 @@ object Database {
                 friendsList.add(data1.value.toString())
             }
             val postKeyList = ArrayList<PostClass>()
+            if (friendsList.isEmpty()) {
+                unit(postKeyList)
+            }
             for (friend in friendsList) {
+                val keyList = ArrayList<String>()
+                for (data2 in snapshot.child(friend).child("Posts").children) {
+                    keyList.add(data2.key.toString())
+                }
+                if (friend == friendsList[friendsList.size - 1]) {
+                    if (keyList.isEmpty()) {
+                        unit(postKeyList)
+                    }
+                }
                 for (data2 in snapshot.child(friend).child("Posts").children) {
                     val postType = PostType.valueOf(data2.child("postType").value.toString())
+                    val spotType = SpotType.valueOf(data2.child("spotType").value.toString())
                     val country = data2.child("country").value.toString()
                     val city = data2.child("city").value.toString()
                     val location = data2.child("location").value.toString()
                     val description = data2.child("description").value.toString()
-                    postKeyList.add(PostClass(UploadPostClass(
-                        friend,
-                        postType,
-                        data2.key.toString(),
-                        country,
-                        city,
-                        location,
-                        description), 0, null, null))
+                    getPostLikeList(data2.key.toString()) { likeList ->
+                        postKeyList.add(PostClass(UploadPostClass(
+                                    friend,
+                                    postType,
+                                    data2.key.toString(),
+                                    country,
+                                    city,
+                                    location,
+                                    description,
+                                    spotType), likeList, null, null))
+                        if (friend == friendsList[friendsList.size - 1]) {
+                            if (keyList[keyList.size - 1] == data2.key.toString()) {
+                                unit(postKeyList)
+                            }
+                        }
+                    }
                 }
             }
-            unit(postKeyList)
         }
     }
     fun deletePost(key: String) {
@@ -928,7 +971,7 @@ object Database {
     }
 
     fun deleteAccount(unit: () -> Unit) {
-         reference.child("Emails").child(Global.getKeyFromEmail(Global.email)).removeValue()
+        reference.child("Emails").child(Global.getKeyFromEmail(Global.email)).removeValue()
         reference.child("User").child(Global.username).removeValue()
         val user = FirebaseAuth.getInstance().currentUser
         user?.delete()
@@ -938,7 +981,113 @@ object Database {
                 reference.child("Posts").child(key).removeValue()
                 storageReference.child(Global.username).child("Posts").child(key).delete()
             }
-            unit
+            unit()
         }
+    }
+
+    /*
+    Support
+     */
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sendMessageToSupport(message: String) {
+        if (message.trim() != "") {
+            val messageTime = Global.getStringFromDate(Global.getCurrentTime(), Global.basicFormat)
+            val key = Global.getKey()
+            val hm = HashMap<String, Any?>()
+            hm[key] = MessageClass(message, Global.username, messageTime, key)
+            reference.child("Support").child("Messages").child(Global.username).updateChildren(hm)
+            reference.child("Support").child("New").child(Global.username).setValue(Global.username)
+        }
+    }
+
+    fun getMessageSupportList(username: String, unit: (messageList: ArrayList<MessageClass>) -> Unit) {
+        getDataFromDatabase("Support", "Messages", username) {snapshot ->
+            val messageList = ArrayList<MessageClass>()
+            for (data in snapshot.children) {
+                val message = data.child("message").value.toString()
+                val usernameDatabase = data.child("username").value.toString()
+                val time = data.child("time").value.toString()
+                val key = data.child("key").value.toString()
+                messageList.add(MessageClass(message, usernameDatabase, time, key))
+            }
+            unit(messageList)
+        }
+    }
+
+    fun getNewSupportMessages(unit: (userList: ArrayList<String>) -> Unit) {
+        getSingleDataFromDatabase("Support", "New") {snapshot ->
+            val userList = ArrayList<String>()
+            for (data in snapshot.children) {
+                userList.add(data.value.toString())
+            }
+            unit(userList)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sendSupportMessageToUser(message: String, username: String) {
+        if (message.trim() != "") {
+            val messageTime = Global.getStringFromDate(Global.getCurrentTime(), Global.basicFormat)
+            val key = Global.getKey()
+            val hm = HashMap<String, Any?>()
+            hm[key] = MessageClass(message, "Support", messageTime, key)
+            reference.child("Support").child("Messages").child(username).updateChildren(hm)
+        }
+    }
+
+    fun uploadSpot(latitude: Double, longitude: Double, country: String, key: String, description: String, spotType: SpotType) {
+        reference.child("Spots").child(country).child(key).child("latitude").setValue(latitude)
+        reference.child("Spots").child(country).child(key).child("longitude").setValue(longitude)
+        reference.child("Spots").child(country).child(key).child("description").setValue(description)
+        reference.child("Spots").child(country).child(key).child("spotType").setValue(spotType)
+    }
+    fun getSpotsFromCountry(country: String, unit: (spotList: ArrayList<SpotDatabaseClass>) -> Unit) {
+        getSingleDataFromDatabase("Spots", country) {
+            val spotList = ArrayList<SpotDatabaseClass>()
+            for (data in it.children) {
+                val description = data.child("description").value.toString()
+                val latitude = data.child("latitude").value.toString().toDouble()
+                val longitude = data.child("longitude").value.toString().toDouble()
+                val spotType = SpotType.valueOf(data.child("spotType").value.toString())
+                val key = data.key.toString()
+                spotList.add(SpotDatabaseClass(latitude, longitude, key, description, spotType))
+            }
+            unit(spotList)
+        }
+    }
+    fun getPostFromKey(key: String, unit: (post: UploadPostClass) -> Unit) {
+        getSingleDataFromDatabase("Posts", key) { data ->
+            val username = data.child("username").value.toString()
+            val postType = PostType.valueOf(data.child("postType").value.toString())
+            val country = data.child("country").value.toString()
+            val city = data.child("city").value.toString()
+            val location = data.child("location").value.toString()
+            val description = data.child("description").value.toString()
+            val spotType = SpotType.valueOf(data.child("spotType").value.toString())
+            if (!ImageUriListsObject.postsList.contains(key)) {
+                getImageUriFromUser(username, key) {uri ->
+                    ImageUriListsObject.setPostImageUriHashMap(key, uri)
+                    unit(UploadPostClass(username, postType, key, country, city, location, description, spotType))
+                }
+            }else unit(UploadPostClass(username, postType, key, country, city, location, description, spotType))
+        }
+    }
+    fun getLocationFromKey(country: String, key: String, unit: (latitude: Double, longitude: Double) -> Unit) {
+        getSingleDataFromDatabase("Spots", country, key) {snapshot ->
+            unit(snapshot.child("latitude").value.toString().toDouble(), snapshot.child("longitude").value.toString().toDouble())
+        }
+    }
+
+    fun getTeamPic(key: String, unit: (uri : Uri) -> Unit) {
+        if (ImageUriListsObject.getTeamPic(key) == null) {
+            teamStorageReference.child(key).downloadUrl.addOnSuccessListener {
+                ImageUriListsObject.setTeamPicImageUriHashMap(key, it)
+                unit(it)
+            }.addOnFailureListener {
+                ImageUriListsObject.setTeamPicImageUriHashMap(key, Uri.parse("not_found"))
+                unit(Uri.parse("not_found"))
+            }
+        }else unit(ImageUriListsObject.getTeamPic(key)!!)
     }
 }

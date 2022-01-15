@@ -1,4 +1,13 @@
 <resources>
+    <string-array name="spot_types">
+        <item>Parkour Park</item>
+        <item>Wall Jumps</item>
+        <item>Stairs</item>
+        <item>Playground</item>
+        <item>Calisthenics</item>
+        <item>Big Area</item>
+        <item>Other</item>
+    </string-array>
     <string name="app_name">Parkour</string>
     <string name="title_home">Home</string>
     <string name="title_explore">Explore</string>
@@ -111,4 +120,23 @@
     <string name="no_teams">You are not currently on any team</string>
     <string name="delete_account">Delete Account</string>
     <string name="email_exists">Email already exists</string>
+    <string name="parkour_spots">Parkour Spots</string>
+    <string name="google_maps_api" translatable="false">AIzaSyB_9KKegtWs3LOGSoTIhE51KGXagpqUeO8</string>
+    <string name="you">You</string>
+    <string name="clear_history">Clear history</string>
+    <string name="navigate_to_spot">Navigate</string>
+    <string name="google_street_view" translatable="false">Street View</string>
+    <string name="create_shortcut">Create Shortcut</string>
+    <string name="navigate_to_meet_up">Navigate to meet up</string>
+    <string name="show_street_view">Show Google Street View</string>
+    <string name="remind_1_hour_before">Remind 1 hour before Meet Up</string>
+    <string name="parkour_spot_type">Spot Type</string>
+    <string name="parkour_park">Parkour Park</string>
+    <string name="stairs">Stairs</string>
+    <string name="wall_jumps">Wall Jumps</string>
+    <string name="other">Other</string>
+    <string name="use">Use</string>
+    <string name="playground">Playground</string>
+    <string name="calisthenics">Calisthenics</string>
+    <string name="big_area">Big Area</string>
 </resources>

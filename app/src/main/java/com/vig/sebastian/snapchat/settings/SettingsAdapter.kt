@@ -24,7 +24,7 @@ class SettingsAdapter(context: Context, private val int: Int, arrayList : ArrayL
         val textView = view.findViewById<TextView>(R.id.settingsTextView)
         textView.text = text
 
-        if (text == context.getString(R.string.delete_account)) textView.setTextColor(Color.rgb(135, 0, 0))
+        if (text == context.getString(R.string.delete_account)) textView.setTextColor(Color.RED)
 
         return view
     }

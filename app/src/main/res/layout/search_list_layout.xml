@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background"
     android:id="@+id/searchListLayout">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -13,7 +14,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:src="@drawable/profile"
-        app:civ_border_color="#000000"
+        app:civ_border_color="@color/text_color"
         app:civ_border_width="2dp" />
 
     <TextView
@@ -22,7 +23,7 @@
         android:layout_height="50dp"
         android:layout_toEndOf="@id/profilePicImageView"
         android:gravity="center_vertical"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:textSize="20sp" />
 
 </RelativeLayout>

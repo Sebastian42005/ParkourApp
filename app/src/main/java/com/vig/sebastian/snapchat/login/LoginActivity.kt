@@ -23,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loginLayout : RelativeLayout
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
+    lateinit var resetPasswordLayout: RelativeLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -36,8 +37,6 @@ class LoginActivity : AppCompatActivity() {
         val loginPasswordEditText = findViewById<EditText>(R.id.loginPasswordEditText)
         val registerUsername = findViewById<EditText>(R.id.registerUsernameEditText)
         val registerPassword = findViewById<EditText>(R.id.registerPasswordEditText)
-        val registerCountry = findViewById<EditText>(R.id.registerCountryEditText)
-        val registerCity = findViewById<EditText>(R.id.registerCityEditText)
         val registerAge = findViewById<EditText>(R.id.registerAgeEditText)
         val registerBtn = findViewById<Button>(R.id.registerBtn)
         val registerEmail = findViewById<EditText>(R.id.registerEmailEditText)
@@ -47,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
         val resetEmailEditText : EditText = findViewById(R.id.resetEmailEditText)
         val registerBackBtn : ImageView = findViewById(R.id.registerBackBtn)
         val resetPasswordBackBtn: ImageView = findViewById(R.id.resetPasswordBackBtn)
-        val resetPasswordLayout  : RelativeLayout = findViewById(R.id.resetPasswordRelativeLayout)
+        resetPasswordLayout = findViewById(R.id.resetPasswordRelativeLayout)
 
         registerBackBtn.setOnClickListener {
             YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
@@ -66,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
         resetPasswordBtn.setOnClickListener {
             Toast.makeText(this, getString(R.string.password_reset_check_mails), Toast.LENGTH_SHORT).show()
             Database.resetPassword(resetEmailEditText.text.toString().trim())
+            resetEmailEditText.setText("")
         }
 
         registerTextView.setOnClickListener {
@@ -73,56 +73,64 @@ class LoginActivity : AppCompatActivity() {
             YoYo.with(Techniques.SlideInLeft).duration(400).playOn(registerLayout)
         }
 
-        resetPasswordTextView.setOnClickListener{
+        resetPasswordTextView.setOnClickListener {
             resetPasswordLayout.visibility = View.VISIBLE
             YoYo.with(Techniques.SlideInRight).duration(400).playOn(resetPasswordLayout)
+            resetEmailEditText.requestFocus()
         }
 
         registerBtn.setOnClickListener {
-            val username = registerUsername.text.toString().trim()
-            val password = registerPassword.text.toString().trim()
-            val country = registerCountry.text.toString().trim()
-            val city = registerCity.text.toString().trim()
-            val email = registerEmail.text.toString().trim()
-            if (!Global.checkIfStringsAreEmpty(
-                    username,
-                    password,
-                    country,
-                    city,
-                    registerAge.text.toString()
-                )
-            ) {
-                val age = registerAge.text.toString().toInt()
-                Database.register(User(username, email, "", country, city, age), password) { exception ->
-                    if (exception == "") {
-                        editor.putString("email", email)
-                        editor.putString("password", password)
-                        Global.username = username
-                        Global.email = email
-                        Global.password = password
-                        editor.apply()
-                        YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
-                        Global.wait(400) {
-                            registerLayout.visibility = View.GONE
-                        }
-                        Toast.makeText(this, "Check your mails to verify!", Toast.LENGTH_SHORT).show()
-                    }else {
-                        when (exception) {
-                            "6" -> {
-                                YoYo.with(Techniques.Shake).duration(300).playOn(registerPassword)
-                                registerPassword.error = getString(R.string.password_at_least_6_characters)
-                                registerPassword.requestFocus()
+            Global.getLocation(this, this) { location ->
+                val username = registerUsername.text.toString().trim()
+                val password = registerPassword.text.toString().trim()
+                val country = location.country
+                val city = location.city
+                val email = registerEmail.text.toString().trim()
+                if (!Global.checkIfStringsAreEmpty(
+                        username,
+                        password,
+                        country,
+                        city,
+                        registerAge.text.toString()
+                    )
+                ) {
+                    val age = registerAge.text.toString().toInt()
+                    Database.register(
+                        User(username, email, "", country, city, age),
+                        password
+                    ) { exception ->
+                        if (exception == "") {
+                            editor.putString("email", email)
+                            editor.putString("password", password)
+                            Global.username = username
+                            Global.email = email
+                            Global.password = password
+                            editor.apply()
+                            YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
+                            Global.wait(400) {
+                                registerLayout.visibility = View.GONE
                             }
-                            "email" -> {
-                                YoYo.with(Techniques.Shake).duration(300).playOn(registerEmail)
-                                registerEmail.error = getString(R.string.email_exists)
-                                registerEmail.requestFocus()
+                            Toast.makeText(this, "Check your mails to verify!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            when (exception) {
+                                "6" -> {
+                                    YoYo.with(Techniques.Shake).duration(300)
+                                        .playOn(registerPassword)
+                                    registerPassword.error =
+                                        getString(R.string.password_at_least_6_characters)
+                                    registerPassword.requestFocus()
+                                }
+                                "email" -> {
+                                    YoYo.with(Techniques.Shake).duration(300).playOn(registerEmail)
+                                    registerEmail.error = getString(R.string.email_exists)
+                                    registerEmail.requestFocus()
+                                }
                             }
                         }
                     }
+                } else {
+                    Toast.makeText(this, getString(R.string.error_empty), Toast.LENGTH_SHORT).show()
                 }
-            }else {
-                Toast.makeText(this, getString(R.string.error_empty), Toast.LENGTH_SHORT).show()
             }
         }
         loginBtn.setOnClickListener {
@@ -133,10 +141,12 @@ class LoginActivity : AppCompatActivity() {
                     if (it != null) {
                         Global.username = it.username
                         Global.description = it.description
-                        Global.country = it.country
                         Global.email = email
-                        Global.city = it.city
                         Global.age = it.age
+                        Global.getLocation(this, this) { location ->
+                            Global.country = location.country
+                            Global.city = location.city
+                        }
                         editor.putString("email", email)
                         editor.putString("password", password)
                         editor.apply()
@@ -188,6 +198,11 @@ class LoginActivity : AppCompatActivity() {
             YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(registerLayout)
             Global.wait(400) {
                 registerLayout.visibility = View.GONE
+            }
+        }else if (resetPasswordLayout.isVisible) {
+            YoYo.with(Techniques.SlideOutLeft).duration(400).playOn(resetPasswordLayout)
+            Global.wait(400) {
+                resetPasswordLayout.visibility = View.GONE
             }
         }
     }

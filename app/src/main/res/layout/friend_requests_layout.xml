@@ -3,26 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:background="@drawable/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilePicImageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
         android:src="@drawable/profile"
-        app:civ_border_color="#FFFFFF"
-        app:civ_border_width="3dp" />
+        app:civ_border_color="@color/text_color"
+        app:civ_border_width="2dp" />
 
     <TextView
         android:id="@+id/usernameTextView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
         android:gravity="center_vertical"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/profilePicImageView"
-        android:textColor="@color/black"
-        android:textSize="20sp"/>
+        android:textColor="@color/text_color"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/acceptFriendRequestBtn"

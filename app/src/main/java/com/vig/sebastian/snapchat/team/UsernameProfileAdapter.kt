@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.team
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,16 +27,18 @@ class UsernameProfileAdapter(context: Context, private val int: Int, arrayList :
         val profilePic = view.findViewById<ImageView>(R.id.profilePicImageView)
 
         usernameTextView.text = username
-
         if (ImageUriListsObject.profilePicsList.contains(username)) {
-            if (ImageUriListsObject.getProfilePic(username) != null) {
+            if (ImageUriListsObject.getProfilePic(username) != Uri.parse("not_found")) {
                 Glide.with(context).load(ImageUriListsObject.getProfilePic(username))
                     .into(profilePic)
             }
         }else {
             Database.getUserProfilePic(username) {
                 ImageUriListsObject.setProfilePicImageUriHashMap(username, it)
-                Glide.with(context).load(it).into(profilePic)
+                if (ImageUriListsObject.getProfilePic(username) != Uri.parse("not_found")) {
+                    Glide.with(context).load(it)
+                        .into(profilePic)
+                }
             }
         }
 

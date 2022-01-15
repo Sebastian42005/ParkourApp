@@ -17,14 +17,14 @@
             android:layout_height="45dp"
             android:gravity="center"
             android:text="@string/parkour_meet_ups"
-            android:textColor="@color/dark_blue"
-            android:textStyle="bold|italic"
-            android:textSize="23sp" />
+            android:textColor="@color/text_color"
+            android:textSize="23sp"
+            android:textStyle="bold|italic" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/dark_blue"
+            android:background="@color/text_color"
             android:layout_below="@id/actionBar"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -55,7 +55,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:foreground="@drawable/ic_baseline_arrow_back_ios_24"
-            android:foregroundTint="@color/black"
+            android:foregroundTint="@color/text_color"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:id="@+id/backBtn"/>
@@ -76,14 +76,14 @@
                 android:text="@string/show_location"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_color"/>
 
             <TextView
                 android:id="@+id/locationTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_color"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:text="@string/show_start_date"/>
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_color" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -108,13 +108,13 @@
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_color"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:id="@+id/endDateTextView"/>
 
             <TextView
@@ -124,13 +124,13 @@
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_color"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:id="@+id/durationTextView"/>
 
             <TextView
@@ -139,7 +139,7 @@
                 android:text="@string/show_description"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:layout_marginTop="10dp"/>
 
             <TextView
@@ -147,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_color"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,6 +181,28 @@
 
             </LinearLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/navigateToMeetUpBtn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="@color/text_color"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:text="@string/navigate_to_meet_up"
+                android:background="@drawable/post_picture_drawable"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/showMeetUpStreetView"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:text="@string/show_street_view"
+                android:background="@drawable/post_picture_drawable"/>
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -205,7 +227,7 @@
             android:gravity="center"
             android:text="@string/no_meet_ups"
             android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/text_color"/>
 
     </LinearLayout>
 

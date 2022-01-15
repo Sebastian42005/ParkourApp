@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/parkourParkSpotTypeItem"
+        android:title="@string/parkour_park"/>
+
+    <item
+        android:id="@+id/stairsSpotTypeItem"
+        android:title="@string/stairs"/>
+
+    <item
+        android:id="@+id/wallJumpsSpotTypeItem"
+        android:title="@string/wall_jumps"/>
+
+    <item
+        android:id="@+id/playgroundSpotTypeItem"
+        android:title="@string/playground"/>
+
+    <item
+        android:id="@+id/calisthenicsSpotTypeItem"
+        android:title="@string/calisthenics"/>
+
+    <item
+        android:id="@+id/bigAreaSpotTypeItem"
+        android:title="@string/big_area"/>
+
+    <item
+        android:id="@+id/otherSpotTypeItem"
+        android:title="@string/other"/>
+
+</menu>

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="spot_types">
+        <item>Parkour Park</item>
+        <item>Wall Jumps</item>
+        <item>Treppen</item>
+        <item>Spielplatz</item>
+        <item>Calisthenics</item>
+        <item>Große Fläche</item>
+        <item>Anderes</item>
+    </string-array>
     <string name="app_name">Parkour</string>
     <string name="title_meet_ups">Treffen</string>
     <string name="title_profile">Profil</string>
@@ -112,4 +121,21 @@
     <string name="no_teams">Du bist derzeit in keinem Team</string>
     <string name="delete_account">Account löschen</string>
     <string name="email_exists">Email existiert bereist</string>
+    <string name="parkour_spots">Parkour Spots</string>
+    <string name="you">Du</string>
+    <string name="clear_history">Verlauf löschen</string>
+    <string name="navigate_to_spot">Navigiere</string>
+    <string name="create_shortcut">Verknüpfung erstellen</string>
+    <string name="navigate_to_meet_up">Navigiere zu Meet Up</string>
+    <string name="show_street_view">Zeige Google Street View an</string>
+    <string name="remind_1_hour_before">Errinnere mich 1 Stunde vor dem Treffen</string>
+    <string name="parkour_spot_type">Spot Art</string>
+    <string name="parkour_park">Parkour Park</string>
+    <string name="stairs">Treppen</string>
+    <string name="wall_jumps">Wall Jumps</string>
+    <string name="other">Andere</string>
+    <string name="use">Anwenden</string>
+    <string name="playground">Spielplatz</string>
+    <string name="calisthenics">Calisthenics</string>
+    <string name="big_area">Große Fläche</string>
 </resources>

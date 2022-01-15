@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
             }else noUploadsLayout.visibility = View.GONE
             postList.clear()
             for (post in it) {
-                postList.add(PostClass(post.uploadPostClass, post.position, ImageUriListsObject.getPost(post.uploadPostClass.key), ImageUriListsObject.getProfilePic(post.uploadPostClass.username)))
+                postList.add(PostClass(post.uploadPostClass, post.likeList, ImageUriListsObject.getPost(post.uploadPostClass.key), ImageUriListsObject.getProfilePic(post.uploadPostClass.username)))
             }
             postListView = root.findViewById(R.id.postListView)
             try {

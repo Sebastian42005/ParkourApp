@@ -49,10 +49,10 @@ import kotlin.math.roundToInt
 class ProfileFragment : Fragment() {
     lateinit var sharedPreferences : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
-    lateinit var profilePicImageUri : Uri
     lateinit var imageUri: Uri
     lateinit var profilePic: ImageView
     lateinit var noUploadsLayout: LinearLayout
+    lateinit var profilePicProgressBar: ProgressBar
     lateinit var layoutList: ArrayList<LinearLayout>
     var postImageType = "profile"
     @SuppressLint("CommitPrefEdits")
@@ -66,6 +66,7 @@ class ProfileFragment : Fragment() {
         editor = sharedPreferences.edit()
         profilePic = root.findViewById(R.id.profilePicImageView)
         val profileBanner = root.findViewById<ImageView>(R.id.profileBannerImageView)
+        profilePicProgressBar = root.findViewById(R.id.progressBar)
         val profileUsernameTextView = root.findViewById<TextView>(R.id.profileUsername)
         val profileImageLayout1 = root.findViewById<LinearLayout>(R.id.layout1)
         val profileImageLayout2 = root.findViewById<LinearLayout>(R.id.layout2)
@@ -90,6 +91,8 @@ class ProfileFragment : Fragment() {
         editProfileBtn.setOnClickListener {
             startActivity(Intent(context, EditProfileActivity::class.java))
         }
+
+        setProfilePicture()
 
         Database.getFriendRequestList(Global.username) { friendRequestList ->
             val listSize = friendRequestList.size
@@ -137,9 +140,6 @@ class ProfileFragment : Fragment() {
             profileDescriptionTextView.visibility = View.GONE
         }else profileDescriptionTextView.text = Global.description
 
-        if (ImageUriListsObject.getProfilePic(Global.username) != null) {
-            Glide.with(requireContext()).load(ImageUriListsObject.getProfilePic(Global.username)).into(profilePic)
-        }
         setPostsList()
 
         postPicBtn.setOnClickListener {
@@ -155,10 +155,14 @@ class ProfileFragment : Fragment() {
         return root
     }
     private fun setProfilePicture() {
-        Database.getUserProfilePic(Global.username) {
-            ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, it)
-            Glide.with(requireContext()).load(it).into(profilePic)
-        }
+        try {
+            if (ImageUriListsObject.getProfilePic(Global.username) != Uri.parse("not_found")) {
+                Glide.with(requireContext())
+                    .load(ImageUriListsObject.getProfilePic(Global.username)).into(profilePic)
+            }
+
+        }catch (e: Exception) {}
+        profilePicProgressBar.visibility = View.GONE
     }
     private fun choosePicture() {
         val intent = Intent()
@@ -176,8 +180,14 @@ class ProfileFragment : Fragment() {
     }
     private fun uploadPicture() {
         if (postImageType == "profile") {
+            profilePicProgressBar.visibility = View.VISIBLE
             Database.storageReference.child(Global.username + "/ProfilePic").putFile(imageUri).addOnSuccessListener {
-                setProfilePicture()
+                Database.getUserProfilePic(Global.username) {
+                    ImageUriListsObject.setProfilePicImageUriHashMap(Global.username, it)
+                    setProfilePicture()
+                }
+            }.addOnFailureListener{
+                profilePicProgressBar.visibility = View.GONE
             }
         }else {
             PostObject.uri = imageUri

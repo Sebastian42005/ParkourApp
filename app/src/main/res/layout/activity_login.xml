@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/login_background" />
+            android:src="@drawable/background" />
 
         <TextView
             android:id="@+id/loginTextView"
@@ -111,10 +111,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/loginBtn"
             android:layout_centerHorizontal="true"
-            android:textSize="17sp"
             android:layout_marginTop="5dp"
-            android:textColor="@color/black"
-            android:text="@string/register" />
+            android:text="@string/register"
+            android:textColor="@color/text_color"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/passwordResetTextView"
@@ -124,7 +124,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="3dp"
             android:textSize="17sp"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:text="@string/reset_password" />
 
         <ProgressBar
@@ -258,60 +258,6 @@
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_!-"
                         android:backgroundTint="#00000000"
                         android:hint="@string/password" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_text_background"
-                        android:layout_alignBottom="@id/registerCountryEditText"
-                        android:layout_alignEnd="@id/registerCountryEditText"
-                        android:layout_alignStart="@id/registerCountryEditText"
-                        android:layout_alignTop="@id/registerCountryEditText"/>
-
-                    <EditText
-                        android:id="@+id/registerCountryEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:inputType="text"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="20dp"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-"
-                        android:backgroundTint="#00000000"
-                        android:hint="@string/country" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_text_background"
-                        android:layout_alignBottom="@id/registerCityEditText"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-"
-                        android:layout_alignEnd="@id/registerCityEditText"
-                        android:layout_alignStart="@id/registerCityEditText"
-                        android:layout_alignTop="@id/registerCityEditText"/>
-
-                    <EditText
-                        android:id="@+id/registerCityEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:inputType="text"
-                        android:layout_marginRight="20dp"
-                        android:backgroundTint="#00000000"
-                        android:hint="@string/city" />
 
                 </RelativeLayout>
 

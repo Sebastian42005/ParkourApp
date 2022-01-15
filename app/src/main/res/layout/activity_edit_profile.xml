@@ -21,7 +21,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:foreground="@drawable/ic_baseline_arrow_back_24"
-                android:foregroundTint="@color/black"/>
+                android:foregroundTint="@color/text_color" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                     android:text="@string/show_username"
                     android:textSize="17sp"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold"/>
 
                 <EditText
@@ -50,7 +50,7 @@
                     android:textSize="17sp"
                     android:editable="false"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/text_color"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                     android:text="@string/show_email"
                     android:textSize="17sp"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold"/>
 
                 <EditText
@@ -68,7 +68,7 @@
                     android:textSize="17sp"
                     android:editable="false"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/text_color"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
                     android:text="@string/show_country"
                     android:textSize="17sp"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold"/>
 
                 <EditText
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/text_color"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                     android:text="@string/show_city"
                     android:textSize="17sp"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold"/>
 
                 <EditText
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/text_color"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
                     android:text="@string/show_description"
                     android:textSize="17sp"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold"/>
 
                 <EditText
@@ -118,14 +118,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/text_color"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/show_age"
                     android:textSize="17sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold"/>
 
                 <EditText
@@ -136,7 +136,7 @@
                     android:inputType="number"
                     android:maxLength="2"
                     android:textSize="17sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/text_color"/>
 
                 <Button
                     android:id="@+id/saveProfileSettingsBtn"

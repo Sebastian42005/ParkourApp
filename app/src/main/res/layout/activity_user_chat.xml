@@ -18,7 +18,7 @@
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@id/backBtn"
             android:src="@drawable/profile"
-            app:civ_border_color="@color/black"
+            app:civ_border_color="@color/text_color"
             app:civ_border_width="2dp"
             tools:ignore="RtlCompat" />
 
@@ -26,11 +26,12 @@
             android:id="@+id/profileUsernameTextView"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_toEndOf="@id/profilePicImageView"
             android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
+            android:layout_toStartOf="@id/optionsLayout"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:ignore="RtlCompat" />
@@ -44,13 +45,29 @@
             android:layout_centerVertical="true"
             tools:ignore="MissingPrefix,RtlCompat" />
 
+        <RelativeLayout
+            android:id="@+id/optionsLayout"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:id="@+id/teamOptionsImageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:foreground="@drawable/options_drawable"
+                android:foregroundTint="@color/text_color"/>
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/black"
-        android:layout_below="@id/profileLayout"/>
+        android:layout_below="@id/profileLayout"
+        android:background="@color/text_color" />
 
     <ListView
         android:id="@+id/chatListView"

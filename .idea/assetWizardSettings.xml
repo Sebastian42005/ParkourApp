@@ -307,7 +307,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/hide_image/baseline_hide_image_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/zoom_out/baseline_zoom_out_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -317,8 +317,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_hide_image_24" />
-                            <entry key="sourceFile" value="C:\Users\sebi4\AndroidStudioProjects\ParkourApp" />
+                            <entry key="outputName" value="zoom_out" />
+                            <entry key="sourceFile" value="/C:\Users\sebi4\AndroidStudioProjects\ParkourApp" />
                           </map>
                         </option>
                       </PersistentState>

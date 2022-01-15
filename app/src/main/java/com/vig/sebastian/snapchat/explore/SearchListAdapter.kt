@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.explore
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,14 +26,14 @@ class SearchListAdapter(context: Context, private val int: Int, arrayList : Arra
         val profilePicImageView : ImageView = view.findViewById(R.id.profilePicImageView)
 
         if (ImageUriListsObject.profilePicsList.contains(username)) {
-            if (ImageUriListsObject.getProfilePic(username) != null) {
+            if (ImageUriListsObject.getProfilePic(username) != Uri.parse("not_found")) {
                 Glide.with(context).load(ImageUriListsObject.getProfilePic(username))
                     .into(profilePicImageView)
             }
         }else {
             Database.getUserProfilePic(username) {
                 ImageUriListsObject.setProfilePicImageUriHashMap(username, it)
-                Glide.with(context).load(it).into(profilePicImageView)
+                if (it != Uri.parse("not_found")) Glide.with(context).load(it).into(profilePicImageView)
             }
         }
 

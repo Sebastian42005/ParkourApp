@@ -1,6 +1,5 @@
 package com.vig.sebastian.snapchat.chat.team
 
-import android.R.attr
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
@@ -26,16 +25,14 @@ import com.vig.sebastian.snapchat.team.AddUserToTeamAdapter
 import com.vig.sebastian.snapchat.team.AddUserToTeamClass
 import com.vig.sebastian.snapchat.team.UsernameProfileAdapter
 import java.lang.Exception
-import android.R.attr.label
+import android.app.PendingIntent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.net.Uri
+import com.vig.sebastian.snapchat.MainActivity
+import com.vig.sebastian.snapchat.shortcuts.Shortcuts
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-
-
-class
-
-TeamChatActivity : AppCompatActivity() {
+class TeamChatActivity : AppCompatActivity() {
     var teamMembersList = ArrayList<String>()
     var editTeamMemberList = ArrayList<AddUserToTeamClass>()
     lateinit var chatListView : ListView
@@ -46,8 +43,11 @@ TeamChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_chat)
-
         //Team
+
+        if (Build.VERSION.SDK_INT >= 25) {
+            Shortcuts.createTeamShortcut(this, ClickedTeamChatObject.teamKey, ClickedTeamChatObject.teamName, ClickedTeamChatObject.admin, ClickedTeamChatObject.password)
+        }
 
         val usernameTextView: TextView = findViewById(R.id.profileUsernameTextView)
         val backBtn: ImageView = findViewById(R.id.backBtn)
@@ -58,7 +58,7 @@ TeamChatActivity : AppCompatActivity() {
         usernameTextView.text = ClickedTeamChatObject.teamName
 
         backBtn.setOnClickListener {
-            super.onBackPressed()
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         chatListView.setOnItemLongClickListener { parent, view, position, id ->
@@ -94,10 +94,13 @@ TeamChatActivity : AppCompatActivity() {
         val endDateTextView : TextView = findViewById(R.id.endDateTextView)
         val meetUpBackBtn : ImageView = findViewById(R.id.meetUpBackBtn)
         val showTeamChatBtn: ImageView = findViewById(R.id.showTeamChatBtn)
+        val navigateToMeetUpBtn: Button = findViewById(R.id.navigateToMeetUpBtn)
         val teamMeetUpsLayout: RelativeLayout = findViewById(R.id.teamMeetUpsLayout)
+        val showStreetViewBtn: Button = findViewById(R.id.showMeetUpStreetView)
         val createMeetUpBtn: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = findViewById(R.id.createMeetUpBtn)
         val declinedUsersTextView: TextView = findViewById(R.id.declinedUsersTextView)
         val acceptedUsersTextView: TextView = findViewById(R.id.acceptedUsersTextView)
+
 
         showTeamChatBtn.setOnClickListener {
             YoYo.with(Techniques.SlideOutDown).duration(300).playOn(teamMeetUpsLayout)
@@ -108,6 +111,18 @@ TeamChatActivity : AppCompatActivity() {
 
         meetUpListView.setOnItemClickListener { parent, view, position, id ->
             val meetUp = meetUpList[position]
+            navigateToMeetUpBtn.setOnClickListener {
+                val gmmIntentUri = Uri.parse("google.navigation:q=${meetUp.latitude},${meetUp.longitude}&mode=b")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+            showStreetViewBtn.setOnClickListener {
+                val gmmIntentUri = Uri.parse("google.streetview:cbll=${meetUp.latitude},${meetUp.longitude}&cbp=0,30,0,0,-15")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
             Database.getMeetUpAcceptedUsers(meetUp.key, meetUp.teamKey) {
                 if (it.isNotEmpty()) {
                     acceptedUsersTextView.setTypeface(null, Typeface.BOLD)
@@ -261,18 +276,38 @@ TeamChatActivity : AppCompatActivity() {
                         }.setNegativeButton(getString(R.string.cancel)){_,_->}.show()
                         return@OnMenuItemClickListener false
                     }
-                    else -> {
+                    R.id.createTeamShortcutItem -> {
+                        if (Build.VERSION.SDK_INT >= 28) {
+                            createTeamShortcut()
+                        }
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.deleteTeamItem -> {
                         AlertDialog.Builder(this).setMessage(getString(R.string.delete_team)).setPositiveButton(getString(R.string.delete)) {_,_ ->
                             Database.deleteTeam(ClickedTeamChatObject.teamKey)
                             super.onBackPressed()
                         }.setNegativeButton(getString(R.string.cancel)){_,_->}.show()
                         return@OnMenuItemClickListener false
                     }
+                    else -> return@OnMenuItemClickListener false
                 }
             })
             if (ClickedTeamChatObject.admin == Global.username) popupMenu.inflate(R.menu.team_options_admin_menu)
             else popupMenu.inflate(R.menu.team_options_menu)
             popupMenu.show()
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createTeamShortcut() {
+        val shortcutManager = getSystemService(ShortcutManager::class.java)
+
+        if (shortcutManager!!.isRequestPinShortcutSupported) {
+            val pinShortcutInfo = ShortcutInfo.Builder(this, ClickedTeamChatObject.teamKey).build()
+            val pinnedShortcutCallbackIntent = shortcutManager.createShortcutResultIntent(pinShortcutInfo)
+
+            val successCallback = PendingIntent.getBroadcast(this, 0, pinnedShortcutCallbackIntent, 0)
+
+            shortcutManager.requestPinShortcut(pinShortcutInfo, successCallback.intentSender)
         }
     }
 
@@ -317,5 +352,9 @@ TeamChatActivity : AppCompatActivity() {
                 meetUpListView.adapter = adapter
             }catch (e: Exception) {}
         }
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this, MainActivity::class.java))
     }
 }

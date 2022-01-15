@@ -35,35 +35,39 @@
                 android:gravity="top"
                 android:hint="@string/description" />
 
+            <Spinner
+                android:id="@+id/uploadPostTypeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"/>
+
             <EditText
                 android:id="@+id/uploadPostCountryEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:editable="false"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                android:inputType="text"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/"
-                android:hint="@string/country" />
-
+                android:text="@string/country" />
 
             <EditText
                 android:id="@+id/uploadPostCityEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:editable="false"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                android:inputType="text"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/"
-                android:hint="@string/city" />
+                android:text="@string/city" />
 
             <EditText
                 android:id="@+id/uploadPostLocationEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:editable="false"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ßöÖäÄüÜ_-/ "
-                android:hint="@string/location" />
+                android:text="@string/location" />
 
             <Switch
                 android:id="@+id/uploadPostTypeSwitch"
@@ -71,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/parkour_spot"
+                android:trackTint="@color/text_color"
                 android:layout_marginStart="2dp"
                 android:textSize="18sp"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />

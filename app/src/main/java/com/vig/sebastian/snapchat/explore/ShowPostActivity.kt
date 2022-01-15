@@ -2,20 +2,22 @@ package com.vig.sebastian.snapchat.explore
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.like.LikeButton
-import com.like.OnLikeListener
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.profile.PostType
+import java.util.*
+
 
 class ShowPostActivity : AppCompatActivity() {
     private var doubleClickLastTime = 0L
@@ -32,12 +34,20 @@ class ShowPostActivity : AppCompatActivity() {
         val city = uploadPostClass.city
         val location = uploadPostClass.location
         val description = uploadPostClass.description
+        var latitude = 0.0
+        var longitude = 0.0
+        if (country != "") {
+            Database.getLocationFromKey(country, key) {la, lo ->
+                latitude = la
+                longitude = lo
+            }
+        }
 
         val imageView = findViewById<ImageView>(R.id.postImage)
         val profilePicImageView = findViewById<ImageView>(R.id.profilePicImageView)
         val likesAmountTextView: TextView = findViewById(R.id.postLikeAmountTextView)
         val usernameTextView = findViewById<TextView>(R.id.postUsername)
-        val likePostBtn: LikeButton = findViewById(R.id.likePostImageView)
+        val likePostBtn: ImageView = findViewById(R.id.likePostImageView)
         val likedImageImageView = findViewById<ImageView>(R.id.likedImageImageView)
         val descriptionTextView = findViewById<TextView>(R.id.postDescriptionTextView)
         val backBtn: ImageView = findViewById(R.id.backBtn)
@@ -63,12 +73,34 @@ class ShowPostActivity : AppCompatActivity() {
                         }.setNegativeButton(getString(R.string.cancel)) {_,_->}.show()
                         return@OnMenuItemClickListener false
                     }
+                    R.id.navigateToSpotItem -> {
+                        val gmmIntentUri =
+                            Uri.parse("google.navigation:q=$latitude,$longitude&mode=b")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        startActivity(mapIntent)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.streetViewItem -> {
+                        val gmmIntentUri =
+                            Uri.parse("google.streetview:cbll=$latitude,$longitude&cbp=0,30,0,0,-15")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        startActivity(mapIntent)
+                        return@OnMenuItemClickListener false
+                    }
                     else -> return@OnMenuItemClickListener false
                 }
             })
             if (username != Global.username) {
-                popupMenu.inflate(R.menu.options_menu)
-            }else popupMenu.inflate(R.menu.options_profile_menu)
+                if (uploadPostClass.postType == PostType.PARKOUR_SPOT) {
+                    popupMenu.inflate(R.menu.options_spot_menu)
+                }else popupMenu.inflate(R.menu.options_post_menu)
+            }else {
+                if (uploadPostClass.postType == PostType.PARKOUR_SPOT) {
+                    popupMenu.inflate(R.menu.options_own_spot_menu)
+                }else popupMenu.inflate(R.menu.options_own_post_menu)
+            }
             popupMenu.show()
         }
 
@@ -77,7 +109,7 @@ class ShowPostActivity : AppCompatActivity() {
                 doubleClickLastTime = 0
                 likedImageImageView.visibility = View.VISIBLE
                 if (!likeList.contains(Global.username)) {
-                    likePostBtn.isLiked = true
+                    likePostBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_24))
                     Database.likePost(key)
                     likeList.add(Global.username)
 
@@ -107,14 +139,14 @@ class ShowPostActivity : AppCompatActivity() {
         }
 
         usernameTextView.text = username
-        if (ImageUriListsObject.getProfilePic(ClickedPostObject.uploadPostClass!!.username) != null) {
+        if (ImageUriListsObject.getProfilePic(ClickedPostObject.uploadPostClass!!.username) != Uri.parse("not_found")) {
             Glide.with(this)
                 .load(ImageUriListsObject.getProfilePic(ClickedPostObject.uploadPostClass!!.username))
                 .into(profilePicImageView)
         }
 
-        likePostBtn.setOnLikeListener(object : OnLikeListener {
-            override fun liked(likeButton: LikeButton?) {
+        likePostBtn.setOnClickListener{
+            if (likeList.contains(Global.username)) {
                 Database.likePost(key)
                 likeList.add(Global.username)
 
@@ -122,9 +154,7 @@ class ShowPostActivity : AppCompatActivity() {
                     likesAmountTextView.visibility = View.VISIBLE
                     if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
                 }else likesAmountTextView.visibility = View.GONE
-            }
-
-            override fun unLiked(likeButton: LikeButton?) {
+            }else {
                 Database.removeLikeFromPost(key)
                 likeList.remove(Global.username)
 
@@ -133,18 +163,19 @@ class ShowPostActivity : AppCompatActivity() {
                     if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
                 }else likesAmountTextView.visibility = View.GONE
             }
-        })
+        }
 
         Database.getPostLikeList(key) { likesList ->
             likeList = likesList
-            likePostBtn.isLiked = likeList.contains(Global.username)
+            if (likeList.contains(Global.username)) likePostBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_24))
+            else likePostBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_outline_24))
             if (likeList.size != 0) {
                 likesAmountTextView.visibility = View.VISIBLE
                 if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
             }else likesAmountTextView.visibility = View.GONE
         }
 
-        if (imageUri != null) {
+        if (imageUri != Uri.parse("not_found")) {
             Glide.with(this).load(imageUri).into(imageView)
         }else {
             if (!ImageUriListsObject.postsList.contains(key)) {

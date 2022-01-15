@@ -18,6 +18,8 @@ import com.vig.sebastian.snapchat.chat.team.TeamChatActivity
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.team.CreateTeamActivity
 import com.vig.sebastian.snapchat.team.DisplayedTeam
+import com.vig.sebastian.snapchat.team.TeamAdapter
+import com.vig.sebastian.snapchat.team.UsernameProfileAdapter
 import java.lang.Exception
 
 class TeamsFragment : Fragment() {
@@ -71,7 +73,7 @@ class TeamsFragment : Fragment() {
             }
             val teamsListView = root.findViewById<ListView>(R.id.teamsListView)
             try {
-                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, teamsList)
+                val adapter = TeamAdapter(requireContext(), R.layout.username_profile_layout, teamsList)
                 teamsListView.adapter = adapter
             }catch (e: Exception) {}
         }

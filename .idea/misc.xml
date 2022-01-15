@@ -42,28 +42,49 @@
         <entry key="app/src/main/res/drawable/background.xml" value="0.1655" />
         <entry key="app/src/main/res/drawable/button_drawable.xml" value="0.136" />
         <entry key="app/src/main/res/drawable/custom_progress_bar.xml" value="0.2715" />
+        <entry key="app/src/main/res/drawable/cutsom_seekbar.xml" value="0.261" />
         <entry key="app/src/main/res/drawable/edit_text_background.xml" value="0.2235" />
+        <entry key="app/src/main/res/drawable/explore.xml" value="0.419" />
         <entry key="app/src/main/res/drawable/gradient.xml" value="0.1885" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.4235" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.4235" />
+        <entry key="app/src/main/res/drawable/ic_baseline_chat_24.xml" value="0.4235" />
+        <entry key="app/src/main/res/drawable/ic_baseline_groups_24.xml" value="0.3455" />
         <entry key="app/src/main/res/drawable/ic_baseline_hide_image_24.xml" value="0.4175" />
+        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.3455" />
         <entry key="app/src/main/res/drawable/login_background.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/login_background_drawable.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/loginbackground.xml" value="0.2235" />
         <entry key="app/src/main/res/drawable/meet_up_drawable.xml" value="0.174" />
         <entry key="app/src/main/res/drawable/meetup_create_button_background.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/post_picture_drawable.xml" value="0.2225" />
+        <entry key="app/src/main/res/drawable/profile.xml" value="0.4235" />
+        <entry key="app/src/main/res/drawable/round_drawable.xml" value="0.4235" />
+        <entry key="app/src/main/res/drawable/search_drawable.xml" value="0.2295" />
+        <entry key="app/src/main/res/layout/activity_add_spot.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/activity_clicked_user_profile.xml" value="0.20643363728470113" />
         <entry key="app/src/main/res/layout/activity_create_meet_up.xml" value="0.38858695652173914" />
+        <entry key="app/src/main/res/layout/activity_create_team.xml" value="0.36367753623188404" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.3540843797766644" />
         <entry key="app/src/main/res/layout/activity_loading_screen.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.6151761517615176" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_meet_up.xml" value="0.46141479099678456" />
         <entry key="app/src/main/res/layout/activity_meet_up_details.xml" value="0.2874873353596758" />
         <entry key="app/src/main/res/layout/activity_meet_uup.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/activity_parkour_spots.xml" value="0.4028906955736224" />
         <entry key="app/src/main/res/layout/activity_post_list.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_show_post.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_support.xml" value="0.35778985507246375" />
+        <entry key="app/src/main/res/layout/activity_support_chat.xml" value="0.35778985507246375" />
+        <entry key="app/src/main/res/layout/activity_support_list.xml" value="0.3120471014492754" />
+        <entry key="app/src/main/res/layout/activity_team_chat.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.20643363728470113" />
+        <entry key="app/src/main/res/layout/activity_upload_post.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_user_chat.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/add_user_to_team_layout.xml" value="0.36367753623188404" />
+        <entry key="app/src/main/res/layout/custom_confirm_address.xml" value="0.1643976897689769" />
         <entry key="app/src/main/res/layout/fragment_battles.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_chats.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_explore.xml" value="0.45" />
@@ -73,10 +94,24 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_quiz.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_teams.xml" value="0.38858695652173914" />
+        <entry key="app/src/main/res/layout/friend_requests_layout.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/meet_up_drawable.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/meet_up_layout.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/message_layout.xml" value="0.36367753623188404" />
         <entry key="app/src/main/res/layout/post_layout.xml" value="0.2034332275390625" />
+        <entry key="app/src/main/res/layout/search_list_layout.xml" value="0.36367753623188404" />
+        <entry key="app/src/main/res/layout/settings_layout.xml" value="0.36367753623188404" />
+        <entry key="app/src/main/res/layout/team_layout.xml" value="0.34375" />
+        <entry key="app/src/main/res/layout/username_profile_layout.xml" value="0.20643363728470113" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.27419354838709675" />
+        <entry key="app/src/main/res/menu/options_own_spot_menu.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/menu/options_post_menu.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/menu/options_profile_menu.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/menu/options_spot_menu.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/menu/spot_type_menu.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/menu/team_options_admin_menu.xml" value="0.4244791666666667" />
+        <entry key="app/src/main/res/menu/team_options_menu.xml" value="0.41794871794871796" />
+        <entry key="app/src/main/res/menu/user_chat_menu.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>

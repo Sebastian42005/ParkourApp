@@ -29,6 +29,7 @@ import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.explore.*
+import com.vig.sebastian.snapchat.parkour_spots.ParkourSpotsActivity
 import com.vig.sebastian.snapchat.profile.classes.UploadPostClass
 import kotlin.Exception
 
@@ -66,6 +67,7 @@ class ExploreFragment : Fragment() {
         val showFilterBtn : LinearLayout = root.findViewById(R.id.setFilterBtn)
         val onlySpotsSwitch: Switch = root.findViewById(R.id.onlySpotsSwitch)
         val postsListScrollView : ScrollView = root.findViewById(R.id.postsListScrollView)
+        val searchSpotBtn: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = root.findViewById(R.id.searchSpotsBtn)
         val searchUserBackBtn : ImageView = root.findViewById(R.id.searchUserBackBtn)
         noUploadsLayout = root.findViewById(R.id.noUploadsLayout)
         val refreshLayout : androidx.swiperefreshlayout.widget.SwipeRefreshLayout = root.findViewById(R.id.refreshLayout)
@@ -75,6 +77,12 @@ class ExploreFragment : Fragment() {
 
         onlySpotsSwitch.setOnClickListener {
             setPostsList(onlySpotsSwitch.isChecked)
+        }
+
+        searchSpotBtn.setOnClickListener{
+            try {
+                startActivity(Intent(requireContext(), ParkourSpotsActivity::class.java))
+            }catch (e: java.lang.Exception) {}
         }
 
         refreshLayout.setColorSchemeColors(Color.rgb(0, 170, 170))
@@ -228,8 +236,7 @@ class ExploreFragment : Fragment() {
                 searchUserList.add(ExploreSearchClass(user.username, user.importance))
             }
             try {
-                val adapter =
-                    SearchListAdapter(requireContext(), R.layout.search_list_layout, searchUserList)
+                val adapter = SearchListAdapter(requireContext(), R.layout.search_list_layout, searchUserList)
                 val searchListView: ListView = root.findViewById(R.id.searchListView)
                 searchListView.adapter = adapter
             }catch (e: Exception) {}

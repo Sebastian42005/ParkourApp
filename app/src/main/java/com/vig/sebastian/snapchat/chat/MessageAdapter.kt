@@ -2,6 +2,7 @@ package com.vig.sebastian.snapchat.chat
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,8 @@ class MessageAdapter(context: Context, private val int: Int, arrayList : ArrayLi
         val messageUsernameTextView = view.findViewById<TextView>(R.id.messageUsernameTextView)
         val messageTextView: TextView = view.findViewById(R.id.messageTextView)
         val messageTimeTextView: TextView = view.findViewById(R.id.messageTimeTextView)
+
+        if (username == Global.username) messageUsernameTextView.setTextColor(Color.rgb(0, 0, 115))
 
         messageUsernameTextView.text = username
         messageTextView.text = message

@@ -3,27 +3,20 @@ package com.vig.sebastian.snapchat.profile.adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DownloadManager
 import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
+import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import com.like.LikeButton
-import com.like.OnLikeListener
 import com.vig.sebastian.snapchat.Global
 import com.vig.sebastian.snapchat.ImageUriListsObject
 import com.vig.sebastian.snapchat.R
 import com.vig.sebastian.snapchat.database.Database
-import com.vig.sebastian.snapchat.explore.ClickedPostObject
 import com.vig.sebastian.snapchat.profile.PostType
 import com.vig.sebastian.snapchat.profile.classes.PostClass
 
@@ -39,7 +32,9 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         val username = getItem(position)!!.uploadPostClass.username
         val postType = getItem(position)!!.uploadPostClass.postType
         val location = getItem(position)!!.uploadPostClass.location
+        val likeList = getItem(position)!!.likeList
         val description = getItem(position)!!.uploadPostClass.description
+        val country = getItem(position)!!.uploadPostClass.country
         val imageUri = getItem(position)!!.imageUri
         val profileImageUri = getItem(position)!!.profilePicImageUri
         val inflater = LayoutInflater.from(context)
@@ -49,11 +44,19 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         val profilePicImageView = view.findViewById<ImageView>(R.id.profilePicImageView)
         val likesAmountTextView: TextView = view.findViewById(R.id.postLikeAmountTextView)
         val usernameTextView = view.findViewById<TextView>(R.id.postUsername)
-        val likePostBtn: LikeButton = view.findViewById(R.id.likePostImageView)
+        val likePostBtn: ImageView = view.findViewById(R.id.likePostImageView)
         val descriptionTextView = view.findViewById<TextView>(R.id.postDescriptionTextView)
         val likedImageImageView : ImageView = view.findViewById(R.id.likedImageImageView)
-        var likeList = ArrayList<String>()
         val optionsBtn : ImageView = view.findViewById(R.id.postOptionsImageView)
+        var latitude = 0.0
+        var longitude = 0.0
+
+        if (country != "") {
+            Database.getLocationFromKey(country, key) {la, lo ->
+                latitude = la
+                longitude = lo
+            }
+        }
 
         optionsBtn.setOnClickListener {
             val popupMenu = PopupMenu(context, optionsBtn)
@@ -64,7 +67,7 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
                         return@OnMenuItemClickListener false
                     }
                     R.id.saveImageItem -> {
-                        saveImage(imageView, description)
+                        saveImage(username, key)
                         return@OnMenuItemClickListener false
                     }
                     R.id.deleteImageItem -> {
@@ -74,12 +77,33 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
                         }.setNegativeButton(context.getString(R.string.cancel)) {_,_->}.show()
                         return@OnMenuItemClickListener false
                     }
+                    R.id.navigateToSpotItem -> {
+                        val gmmIntentUri =
+                            Uri.parse("google.navigation:q=$latitude,$longitude&mode=b")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        context.startActivity(mapIntent)
+                        return@OnMenuItemClickListener false
+                    }
+                    R.id.streetViewItem -> {
+                        val gmmIntentUri = Uri.parse("google.streetview:cbll=$latitude,$longitude&cbp=0,30,0,0,-15")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        context.startActivity(mapIntent)
+                        return@OnMenuItemClickListener false
+                    }
                     else -> return@OnMenuItemClickListener false
                 }
             })
             if (username != Global.username) {
-                popupMenu.inflate(R.menu.options_menu)
-            }else popupMenu.inflate(R.menu.options_profile_menu)
+                if (postType == PostType.PARKOUR_SPOT) {
+                    popupMenu.inflate(R.menu.options_spot_menu)
+                }else popupMenu.inflate(R.menu.options_post_menu)
+            }else {
+                if (postType == PostType.PARKOUR_SPOT) {
+                    popupMenu.inflate(R.menu.options_own_spot_menu)
+                }else popupMenu.inflate(R.menu.options_own_post_menu)
+            }
             popupMenu.show()
         }
 
@@ -87,7 +111,7 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
             if(System.currentTimeMillis() - doubleClickLastTime < 300){
                 doubleClickLastTime = 0
                 if (!likeList.contains(Global.username)) {
-                    likePostBtn.isLiked = true
+                    likePostBtn.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_24))
                     Database.likePost(key)
                     likeList.add(Global.username)
 
@@ -113,10 +137,10 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         }
 
         usernameTextView.text = username
-        if (profileImageUri != null) Glide.with(context).load(profileImageUri).into(profilePicImageView)
+        if (profileImageUri != Uri.parse("not_found")) Glide.with(context).load(profileImageUri).into(profilePicImageView)
 
-        likePostBtn.setOnLikeListener(object : OnLikeListener {
-            override fun liked(likeButton: LikeButton?) {
+        likePostBtn.setOnClickListener{
+            if (likeList.contains(Global.username)) {
                 Database.likePost(key)
                 likeList.add(Global.username)
 
@@ -124,9 +148,7 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
                     likesAmountTextView.visibility = View.VISIBLE
                     if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
                 }else likesAmountTextView.visibility = View.GONE
-            }
-
-            override fun unLiked(likeButton: LikeButton?) {
+            }else {
                 Database.removeLikeFromPost(key)
                 likeList.remove(Global.username)
 
@@ -135,17 +157,14 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
                     if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
                 }else likesAmountTextView.visibility = View.GONE
             }
-        })
-
-        Database.getPostLikeList(key) { likesList ->
-            likeList = likesList
-            likePostBtn.isLiked = likeList.contains(Global.username)
-            if (likeList.size != 0) {
-                likesAmountTextView.visibility = View.VISIBLE
-                if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
-            }else likesAmountTextView.visibility = View.GONE
         }
-        if (imageUri != null) {
+        if (likeList.contains(Global.username)) likePostBtn.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_24))
+        else likePostBtn.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_outline_24))
+        if (likeList.size != 0) {
+            likesAmountTextView.visibility = View.VISIBLE
+            if (likeList.size > 1) likesAmountTextView.text = "${likeList.size} Likes" else likesAmountTextView.text = "1 Like"
+        }else likesAmountTextView.visibility = View.GONE
+        if (imageUri != Uri.parse("not_found")) {
             Glide.with(context).load(imageUri).into(imageView)
         }else {
             Database.getImageUriFromUser(username, key) {
@@ -157,8 +176,12 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
         return view
     }
 
-    private fun saveImage(imageView: ImageView, description: String) {
-
+    private fun saveImage(username: String, key: String) {
+        val storageRef = Database.storageReference.child(username).child("Posts").child(key)
+        storageRef.downloadUrl.addOnSuccessListener {
+            val url = it.toString()
+            downloadFile(key, ".jpg", DIRECTORY_DOWNLOADS, url)
+        }
     }
 
     private fun shareImage(postType: PostType, location: String, username: String, description: String, imageUri: Uri?) {
@@ -181,5 +204,19 @@ class PostAdapter(context: Context, private val int: Int, arrayList : ArrayList<
 
     override fun isEnabled(position: Int): Boolean {
         return false
+    }
+
+    private fun downloadFile(fileName: String, fileExtension: String, destinationDirectory: String, url: String) {
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val uri = Uri.parse(url)
+
+        val request = DownloadManager.Request(uri)
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        request.setDestinationInExternalFilesDir(context, destinationDirectory,
+            "DCIM/Parkour/$fileName$fileExtension"
+        )
+
+        downloadManager.enqueue(request)
     }
 }

@@ -14,6 +14,10 @@
         android:title="@string/title_meet_ups"/>
 
     <item
+        android:id="@+id/createTeamShortcutItem"
+        android:title="@string/create_shortcut"/>
+
+    <item
         android:id="@+id/leaveTeamItem"
         android:title="@string/leave"/>
 

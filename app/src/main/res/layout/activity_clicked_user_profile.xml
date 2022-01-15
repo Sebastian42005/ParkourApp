@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/profileNameLayout"
             android:layout_width="match_parent"
-            android:background="@color/dark_aqua"
+            android:background="@color/background_color"
             android:layout_height="50dp">
 
             <ImageView
@@ -23,7 +23,7 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24"/>
+                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
             <TextView
                 android:id="@+id/profileUsername"
@@ -31,7 +31,7 @@
                 android:layout_height="50dp"
                 android:layout_toEndOf="@id/backToMainMenuBtn"
                 android:gravity="center_vertical"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
                     android:layout_below="@id/space"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/profile"
-                    app:civ_border_color="#000000"
+                    app:civ_border_color="@color/text_color"
                     app:civ_border_width="3dp" />
 
                 <TextView
@@ -95,7 +95,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:text=""
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textSize="18sp" />
 
                 <Button
@@ -107,7 +107,7 @@
                     android:layout_marginEnd="30dp"
                     android:backgroundTint="@color/dark_aqua"
                     android:text="@string/follow"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/text_color" />
 
                 <LinearLayout
                     android:id="@+id/profileImagesListLinearLayout"
@@ -165,7 +165,7 @@
                         android:gravity="center"
                         android:text="@string/user_no_uploads"
                         android:textSize="18sp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/text_color"/>
 
                 </LinearLayout>
 
@@ -193,7 +193,7 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:foreground="@drawable/ic_baseline_arrow_back_24"
-                android:foregroundTint="@color/black"
+                android:foregroundTint="@color/text_color"
                 android:layout_marginStart="5dp"/>
 
             <TextView
@@ -203,7 +203,7 @@
                 android:text="Posts"
                 android:textSize="20sp"
                 android:layout_marginStart="5dp"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textStyle="bold"
                 android:layout_toEndOf="@id/backBtn"/>
 
@@ -241,7 +241,7 @@
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_color"/>
 
             <ImageView
                 android:id="@+id/friendsRequestsBackBtn"

@@ -13,8 +13,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.vig.sebastian.snapchat.parkour_spots.ParkourSpotsActivity
 import com.vig.sebastian.snapchat.Global
+import com.vig.sebastian.snapchat.MainActivity
 import com.vig.sebastian.snapchat.R
+import com.vig.sebastian.snapchat.support.SupportChatActivity
+import com.vig.sebastian.snapchat.support.SupportListActivity
+import com.vig.sebastian.snapchat.support.SupportObject
 import com.vig.sebastian.snapchat.database.Database
 import com.vig.sebastian.snapchat.login.LoginActivity
 import com.vig.sebastian.snapchat.team.UsernameProfileAdapter
@@ -70,6 +75,10 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
+    private fun showParkourSpots() {
+        startActivity(Intent(this, ParkourSpotsActivity::class.java))
+    }
+
     private fun deleteAccount() {
         AlertDialog.Builder(this).setTitle(getString(R.string.delete_account) + "?").setPositiveButton(getString(R.string.delete)) { _, _->
             Database.deleteAccount {
@@ -81,7 +90,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun sendMessageToSupport() {
-
+        SupportObject.clickedUsername = ""
+        startActivity(Intent(this, if (Global.username != "Support") SupportChatActivity::class.java else SupportListActivity::class.java))
     }
 
     private fun showFriends() {

@@ -7,18 +7,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
+        android:id="@+id/backBtn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:foreground="@drawable/ic_baseline_arrow_back_24"
-        android:foregroundTint="@color/black"
-        android:id="@+id/backBtn"/>
+        android:foregroundTint="@color/text_color" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:text="Spot"
         android:textSize="22sp"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:layout_toEndOf="@id/backBtn"
         android:textStyle="bold"
         android:layout_marginStart="5dp"
@@ -37,7 +37,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/profile"
-            app:civ_border_color="#000000"
+            app:civ_border_color="@color/text_color"
             app:civ_border_width="2dp"
             tools:ignore="NotSibling" />
 
@@ -51,7 +51,7 @@
             android:layout_toEndOf="@id/profilePicImageView"
             android:gravity="center_vertical"
             android:layout_toStartOf="@id/optionsLayout"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -70,7 +70,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="9dp"
                 android:layout_marginBottom="9dp"
-                android:src="@drawable/options_drawable" />
+                android:foreground="@drawable/options_drawable"
+                android:foregroundTint="@color/text_color"/>
 
         </RelativeLayout>
 
@@ -100,32 +101,24 @@
 
         </RelativeLayout>
 
-        <com.like.LikeButton
+        <ImageView
             android:id="@+id/likePostImageView"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_below="@id/postImage"
-            app:icon_type="star"
-            app:circle_start_color="@color/dark_aqua"
-            app:dots_primary_color="@color/dark_aqua"
-            app:dots_secondary_color="@color/aqua"
-            app:circle_end_color="@color/aqua"
-            app:icon_size="40dp"
-            app:liked="false"
-            app:anim_scale_factor="2"
-            app:is_enabled="true" />
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_star_outline_24"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/postLikeAmountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/likePostImageView"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -133,10 +126,10 @@
             android:id="@+id/postDescriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textSize="15sp"
             android:layout_below="@id/postLikeAmountTextView"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
 
     </RelativeLayout>
 

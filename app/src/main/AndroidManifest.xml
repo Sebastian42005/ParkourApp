@@ -6,6 +6,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -28,7 +29,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Snapchat">
         <activity
-            android:name=".login.ResetPasswordActivity"
+            android:name=".parkour_spots.ParkourSpotsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".support.SupportListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".support.SupportChatActivity"
             android:exported="false" />
         <activity
             android:name=".settings.SettingsActivity"
@@ -75,6 +82,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_api"/>
     </application>
-
 </manifest>

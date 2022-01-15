@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color"
     android:layout_marginTop="5dp">
 
     <RelativeLayout
@@ -16,7 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
             android:src="@drawable/profile"
-            app:civ_border_color="#000000"
+            app:civ_border_color="@color/text_color"
             app:civ_border_width="2dp" />
 
         <TextView
@@ -34,6 +35,7 @@
         <CheckBox
             android:id="@+id/checkbox"
             android:layout_width="30dp"
+            android:buttonTint="@color/text_color"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginEnd="5dp"
