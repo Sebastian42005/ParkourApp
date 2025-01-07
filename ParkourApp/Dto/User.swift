@@ -1,11 +1,17 @@
-class User {
-    let username: String = "Patrick"
-    let description: String = "Hallo mein name ist Patrick"
-    let spotsAmount: Int32 = 2
-    let follower: Int32 = 4
-    let follows: Int32 = 2
+import Foundation
+
+struct User: Codable, Hashable {
+    let username: String
+    let description: String
+    let spotsAmount: Int32
+    let follower: Int32
+    let follows: Int32
     
-    init() {
-        
+    init(username: String, description: String, spotsAmount: Int32, follower: Int32, follows: Int32) {
+        self.username = username
+        self.description = description
+        self.spotsAmount = spotsAmount
+        self.follower = follower
+        self.follows = follows
     }
 }
