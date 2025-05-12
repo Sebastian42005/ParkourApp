@@ -1,0 +1,108 @@
+// Auth & Register
+"login" = "Login";
+"register" = "Register";
+"username" = "Username";
+"email" = "Email";
+"password" = "Password";
+"confirm_password" = "Confirm Password";
+"next" = "Next";
+"already_have_an_account" = "Already have an account? Login";
+"dont_have_an_account" = "Don't have an account? Register";
+"wrong_username_password" = "Wrong username or password";
+"successfully_logged_in" = "Successfully logged in";
+"registration_error" = "Registration Error: %@";
+"password_mismatch" = "Password don't match";
+"choose_your_favorite_sports" = "Choose your favorite sports";
+"choose_up_to_5_sports" = "Choose up to 5 sports you’re interested in";
+"search_sports" = "Search sports...";
+"please_select_at_least_one_sport" = "Please select at least one sport";
+
+// Spot Upload
+"title" = "Title";
+"description" = "Description";
+"select_sport" = "Select a sport";
+"attributes" = "Attributes";
+"take_photos" = "Take photos to display them here";
+"select_image_source" = "Select Image Source";
+"choose_image_source" = "Choose Image Source";
+"take_photo" = "Take a Photo";
+"pick_from_gallery" = "Pick from Gallery";
+"upload_spot" = "Upload Spot";
+
+// Feedback
+"feedback" = "Feedback";
+"share_feedback" = "Share your feedback with us";
+"select_feedback_type" = "Select feedback type";
+"feedback_type" = "Feedback Type";
+"please_enter_feedback" = "Please enter feedback";
+"send" = "Send";
+"cancel" = "Cancel";
+"feedback_send_failed" = "Feedback could not be sent";
+"feedback_sent_success" = "Your feedback has been sent.";
+"thank_you" = "Thank you!";
+"error" = "Error";
+
+// Settings
+"settings" = "Settings";
+"appearance" = "Appearance";
+"mode" = "Mode";
+"system" = "System";
+"light" = "Light";
+"dark" = "Dark";
+"feedback_support" = "Feedback & Support";
+"give_feedback" = "Give Feedback";
+"contact_support" = "Contact Support";
+"general" = "General";
+"about_app" = "About the App";
+"privacy_policy" = "Privacy Policy";
+"language" = "Language Settings";
+"rate_app" = "Rate the App";
+"version" = "Version";
+"restart_app" = "App Restart Required";
+"restart_app_message" = "Please restart the app for the language change to take effect.";
+
+// Spot Details
+"created_by" = "Created by: ";
+"attributes_colon" = "Attributes:";
+"rating" = "Rating";
+"no_ratings" = "No ratings yet";
+
+// Map
+"spots_nearby" = "Spots nearby";
+"filter" = "Filter";
+"details" = "Details";
+
+// Filter (shared)
+"filter_title" = "Filter";
+"select_attribute" = "Select attributes";
+"select_rating" = "Select rating";
+"select_city" = "Select city";
+"reset" = "Reset";
+"apply" = "Apply";
+"select_a_sport" = "Select a sport";
+
+// Profile
+"profile" = "Profile";
+"spots" = "Spots";
+"followers" = "Followers";
+"following" = "Following";
+
+// Tabs
+"map_tab" = "Map";
+"explore_tab" = "Explore";
+"profile_tab" = "Profile";
+
+// Explore
+"search" = "Search";
+"users" = "Users";
+
+// Location
+"pick_location" = "Pick Location";
+
+// Feedback Types
+"bug" = "Bug";
+"feature_request" = "Feature Request";
+"improvement" = "Improvement";
+"praise" = "Praise";
+"question" = "Question";
+"other" = "Other";

@@ -17,7 +17,8 @@ struct FancyToastView: View {
                 
                 VStack(alignment: .leading) {
                     Text(title)
-                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(type.themeColor)
+                        .font(.system(size: 20, weight: .semibold))
                     
                     Text(message)
                         .font(.system(size: 15))

@@ -14,7 +14,7 @@ class ViewHandler: ObservableObject {
         } receiveValue: { isVerifyed in
             self.page = isVerifyed.verified ? .tabview : .login
             if isVerifyed.user != nil {
-                user = isVerifyed.user!
+                OWN_USER = isVerifyed.user!
             }
             
         }.store(in: &cancel)

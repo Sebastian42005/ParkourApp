@@ -1,0 +1,109 @@
+// Auth & Register
+"login" = "Einloggen";
+"register" = "Registrieren";
+"username" = "Benutzername";
+"email" = "E-Mail";
+"password" = "Passwort";
+"confirm_password" = "Passwort bestätigen";
+"next" = "Weiter";
+"already_have_an_account" = "Hast du bereits ein Konto? Einloggen";
+"dont_have_an_account" = "Hast du noch kein Konto? Registrieren";
+"wrong_username_password" = "Falscher Benutzername oder Passwort";
+"successfully_logged_in" = "Erfolgreich eingeloggt";
+"registration_error" = "Registrierungsfehler: %@";
+"password_mismatch" = "Passwörter stimmen nicht überein";
+"choose_your_favorite_sports" = "Wähle deine Lieblingssportarten aus";
+"choose_up_to_5_sports" = "Wähle bis zu 5 Sportarten, an denen du interessiert bist";
+"search_sports" = "Sportarten suchen...";
+"please_select_at_least_one_sport" = "Bitte wähle mindestens eine Sportart aus";
+
+// Spot Upload
+"title" = "Titel";
+"description" = "Beschreibung";
+"select_sport" = "Sport auswählen";
+"attributes" = "Eigenschaften";
+"take_photos" = "Mache Fotos, um sie hier anzuzeigen";
+"select_image_source" = "Bildquelle auswählen";
+"choose_image_source" = "Bildquelle wählen";
+"take_photo" = "Foto aufnehmen";
+"pick_from_gallery" = "Aus Galerie auswählen";
+"upload_spot" = "Spot hochladen";
+
+// Feedback
+"feedback" = "Feedback";
+"share_feedback" = "Teile uns dein Feedback mit";
+"select_feedback_type" = "Feedback Art auswählen";
+"feedback_type" = "Feedback Art";
+"please_enter_feedback" = "Bitte gib dein Feedback ein";
+"send" = "Absenden";
+"cancel" = "Abbrechen";
+"feedback_send_failed" = "Feedback konnte nicht gesendet werden";
+"feedback_sent_success" = "Dein Feedback wurde gesendet.";
+"thank_you" = "Danke!";
+"error" = "Fehler";
+
+// Settings
+"settings" = "Einstellungen";
+"appearance" = "Erscheinungsbild";
+"mode" = "Modus";
+"system" = "System";
+"light" = "Hell";
+"dark" = "Dunkel";
+"feedback_support" = "Feedback & Support";
+"give_feedback" = "Feedback geben";
+"contact_support" = "Support kontaktieren";
+"general" = "Allgemein";
+"about_app" = "Über die App";
+"privacy_policy" = "Datenschutzrichtlinie";
+"language" = "Spracheinstellungen";
+"rate_app" = "App bewerten";
+"version" = "Version";
+"restart_app" = "App Neustart erfolderlich";
+"restart_app_message" = "Bitte starte die App neu, damit die Sprachänderung wirksam wird.";
+
+// Spot Details
+"created_by" = "Erstellt von: ";
+"attributes_colon" = "Eigenschaften:";
+"rating" = "Bewertung";
+"no_ratings" = "Noch keine Bewertungen";
+
+// Map
+"spots_nearby" = "Spots in der Nähe";
+"filter" = "Filter";
+"details" = "Details";
+
+// Filter (shared)
+"filter_title" = "Filter";
+"select_attribute" = "Eigenschaften auswählen";
+"select_rating" = "Bewertung auswählen";
+"select_city" = "Stadt auswählen";
+"reset" = "Zurücksetzen";
+"apply" = "Anwenden";
+"select_a_sport" = "Wähle eine Sportart aus";
+
+// Profile
+"profile" = "Profil";
+"spots" = "Spots";
+"followers" = "Follower";
+"following" = "Folge ich";
+
+// Tabs
+"map_tab" = "Karte";
+"explore_tab" = "Entdecken";
+"profile_tab" = "Profil";
+
+// Explore
+"search" = "Suche";
+"users" = "User";
+
+// Location
+"pick_location" = "Wähle einen Ort aus";
+
+// Feedback Types
+"bug" = "Fehler";
+"feature_request" = "Feature-Wunsch";
+"improvement" = "Verbesserung";
+"praise" = "Lob";
+"question" = "Frage";
+"other" = "Sonstiges";
+

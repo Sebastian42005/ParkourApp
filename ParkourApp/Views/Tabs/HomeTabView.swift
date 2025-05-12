@@ -13,24 +13,24 @@ struct HomeTabView: View {
 
                VStack {
                    TabView {
-                       Tab("Map", systemImage: "map") {
-                           MapTab()
+                       Tab("map_tab".localized(), systemImage: "map") {
+                           MapTab(viewModel: MapTabViewModel())
                        }
-                       Tab("Explore", systemImage: "magnifyingglass") {
+                       Tab("explore_tab".localized(), systemImage: "magnifyingglass") {
                            ExploreTab()
                        }
-                       Tab("Profile", systemImage: "person.crop.circle") {
-                           ProfileTab(viewModel: ProfileTabViewModel(user: viewModel.user, colorScheme: colorScheme))
+                       Tab("profile_tab".localized(), systemImage: "person.crop.circle") {
+                           ProfileView(viewModel: ProfileViewModel(username: viewModel.user.username, colorScheme: colorScheme))
                        }
                    }
                    .accentColor(Color.primary)
+                   .navigationBarHidden(true)
                }
            }
-           .navigationTitle("Spot Finder")
        }
     }
 }
 
 #Preview {
-    HomeTabView(viewModel: HomeTabViewModel())
+    HomeTabView(viewModel: HomeTabViewModel(viewHandler: ViewHandler()))
 }

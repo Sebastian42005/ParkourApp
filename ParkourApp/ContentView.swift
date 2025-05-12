@@ -7,7 +7,7 @@ struct ContentView: View {
         switch (viewHandler.page) {
         case .empty : EmptyView()
         case .login : RegisterView(viewModel: RegisterViewModel(viewHandler: viewHandler))
-        case .tabview : HomeTabView(viewModel: HomeTabViewModel())
+        case .tabview : HomeTabView(viewModel: HomeTabViewModel(viewHandler: viewHandler))
         }
     }
 }

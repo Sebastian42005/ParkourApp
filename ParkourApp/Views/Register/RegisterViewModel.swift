@@ -8,88 +8,147 @@ class RegisterViewModel: ObservableObject {
     @Published var username: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
-    @Published var errorToast: FancyToast? = nil
     @Published var isLoading = false
-    @Published var loginState = LoginState.none
-    var viewHandler: ViewHandler;
-    
+    @Published var loginState: LoginState = .login
+
+    @Published var registerStep: Int = 1
+    @Published var selectedSports: [Sport] = []
+    @Published var allSports: [Sport] = []
+    @Published var searchSportText: String = ""
+
+    var filteredSports: [Sport] {
+        if searchSportText.isEmpty {
+            return allSports
+        } else {
+            return allSports.filter { $0.name.localizedCaseInsensitiveContains(searchSportText) }
+        }
+    }
+
+    var viewHandler: ViewHandler
+
     init(viewHandler: ViewHandler) {
         self.viewHandler = viewHandler
         self.checkIfUserIsLoggedIn()
+        self.loadAllSports()
     }
-    
+
     func buttonClick() {
         switch loginState {
-        case .none:
-            checkLoginState()
         case .login:
             login()
         case .register:
-            register()
-        }
-    }
-    
-    func checkLoginState() {
-        if (username.isEmpty) {
-            self.errorToast = FancyToast(type: .error, title: "Login", message: "Username can't be empty")
-            return
-        }
-        let publisher = Service().checkLogin(username: username)
-        
-        publisher.sink { error in
-            print("CheckLoginState: \(error)")
-        } receiveValue: { data in
-            if data.loggedIn {
-                self.loginState = .login
+            if registerStep == 1 {
+                registerStep = 2
             } else {
-                self.loginState = .register
+                register()
             }
-        }.store(in: &cancel)
+        }
     }
-    
+
+    func loadAllSports() {
+        Service().getSports()
+            .sink { _ in } receiveValue: { sports in
+                self.allSports = sports
+            }
+            .store(in: &cancel)
+    }
+
     func login() {
         self.isLoading = true
-        let publisher = Service().login(username: username, password: password)
-        
-        publisher.sink { error in
-            self.errorToast = FancyToast(type: .error, title: "Login", message: "Wrong Username or password")
-        } receiveValue: { token in
-            if (token.token != nil) {
-                UserDefaults.standard.set(token.token, forKey: "token")
-                user = token.user!
-                self.viewHandler.page = .tabview
-            }else {
-                self.errorToast = FancyToast(type: .error, title: "Login", message: "Wrong username or password")
+        Service().login(username: username, password: password)
+            .sink { completion in
+                switch completion {
+                case .failure:
+                    ToastManager.shared.showToast(
+                        type: .error,
+                        title: "login".localized(),
+                        message: "wrong_username_password".localized()
+                    )
+                    self.isLoading = false
+                case .finished:
+                    break
+                }
+            } receiveValue: { token in
+                if let authToken = token.token {
+                    UserDefaults.standard.set(authToken, forKey: "token")
+                    OWN_USER = token.user!
+                    ToastManager.shared.showToast(
+                        type: .success,
+                        title: "login".localized(),
+                        message: "successfully_logged_in".localized()
+                    )
+                    self.viewHandler.page = .tabview
+                } else {
+                    ToastManager.shared.showToast(
+                        type: .error,
+                        title: "login".localized(),
+                        message: "wrong_username_password".localized()
+                    )
+                }
+                self.isLoading = false
             }
-            self.isLoading = false
-        }.store(in: &cancel)
-
+            .store(in: &cancel)
     }
-    
+
     func register() {
         if password == confirmPassword {
             self.isLoading = true
-            let publisher = Service().register(username: username, email: email, password: password)
-            
-            publisher.sink { error in
-                print("Register: \(error)")
-            } receiveValue: { data in
-                self.loginState = .login
-                self.errorToast = FancyToast(type: .success, title: "Register", message: "Successfully registered")
-                self.isLoading = false
-            }.store(in: &cancel)
+            let publisher = Service().register(
+                username: username,
+                email: email,
+                password: password,
+                favoriteSports: selectedSports.map { $0.name }
+            )
+
+            publisher
+                .sink { completion in
+                    switch completion {
+                    case .failure(let error):
+                        ToastManager.shared.showToast(
+                            type: .error,
+                            title: "register".localized(),
+                            message: String(format: "registration_error".localized(), error.localizedDescription)
+                        )
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { _ in
+                    self.loginState = .login
+                    ToastManager.shared.showToast(
+                        type: .success,
+                        title: "register".localized(),
+                        message: "successfully_logged_in".localized()
+                    )
+                    self.isLoading = false
+                }
+                .store(in: &cancel)
         } else {
-            self.errorToast = FancyToast(type: .error, title: "Register", message: "Password don't match")
+            ToastManager.shared.showToast(
+                type: .error,
+                title: "register".localized(),
+                message: "password_mismatch".localized()
+            )
         }
     }
-    
+
+    var isFormValid: Bool {
+        if loginState == .login {
+            return !username.isEmpty && !password.isEmpty
+        } else {
+            if registerStep == 1 {
+                return !username.isEmpty && !email.isEmpty && !password.isEmpty && !confirmPassword.isEmpty && password == confirmPassword
+            } else {
+                return !selectedSports.isEmpty
+            }
+        }
+    }
+
     func checkIfUserIsLoggedIn() {
-        let publisher = Service().getOwnUser()
-        
-        publisher.sink { error in
-        } receiveValue: { databaseUser in
-            self.viewHandler.page = .tabview
-            user = databaseUser
-        }.store(in: &cancel)
+        Service().getOwnUser()
+            .sink { _ in } receiveValue: { databaseUser in
+                self.viewHandler.page = .tabview
+                OWN_USER = databaseUser
+            }
+            .store(in: &cancel)
     }
 }
